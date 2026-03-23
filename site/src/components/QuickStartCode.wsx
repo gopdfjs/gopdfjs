@@ -1,0 +1,101 @@
+/** @jsxImportSource @wsxjs/wsx-core */
+/**
+ * Quick Start Code - 快速开始代码示例
+ * 使用 base-components 中的 CodeBlock 组件
+ */
+import { WebComponent, autoRegister } from "@wsxjs/wsx-core";
+import { i18n } from "@wsxjs/wsx-i18next";
+import "@wsxjs/wsx-base-components";
+import styles from "./QuickStartCode.css?inline";
+
+// 定义 code-block 元素的类型接口
+interface CodeBlockConfig {
+    segments?: Array<{ code: string; language: string }>;
+    code?: string;
+    title?: string;
+    language?: string;
+    showCopy?: boolean;
+    showTryOnline?: boolean;
+    tryOnlineUrl?: string;
+    onTryOnline?: () => void;
+}
+
+interface CodeBlockElement extends HTMLElement {
+    updateConfig?(config: CodeBlockConfig): void;
+}
+
+@autoRegister({ tagName: "quick-start-code" })
+@i18n("quickstart")
+export class QuickStartCode extends WebComponent {
+    private segments = [
+        {
+            code: "pnpm add @gopdfjs/pdf-wasm",
+            language: "bash",
+        },
+        {
+            code: `// 本站点用 WSX 搭建；PDF 重计算走 WASM
+/** @jsxImportSource @wsxjs/wsx-core */
+import { WebComponent, autoRegister } from "@wsxjs/wsx-core";
+
+@autoRegister()
+export class ToolShell extends WebComponent {
+    render() {
+        return <div>GoPDF.js · browser-native</div>;
+    }
+}`,
+            language: "typescript",
+        },
+    ];
+
+    private configUpdated: boolean = false; // 防止重复更新配置
+
+    constructor() {
+        super({ styles });
+    }
+
+    protected onRendered() {
+        super.onRendered?.();
+        // 防止重复更新配置（避免循环重渲染）
+        if (this.configUpdated) {
+            return;
+        }
+
+        // 确保 code-block 元素在 Shadow DOM 中可用
+        const codeBlock = this.shadowRoot?.querySelector(
+            "wsx-code-block"
+        ) as CodeBlockElement | null;
+        if (codeBlock && codeBlock.updateConfig) {
+            this.configUpdated = true; // 标记已更新
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const t = ((this as any).t as (key: string, options?: object) => string).bind(this);
+            // 通过 updateConfig 方法设置多个代码段
+            codeBlock.updateConfig({
+                segments: this.segments,
+                title: t("codeExample.titleInstallation"),
+                showCopy: true,
+                showTryOnline: true,
+                tryOnlineUrl: "/playground",
+            });
+        }
+    }
+
+    render() {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const t = ((this as any).t as (key: string, options?: object) => string).bind(this);
+
+        return (
+            <section class="code-example-section">
+                <div class="container">
+                    <h2 class="section-title">{t("codeExample.title")}</h2>
+                    <p class="section-description">{t("codeExample.description")}</p>
+                    <wsx-code-block
+                        title={t("codeExample.titleInstallation")}
+                        show-copy="true"
+                        show-try-online="true"
+                        try-online-url="/playground"
+                    ></wsx-code-block>
+                </div>
+            </section>
+        );
+    }
+}

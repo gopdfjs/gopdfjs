@@ -1,0 +1,12 @@
+# 盘古 CLI：根目录运行 `pnpm dev` 时选择并启动 workspace 包
+projectName: pdf-monorepo
+packageManager: pnpm
+demos:
+  - name: Site — @gopdfjs landing
+    value: site
+    description: GoPDF.js 宣传落地页（Vite 静态站，GitHub Pages base + 404.html，对齐 wsxjs/site）
+    package: "@gopdfjs/site"
+  - name: Demo — pdf.js vs pdf-wasm
+    value: demo-react
+    description: 最小页面对照测试 pdf.js 与 @gopdfjs/pdf-wasm
+    package: "@gopdfjs/demo-react"

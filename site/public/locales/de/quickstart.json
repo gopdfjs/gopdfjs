@@ -1,0 +1,38 @@
+{
+    "title": "Schnellstart",
+    "description": "Beginnen Sie in wenigen Minuten mit GoPDF.js. Erstellen Sie Ihre erste Web-Komponente mit JSX-Syntax und TypeScript-Unterstützung.",
+    "installation": {
+        "title": "Installation",
+        "copy": "📋 Kopieren",
+        "copied": "✅ Kopiert!"
+    },
+    "steps": {
+        "install": {
+            "title": "Installieren",
+            "description": "Installieren Sie GoPDF.js über npm"
+        },
+        "create": {
+            "title": "Erstellen",
+            "description": "Erstellen Sie Ihre erste Komponente mit JSX"
+        },
+        "build": {
+            "title": "Erstellen",
+            "description": "Erstellen und deployen Sie Ihre Web-Komponenten"
+        }
+    },
+    "routerExample": {
+        "title": "🚀 Router-Beispiel",
+        "description": "Diese Seite demonstriert WSX Router in Aktion! Beachten Sie, wie:",
+        "points": {
+            "highlight": "Navigationslinks heben die aktive Seite hervor",
+            "url": "Die URL ändert sich ohne Seitenaktualisierung",
+            "browser": "Die Browser-Zurück/Vor-Buttons funktionieren ordnungsgemäß",
+            "components": "Jeder Abschnitt ist eine separate Komponente, die über die Route geladen wird"
+        }
+    },
+    "codeExample": {
+        "title": "In 60 Sekunden loslegen",
+        "description": "Installieren Sie GoPDF.js und erstellen Sie Ihre erste Komponente in weniger als einer Minute.",
+        "titleInstallation": "Installation und Beispiel"
+    }
+}

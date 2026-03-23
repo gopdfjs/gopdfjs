@@ -1,0 +1,36 @@
+{
+    "title": "Pourquoi choisir GoPDF.js ?",
+    "description": "Conçu pour le développement web moderne avec un accent sur la simplicité, les performances et l'expérience développeur.",
+    "features": {
+        "approachable": {
+            "title": "Accessible",
+            "description": "Construit sur les Web Components standard avec une syntaxe JSX intuitive et un support TypeScript de classe mondiale. Facile à apprendre et à utiliser.",
+            "icon": "🎯",
+            "details": {
+                "jsx": "Syntaxe JSX",
+                "typescript": "TypeScript d'abord",
+                "standards": "Standards Web"
+            }
+        },
+        "performant": {
+            "title": "Performant",
+            "description": "Zéro dépendance, opérations DOM natives et système de rendu optimisé par le compilateur qui nécessite rarement une optimisation manuelle.",
+            "icon": "⚡",
+            "details": {
+                "zero": "Zéro Dépendance",
+                "native": "DOM Natif",
+                "optimized": "Rendu Optimisé"
+            }
+        },
+        "versatile": {
+            "title": "Polyvalent",
+            "description": "Un écosystème riche et progressivement adoptable qui s'étend des composants simples aux applications complètes.",
+            "icon": "🔧",
+            "details": {
+                "incremental": "Adoption Progressive",
+                "ecosystem": "Écosystème Riche",
+                "scalable": "Évolutif"
+            }
+        }
+    }
+}

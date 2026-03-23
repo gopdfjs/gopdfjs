@@ -1,0 +1,26 @@
+{
+  "name": "@gopdfjs/pdf-wasm",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./worker": "./worker.ts"
+  },
+  "scripts": {
+    "test": "cargo test",
+    "build:wasm": "wasm-pack build --target web --out-dir pkg --release",
+    "build:dev": "wasm-pack build --target web --out-dir pkg --dev",
+    "build": "pnpm run build:wasm && vite build",
+    "clean": "rm -rf pkg dist"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "vite": "^5",
+    "vite-plugin-dts": "^3",
+    "vite-plugin-top-level-await": "^1",
+    "vite-plugin-wasm": "^3"
+  }
+}

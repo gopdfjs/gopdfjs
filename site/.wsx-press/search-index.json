@@ -1,0 +1,103 @@
+{
+  "documents": [
+    {
+      "id": "guide/essentials/typescript-setup",
+      "title": "TypeScript Configuration Guide",
+      "category": "guide/essentials",
+      "route": "/docs/guide/essentials/typescript-setup",
+      "content": "This guide details how to correctly configure TypeScript in your project to use GoPDF.js.\n\n 📋 Table of Contents\n\n- Basic Configurationbasic-configuration\n- Complete Configuration Examplescomplete-configuration-examples\n- Type Reference Mechanismtype-reference-mechanism\n- Best Practicesbest-practices\n- Common Issuescommon-issues\n\n Basic Configuration\n\n 1. JSX Configuration\n\nConfigure JSX support in tsconfig.json:\n\n\n\nConfiguration Notes:\n- jsx: \"react-jsx\" - Use the new JSX transform introduced i"
+    },
+    {
+      "id": "guide/essentials/getting-started",
+      "title": "Getting Started",
+      "category": "guide/essentials",
+      "route": "/docs/guide/essentials/getting-started",
+      "content": "Installation\n\n\n\n Configuration\n\n 1. TypeScript Configuration\n\nRecommended: Use the @wsxjs/wsx-tsconfig package includes all required configurations:\n\n\n\nManual Configuration if not using @wsxjs/wsx-tsconfig:\n\n\n\n> ⚠️ Important: If using the @state decorator, you must configure:\n> - experimentalDecorators: true - Enable decorator syntax\n> - useDefineForClassFields: false - Ensure decorators are compatible with class fields\n>\n> Additionally, you must configure @wsxjs/wsx-vite-plugin in vite.config.t"
+    },
+    {
+      "id": "guide/core-concepts/wsx-design",
+      "title": "GoPDF.js Design Documentation",
+      "category": "guide/core-concepts",
+      "route": "/docs/guide/core-concepts/wsx-design",
+      "content": "I. Framework Introduction\n\nGoPDF.js is a modern Web Components framework that focuses on JSX syntax and TypeScript support, completely zero dependency on React, dedicated to the ultimate development experience of native WebComponent capabilities.\n\n- Core Philosophy: WebComponent + JSX + TypeScript, ultimate type safety and development efficiency.\n- wsx files: Web Component with JSX, using .wsx extension, equivalent to TSX syntax for WebComponent.\n- Self-validation: The examples directory is the "
+    },
+    {
+      "id": "guide/core-concepts/web-components",
+      "title": "WebComponent Guide",
+      "category": "guide/core-concepts",
+      "route": "/docs/guide/core-concepts/web-components",
+      "content": "Overview\n\nWebComponent is the standard custom element base class provided by GoPDF.js, using Shadow DOM to provide complete style isolation and encapsulation. It is the preferred choice for building reusable UI components, especially suitable for scenarios requiring style isolation and complete encapsulation.\n\n Why Use WebComponent?\n\n Use Cases\n\n1. Reusable UI Components\n   - Common components like buttons, inputs, cards, etc.\n   - Components requiring complete style isolation\n   - Component lib"
+    },
+    {
+      "id": "guide/core-concepts/light-components",
+      "title": "LightComponent Usage Guide",
+      "category": "guide/core-concepts",
+      "route": "/docs/guide/core-concepts/light-components",
+      "content": "Overview\n\nLightComponent is a lightweight custom element base class provided by GoPDF.js, designed for scenarios that require integration with third-party libraries or use Light DOM. It directly inherits from HTMLElement, does not use Shadow DOM, and provides complete reactive state management and JSX support.\n\n Why Use LightComponent?\n\n Use Cases\n\n1. Third-party Library Integration\n   - Integration with libraries like EditorJS, Chart.js, etc.\n   - Libraries need direct access to DOM elements\n  "
+    },
+    {
+      "id": "guide/core-concepts/jsx-support",
+      "title": "GoPDF.js JSX Support Documentation",
+      "category": "guide/core-concepts",
+      "route": "/docs/guide/core-concepts/jsx-support",
+      "content": "Overview\n\nGoPDF.js provides complete JSX support without relying on React or other frameworks. Through framework-level configuration, any project using WSX can get out-of-the-box JSX experience.\n\n Core Features\n\n- ✅ Zero React Dependency: Completely independent JSX implementation\n- ✅ Framework-level Support: No additional configuration needed in consumer projects\n- ✅ TypeScript Native Support: Complies with TypeScript standard mechanisms\n- ✅ IDE Friendly: Complete type hints and error checking\n-"
+    },
+    {
+      "id": "guide/core-concepts/design-philosophy",
+      "title": "GoPDF.js Design Philosophy",
+      "category": "guide/core-concepts",
+      "route": "/docs/guide/core-concepts/design-philosophy",
+      "content": "Overview\n\nGoPDF.js is a native-first Web Components framework dedicated to providing the closest experience to native Web development while maintaining the convenience of modern frameworks.\n\n Core Design Principles\n\n 1. Native-First\n\nGoPDF.js prioritizes native Web standards and APIs over creating abstraction layers.\n\n Example: class vs className\n\n\n\nDesign Rationale:\n- class is the standard HTML attribute name\n- Avoids JavaScript reserved word conflicts\n- More aligned with native Web development"
+    },
+    {
+      "id": "guide/advanced/typescript-wsx-types",
+      "title": "WSX Type System Guide",
+      "category": "guide/advanced",
+      "route": "/docs/guide/advanced/typescript-wsx-types",
+      "content": "This guide details how the .wsx file type system works in GoPDF.js, maintenance methods, and best practices.\n\n Table of Contents\n\n- Why Does Each Package Need wsx.d.ts?why-does-each-package-need-wsxdts\n- How to Maintain Type Consistency?how-to-maintain-type-consistency\n- Developer Guidedeveloper-guide\n- Troubleshootingtroubleshooting\n\n---\n\n Why Does Each Package Need wsx.d.ts?\n\n Problem Background\n\nIn GoPDF.js's monorepo structure, multiple packages wsx-router, base-components, examples, etc. al"
+    },
+    {
+      "id": "guide/advanced/publishing",
+      "title": "GoPDF.js Publishing Guide",
+      "category": "guide/advanced",
+      "route": "/docs/guide/advanced/publishing",
+      "content": "This guide explains how to publish all GoPDF.js packages using Turbo and Changesets.\n\n> Best Practice: This publishing workflow follows best practices for open-source npm package publishing, including security checks, dry-run testing, version verification, etc.\n\n Prerequisites\n\n1. Install Turbo already included in devDependencies\n   \n\n2. Ensure logged into NPM\n   \n\n3. Ensure on main branch and all changes committed\n   \n\n Publishing Workflow\n\n Method 1: Using Automated Publishing Script Recommend"
+    },
+    {
+      "id": "guide/advanced/i18next-integration",
+      "title": "@wsxjs/wsx-i18next Usage Guide",
+      "category": "guide/advanced",
+      "route": "/docs/guide/advanced/i18next-integration",
+      "content": "@wsxjs/wsx-i18next provides i18next internationalization support for GoPDF.js components, making it easy for your application to support multiple languages.\n\n Installation\n\n\n\n Prerequisites\n\nUsing the @i18n decorator requires the following configuration:\n\n TypeScript Configuration\n\n\n\n Vite Configuration Required\n\n\n\n> ⚠️ Critical: @wsxjs/wsx-vite-plugin is required, it contains the Babel plugin for processing decorators.\n> \n> Why is this plugin needed?\n> \n> The @i18n decorator returns a new class"
+    },
+    {
+      "id": "guide/advanced/example-development-plan",
+      "title": "Example Component Development Plan",
+      "category": "guide/advanced",
+      "route": "/docs/guide/advanced/example-development-plan",
+      "content": "WSX Example Component Development Plan\n\n Goals\n\nFully demonstrate GoPDF.js capabilities through rich example components, providing developers with best practice references.\n\n Development Principles\n\n1. Teaching First - Each example should clearly demonstrate specific functionality\n2. Code Simplicity - Avoid over-complexity, focus on core concepts\n3. Practical - Provide reusable patterns and solutions\n4. Well Documented - Each example should have detailed comments\n\n Phase 1: Core Feature Examples"
+    },
+    {
+      "id": "guide/advanced/dom-cache",
+      "title": "DOM Cache and Key Best Practices",
+      "category": "guide/advanced",
+      "route": "/docs/guide/advanced/dom-cache",
+      "content": "Overview\n\nGoPDF.js uses DOM caching mechanism to optimize rendering performance and avoid unnecessary DOM element reconstruction. Understanding how to correctly use the key attribute is crucial for ensuring application correctness and performance.\n\n Core Concepts\n\n What is DOM Cache?\n\nDOM cache is a performance optimization technique that:\n- Reuses existing DOM elements instead of destroying and rebuilding\n- Only updates changed attributes and child elements\n- Identifies and matches elements thr"
+    }
+  ],
+  "options": {
+    "keys": [
+      {
+        "name": "title",
+        "weight": 0.7
+      },
+      {
+        "name": "content",
+        "weight": 0.3
+      }
+    ],
+    "threshold": 0.3,
+    "includeScore": true,
+    "includeMatches": true
+  }
+}

@@ -1,0 +1,2238 @@
+{
+  "guide/essentials/typescript-setup": [
+    {
+      "level": 2,
+      "text": "📋 Table of Contents",
+      "id": "table-of-contents",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Basic Configuration",
+      "id": "basic-configuration",
+      "children": [
+        {
+          "level": 3,
+          "text": "1. JSX Configuration",
+          "id": "1-jsx-configuration",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "2. Type Reference Configuration",
+          "id": "2-type-reference-configuration",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "3. Test Library Types (Optional)",
+          "id": "3-test-library-types-optional",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Complete Configuration Examples",
+      "id": "complete-configuration-examples",
+      "children": [
+        {
+          "level": 3,
+          "text": "Production Project Configuration",
+          "id": "production-project-configuration",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Test Environment Configuration",
+          "id": "test-environment-configuration",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Monorepo Workspace Configuration",
+          "id": "monorepo-workspace-configuration",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Type Reference Mechanism",
+      "id": "type-reference-mechanism",
+      "children": [
+        {
+          "level": 3,
+          "text": "How TypeScript Loads Types",
+          "id": "how-typescript-loads-types",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Type Definition File Hierarchy",
+          "id": "type-definition-file-hierarchy",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Why Triple-Slash Directives Are Not Needed",
+          "id": "why-triple-slash-directives-are-not-needed",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Best Practices",
+      "id": "best-practices",
+      "children": [
+        {
+          "level": 3,
+          "text": "1. Use Standard TypeScript Type Resolution",
+          "id": "1-use-standard-typescript-type-resolution",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "2. Separate Production and Test Configuration",
+          "id": "2-separate-production-and-test-configuration",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "3. Keep global.d.ts Concise",
+          "id": "3-keep-globaldts-concise",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "4. File Include Configuration",
+          "id": "4-file-include-configuration",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Common Issues",
+      "id": "common-issues",
+      "children": [
+        {
+          "level": 3,
+          "text": "1. IDE Error: &quot;This JSX tag requires &#39;React&#39; to be in scope&quot;",
+          "id": "1-ide-error-quotthis-jsx-tag-requires-39react39-to-be-in-scopequot",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "2. Cannot Find JSX Type Definitions",
+          "id": "2-cannot-find-jsx-type-definitions",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "3. Cannot Find  Types in Test Files",
+          "id": "3-cannot-find-types-in-test-files",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "4. Types Not Found in Monorepo",
+          "id": "4-types-not-found-in-monorepo",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "5. Cannot Find Type Declarations for  Files",
+          "id": "5-cannot-find-type-declarations-for-files",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "6. External Project Integration with GoPDF.js",
+          "id": "6-external-project-integration-with-gopdfjs",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Debugging Tips",
+      "id": "debugging-tips",
+      "children": [
+        {
+          "level": 3,
+          "text": "View TypeScript Resolved Type Paths",
+          "id": "view-typescript-resolved-type-paths",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Verify Type Definition Loading",
+          "id": "verify-type-definition-loading",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Summary",
+      "id": "summary",
+      "children": [
+        {
+          "level": 3,
+          "text": "✅ Recommended Configuration Approach",
+          "id": "recommended-configuration-approach",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "❌ Practices to Avoid",
+          "id": "practices-to-avoid",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "📚 Related Documentation",
+          "id": "related-documentation",
+          "children": []
+        }
+      ]
+    }
+  ],
+  "guide/essentials/getting-started": [
+    {
+      "level": 2,
+      "text": "Installation",
+      "id": "installation",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Configuration",
+      "id": "configuration",
+      "children": [
+        {
+          "level": 3,
+          "text": "1. TypeScript Configuration",
+          "id": "1-typescript-configuration",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "2. Vite Configuration",
+          "id": "2-vite-configuration",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "3. ESLint Configuration",
+          "id": "3-eslint-configuration",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Creating Components",
+      "id": "creating-components",
+      "children": [
+        {
+          "level": 3,
+          "text": "Basic Component",
+          "id": "basic-component",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Using @state Decorator (Reactive State)",
+          "id": "using-state-decorator-reactive-state",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Using Components",
+      "id": "using-components",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Key Features",
+      "id": "key-features",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Next Steps",
+      "id": "next-steps",
+      "children": []
+    }
+  ],
+  "guide/core-concepts/wsx-design": [
+    {
+      "level": 2,
+      "text": "I. Framework Introduction",
+      "id": "i-framework-introduction",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "II. Project Structure",
+      "id": "ii-project-structure",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "III. Core APIs and Mechanisms",
+      "id": "iii-core-apis-and-mechanisms",
+      "children": [
+        {
+          "level": 3,
+          "text": "1. WebComponent Abstract Base Class",
+          "id": "1-webcomponent-abstract-base-class",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "2. JSX Factory",
+          "id": "2-jsx-factory",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "3. autoRegister Decorator",
+          "id": "3-autoregister-decorator",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "4. Style Management",
+          "id": "4-style-management",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "5. Logging System",
+          "id": "5-logging-system",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "IV. Examples Integration and Self-validation",
+      "id": "iv-examples-integration-and-self-validation",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "V. Vite Plugin",
+      "id": "v-vite-plugin",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "VI. ESLint Plugin",
+      "id": "vi-eslint-plugin",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "VII. CI/CD and Development Workflow",
+      "id": "vii-cicd-and-development-workflow",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "VIII. Best Practices and Future Plans",
+      "id": "viii-best-practices-and-future-plans",
+      "children": []
+    }
+  ],
+  "guide/core-concepts/web-components": [
+    {
+      "level": 2,
+      "text": "Overview",
+      "id": "overview",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Why Use WebComponent?",
+      "id": "why-use-webcomponent",
+      "children": [
+        {
+          "level": 3,
+          "text": "Use Cases",
+          "id": "use-cases",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Not Suitable For",
+          "id": "not-suitable-for",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Quick Start",
+      "id": "quick-start",
+      "children": [
+        {
+          "level": 3,
+          "text": "Basic Usage",
+          "id": "basic-usage",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Using Reactive State",
+          "id": "using-reactive-state",
+          "children": [
+            {
+              "level": 4,
+              "text": "Method 1: Using @state Decorator (Recommended)",
+              "id": "method-1-using-state-decorator-recommended",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "Method 2: Using reactive() Method",
+              "id": "method-2-using-reactive-method",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "Method 3: Using useState Hook",
+              "id": "method-3-using-usestate-hook",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Core Features",
+      "id": "core-features",
+      "children": [
+        {
+          "level": 3,
+          "text": "1. Shadow DOM Style Isolation",
+          "id": "1-shadow-dom-style-isolation",
+          "children": [
+            {
+              "level": 4,
+              "text": "Automatic CSS Injection (Recommended)",
+              "id": "automatic-css-injection-recommended",
+              "children": []
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "text": "2. JSX Support",
+          "id": "2-jsx-support",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "3. Reactive State Management",
+          "id": "3-reactive-state-management",
+          "children": [
+            {
+              "level": 4,
+              "text": "@state Decorator (Recommended)",
+              "id": "state-decorator-recommended",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "reactive() Method",
+              "id": "reactive-method",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "useState() Method",
+              "id": "usestate-method",
+              "children": []
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "text": "4. Lifecycle Hooks",
+          "id": "4-lifecycle-hooks",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "5. Focus Preservation",
+          "id": "5-focus-preservation",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "6. Error Handling",
+          "id": "6-error-handling",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Practical Examples",
+      "id": "practical-examples",
+      "children": [
+        {
+          "level": 3,
+          "text": "Example 1: Button Component",
+          "id": "example-1-button-component",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Example 2: Form Input Component",
+          "id": "example-2-form-input-component",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Example 3: Card Component",
+          "id": "example-3-card-component",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Best Practices",
+      "id": "best-practices",
+      "children": [
+        {
+          "level": 3,
+          "text": "1. Style Isolation",
+          "id": "1-style-isolation",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "2. Event Forwarding",
+          "id": "2-event-forwarding",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "3. Reactive State Management",
+          "id": "3-reactive-state-management",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "4. Attribute Observation",
+          "id": "4-attribute-observation",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "5. Focus Preservation",
+          "id": "5-focus-preservation",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Component Comparison: WebComponent vs LightComponent",
+      "id": "component-comparison-webcomponent-vs-lightcomponent",
+      "children": [
+        {
+          "level": 3,
+          "text": "Core Differences",
+          "id": "core-differences",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Detailed Comparison",
+          "id": "detailed-comparison",
+          "children": [
+            {
+              "level": 4,
+              "text": "1. DOM Rendering",
+              "id": "1-dom-rendering",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "2. Style Handling",
+              "id": "2-style-handling",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "3. Third-party Library Integration",
+              "id": "3-third-party-library-integration",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "4. Reactive API",
+              "id": "4-reactive-api",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "5. Element Queries",
+              "id": "5-element-queries",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "6. Event Handling",
+              "id": "6-event-handling",
+              "children": []
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "text": "Selection Guide",
+          "id": "selection-guide",
+          "children": [
+            {
+              "level": 4,
+              "text": "Use WebComponent when:",
+              "id": "use-webcomponent-when",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "Use LightComponent when:",
+              "id": "use-lightcomponent-when",
+              "children": []
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "text": "Code Example Comparison",
+          "id": "code-example-comparison",
+          "children": [
+            {
+              "level": 4,
+              "text": "Same: Reactive State",
+              "id": "same-reactive-state",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "Different: DOM Access",
+              "id": "different-dom-access",
+              "children": []
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "text": "Summary",
+          "id": "summary",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "FAQ",
+      "id": "faq",
+      "children": [
+        {
+          "level": 3,
+          "text": "Q: Does WebComponent support Light DOM?",
+          "id": "q-does-webcomponent-support-light-dom",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Q: Does Shadow DOM affect performance?",
+          "id": "q-does-shadow-dom-affect-performance",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Q: How to make external styles affect Shadow DOM?",
+          "id": "q-how-to-make-external-styles-affect-shadow-dom",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Q: Are reactive states automatically cleaned up?",
+          "id": "q-are-reactive-states-automatically-cleaned-up",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Q: Can I use slots in WebComponent?",
+          "id": "q-can-i-use-slots-in-webcomponent",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Q: How to automatically inject CSS styles?",
+          "id": "q-how-to-automatically-inject-css-styles",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Q: Why must @state decorator have initial values?",
+          "id": "q-why-must-state-decorator-have-initial-values",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Summary",
+      "id": "summary",
+      "children": []
+    }
+  ],
+  "guide/core-concepts/light-components": [
+    {
+      "level": 2,
+      "text": "Overview",
+      "id": "overview",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Why Use LightComponent?",
+      "id": "why-use-lightcomponent",
+      "children": [
+        {
+          "level": 3,
+          "text": "Use Cases",
+          "id": "use-cases",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Not Suitable For",
+          "id": "not-suitable-for",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Quick Start",
+      "id": "quick-start",
+      "children": [
+        {
+          "level": 3,
+          "text": "Basic Usage",
+          "id": "basic-usage",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Using Reactive State",
+          "id": "using-reactive-state",
+          "children": [
+            {
+              "level": 4,
+              "text": "Method 1: Using @state Decorator (Recommended)",
+              "id": "method-1-using-state-decorator-recommended",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "Method 2: Using reactive() Method",
+              "id": "method-2-using-reactive-method",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "Method 3: Using useState Hook",
+              "id": "method-3-using-usestate-hook",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Core Features",
+      "id": "core-features",
+      "children": [
+        {
+          "level": 3,
+          "text": "1. JSX Support",
+          "id": "1-jsx-support",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "2. Reactive State Management",
+          "id": "2-reactive-state-management",
+          "children": [
+            {
+              "level": 4,
+              "text": "@state Decorator (Recommended)",
+              "id": "state-decorator-recommended",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "reactive() Method",
+              "id": "reactive-method",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "useState() Method",
+              "id": "usestate-method",
+              "children": []
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "text": "3. Lifecycle Hooks",
+          "id": "3-lifecycle-hooks",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "4. Style Management",
+          "id": "4-style-management",
+          "children": [
+            {
+              "level": 4,
+              "text": "Automatic CSS Injection (Recommended)",
+              "id": "automatic-css-injection-recommended",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "Scoped Styles",
+              "id": "scoped-styles",
+              "children": []
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "text": "5. Error Handling",
+          "id": "5-error-handling",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Practical Examples",
+      "id": "practical-examples",
+      "children": [
+        {
+          "level": 3,
+          "text": "Example 1: EditorJS Integration",
+          "id": "example-1-editorjs-integration",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Example 2: Route Container",
+          "id": "example-2-route-container",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Example 3: Reactive Form",
+          "id": "example-3-reactive-form",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Best Practices",
+      "id": "best-practices",
+      "children": [
+        {
+          "level": 3,
+          "text": "1. Style Scoping",
+          "id": "1-style-scoping",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "2. Third-party Library Cleanup",
+          "id": "2-third-party-library-cleanup",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "3. Reactive State Management",
+          "id": "3-reactive-state-management",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "4. Attribute Observation",
+          "id": "4-attribute-observation",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Component Comparison: LightComponent vs WebComponent",
+      "id": "component-comparison-lightcomponent-vs-webcomponent",
+      "children": [
+        {
+          "level": 3,
+          "text": "Core Differences",
+          "id": "core-differences",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Detailed Comparison",
+          "id": "detailed-comparison",
+          "children": [
+            {
+              "level": 4,
+              "text": "1. DOM Rendering",
+              "id": "1-dom-rendering",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "2. Style Handling",
+              "id": "2-style-handling",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "3. Third-party Library Integration",
+              "id": "3-third-party-library-integration",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "4. Reactive API",
+              "id": "4-reactive-api",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "5. Element Queries",
+              "id": "5-element-queries",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "6. Event Handling",
+              "id": "6-event-handling",
+              "children": []
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "text": "Selection Guide",
+          "id": "selection-guide",
+          "children": [
+            {
+              "level": 4,
+              "text": "Use LightComponent When:",
+              "id": "use-lightcomponent-when",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "Use WebComponent When:",
+              "id": "use-webcomponent-when",
+              "children": []
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "text": "Code Example Comparison",
+          "id": "code-example-comparison",
+          "children": [
+            {
+              "level": 4,
+              "text": "Same: Reactive State",
+              "id": "same-reactive-state",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "Different: DOM Access",
+              "id": "different-dom-access",
+              "children": []
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "text": "Summary",
+          "id": "summary",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "FAQ",
+      "id": "faq",
+      "children": [
+        {
+          "level": 3,
+          "text": "Q: Does LightComponent support Shadow DOM?",
+          "id": "q-does-lightcomponent-support-shadow-dom",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Q: Will styles be globally polluted?",
+          "id": "q-will-styles-be-globally-polluted",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Q: Will reactive state be automatically cleaned up?",
+          "id": "q-will-reactive-state-be-automatically-cleaned-up",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Q: Can I use slot in LightComponent?",
+          "id": "q-can-i-use-slot-in-lightcomponent",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Q: How to automatically inject CSS styles?",
+          "id": "q-how-to-automatically-inject-css-styles",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Q: Why must @state decorator have initial values?",
+          "id": "q-why-must-state-decorator-have-initial-values",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Summary",
+      "id": "summary",
+      "children": []
+    }
+  ],
+  "guide/core-concepts/jsx-support": [
+    {
+      "level": 2,
+      "text": "Overview",
+      "id": "overview",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Core Features",
+      "id": "core-features",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Technical Architecture",
+      "id": "technical-architecture",
+      "children": [
+        {
+          "level": 3,
+          "text": "JSX Factory Function",
+          "id": "jsx-factory-function",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Type System",
+          "id": "type-system",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Configuration Guide",
+      "id": "configuration-guide",
+      "children": [
+        {
+          "level": 3,
+          "text": "1. TypeScript Configuration",
+          "id": "1-typescript-configuration",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "2. Vite Configuration",
+          "id": "2-vite-configuration",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "3. ESLint Configuration",
+          "id": "3-eslint-configuration",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Usage",
+      "id": "usage",
+      "children": [
+        {
+          "level": 3,
+          "text": "Basic JSX Syntax",
+          "id": "basic-jsx-syntax",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Event Handling",
+          "id": "event-handling",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Ref Callbacks",
+          "id": "ref-callbacks",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Conditional Rendering",
+          "id": "conditional-rendering",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "List Rendering",
+          "id": "list-rendering",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Framework Internal Implementation",
+      "id": "framework-internal-implementation",
+      "children": [
+        {
+          "level": 3,
+          "text": "JSX Entry Point",
+          "id": "jsx-entry-point",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Package Export Configuration",
+          "id": "package-export-configuration",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Best Practices",
+      "id": "best-practices",
+      "children": [
+        {
+          "level": 3,
+          "text": "1. Type Safety",
+          "id": "1-type-safety",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "2. Event Handling",
+          "id": "2-event-handling",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "3. Component Composition",
+          "id": "3-component-composition",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Troubleshooting",
+      "id": "troubleshooting",
+      "children": [
+        {
+          "level": 3,
+          "text": "Common Issues",
+          "id": "common-issues",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Debugging Tips",
+          "id": "debugging-tips",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Migration Guide",
+      "id": "migration-guide",
+      "children": [
+        {
+          "level": 3,
+          "text": "From React",
+          "id": "from-react",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "From Other Frameworks",
+          "id": "from-other-frameworks",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Summary",
+      "id": "summary",
+      "children": []
+    }
+  ],
+  "guide/core-concepts/design-philosophy": [
+    {
+      "level": 2,
+      "text": "Overview",
+      "id": "overview",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Core Design Principles",
+      "id": "core-design-principles",
+      "children": [
+        {
+          "level": 3,
+          "text": "1. Native-First",
+          "id": "1-native-first",
+          "children": [
+            {
+              "level": 4,
+              "text": "Example: class vs className",
+              "id": "example-class-vs-classname",
+              "children": []
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "text": "2. Zero Dependencies",
+          "id": "2-zero-dependencies",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "3. Progressive Enhancement",
+          "id": "3-progressive-enhancement",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "4. Standards Compliant",
+          "id": "4-standards-compliant",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Comparison with React",
+      "id": "comparison-with-react",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Performance Advantages",
+      "id": "performance-advantages",
+      "children": [
+        {
+          "level": 3,
+          "text": "1. No Virtual DOM",
+          "id": "1-no-virtual-dom",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "2. Smaller Runtime",
+          "id": "2-smaller-runtime",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "3. Native Performance",
+          "id": "3-native-performance",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Developer Experience",
+      "id": "developer-experience",
+      "children": [
+        {
+          "level": 3,
+          "text": "1. Familiar Syntax",
+          "id": "1-familiar-syntax",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "2. TypeScript Support",
+          "id": "2-typescript-support",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "3. Toolchain Integration",
+          "id": "3-toolchain-integration",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Migration Guide",
+      "id": "migration-guide",
+      "children": [
+        {
+          "level": 3,
+          "text": "Migrating from React",
+          "id": "migrating-from-react",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Best Practices",
+      "id": "best-practices",
+      "children": [
+        {
+          "level": 3,
+          "text": "1. Use Native Attribute Names",
+          "id": "1-use-native-attribute-names",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "2. Leverage Native Lifecycle",
+          "id": "2-leverage-native-lifecycle",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "3. Use Shadow DOM",
+          "id": "3-use-shadow-dom",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Summary",
+      "id": "summary",
+      "children": []
+    }
+  ],
+  "guide/advanced/typescript-wsx-types": [
+    {
+      "level": 2,
+      "text": "Table of Contents",
+      "id": "table-of-contents",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Why Does Each Package Need wsx.d.ts?",
+      "id": "why-does-each-package-need-wsxdts",
+      "children": [
+        {
+          "level": 3,
+          "text": "Problem Background",
+          "id": "problem-background",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "TypeScript Module Type Declaration Limitations",
+          "id": "typescript-module-type-declaration-limitations",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Actual Verification Results",
+          "id": "actual-verification-results",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Industry Best Practices",
+          "id": "industry-best-practices",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "References",
+          "id": "references",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "How to Maintain Type Consistency?",
+      "id": "how-to-maintain-type-consistency",
+      "children": [
+        {
+          "level": 3,
+          "text": "Automatic Synchronization Mechanism",
+          "id": "automatic-synchronization-mechanism",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Pre-commit Hook",
+          "id": "pre-commit-hook",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "CI/CD Verification",
+          "id": "cicd-verification",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Developer Guide",
+      "id": "developer-guide",
+      "children": [
+        {
+          "level": 3,
+          "text": "Modifying Type Definitions",
+          "id": "modifying-type-definitions",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Adding New Package",
+          "id": "adding-new-package",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Checking Type Consistency",
+          "id": "checking-type-consistency",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Troubleshooting",
+      "id": "troubleshooting",
+      "children": [
+        {
+          "level": 3,
+          "text": "Problem 1: TypeScript Error",
+          "id": "problem-1-typescript-error",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Problem 2: IDE Shows &quot;React is not in scope&quot; Error",
+          "id": "problem-2-ide-shows-quotreact-is-not-in-scopequot-error",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Problem 3: CI Verification Failed &quot;wsx.d.ts files are inconsistent&quot;",
+          "id": "problem-3-ci-verification-failed-quotwsxdts-files-are-inconsistentquot",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Problem 4: Pre-commit Hook Not Automatically Running",
+          "id": "problem-4-pre-commit-hook-not-automatically-running",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Problem 5: Newly Created Package Cannot Recognize .wsx Files",
+          "id": "problem-5-newly-created-package-cannot-recognize-wsx-files",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Summary",
+      "id": "summary",
+      "children": []
+    }
+  ],
+  "guide/advanced/publishing": [
+    {
+      "level": 2,
+      "text": "Prerequisites",
+      "id": "prerequisites",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Publishing Workflow",
+      "id": "publishing-workflow",
+      "children": [
+        {
+          "level": 3,
+          "text": "Method 1: Using Automated Publishing Script (Recommended)",
+          "id": "method-1-using-automated-publishing-script-recommended",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Phase 1: Version Management (Optional)",
+      "id": "phase-1-version-management-optional",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Phase 2: Publish to NPM",
+      "id": "phase-2-publish-to-npm",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Best Practice Features",
+      "id": "best-practice-features",
+      "children": [
+        {
+          "level": 3,
+          "text": "Method 2: Manual Publishing Workflow",
+          "id": "method-2-manual-publishing-workflow",
+          "children": [
+            {
+              "level": 4,
+              "text": "Step 1: Create Changeset",
+              "id": "step-1-create-changeset",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "Step 2: Build and Test",
+              "id": "step-2-build-and-test",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "Step 3: Apply Version Updates",
+              "id": "step-3-apply-version-updates",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "Step 4: Rebuild",
+              "id": "step-4-rebuild",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "Step 5: Publish to NPM",
+              "id": "step-5-publish-to-npm",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "Step 6: Commit and Push",
+              "id": "step-6-commit-and-push",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Turbo Advantages",
+      "id": "turbo-advantages",
+      "children": [
+        {
+          "level": 3,
+          "text": "1. Parallel Build",
+          "id": "1-parallel-build",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "2. Smart Caching",
+          "id": "2-smart-caching",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "3. Dependency Awareness",
+          "id": "3-dependency-awareness",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "4. Incremental Build",
+          "id": "4-incremental-build",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Common Commands",
+      "id": "common-commands",
+      "children": [
+        {
+          "level": 3,
+          "text": "Build Related",
+          "id": "build-related",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Code Quality",
+          "id": "code-quality",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Changeset Related",
+          "id": "changeset-related",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Publishing Checklist",
+      "id": "publishing-checklist",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Troubleshooting",
+      "id": "troubleshooting",
+      "children": [
+        {
+          "level": 3,
+          "text": "Build Failure",
+          "id": "build-failure",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Version Conflict",
+          "id": "version-conflict",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Publishing Failure",
+          "id": "publishing-failure",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "CI/CD Integration",
+      "id": "cicd-integration",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Related Documentation",
+      "id": "related-documentation",
+      "children": []
+    }
+  ],
+  "guide/advanced/i18next-integration": [
+    {
+      "level": 2,
+      "text": "Installation",
+      "id": "installation",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Prerequisites",
+      "id": "prerequisites",
+      "children": [
+        {
+          "level": 3,
+          "text": "TypeScript Configuration",
+          "id": "typescript-configuration",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Vite Configuration (Required)",
+          "id": "vite-configuration-required",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Quick Start",
+      "id": "quick-start",
+      "children": [
+        {
+          "level": 3,
+          "text": "1. Initialize i18n",
+          "id": "1-initialize-i18n",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "2. Use Decorator (Recommended)",
+          "id": "2-use-decorator-recommended",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "3. Use useTranslation + @state",
+          "id": "3-use-usetranslation-state",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "4. Use Mixin",
+          "id": "4-use-mixin",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Configuration Options",
+      "id": "configuration-options",
+      "children": [
+        {
+          "level": 3,
+          "text": "Basic Configuration",
+          "id": "basic-configuration",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Using HTTP Backend (Recommended)",
+          "id": "using-http-backend-recommended",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Language Detection",
+          "id": "language-detection",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "API Reference",
+      "id": "api-reference",
+      "children": [
+        {
+          "level": 3,
+          "text": "initI18n(config?)",
+          "id": "initi18nconfig",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "@i18n(namespace?)",
+          "id": "i18nnamespace",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "useTranslation(namespace?)",
+          "id": "usetranslationnamespace",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "withI18n(Base, defaultNamespace?)",
+          "id": "withi18nbase-defaultnamespace",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Reactive Mechanism",
+      "id": "reactive-mechanism",
+      "children": [
+        {
+          "level": 3,
+          "text": "@i18n Decorator",
+          "id": "i18n-decorator",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "useTranslation + @state",
+          "id": "usetranslation-state",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "withI18n Mixin",
+          "id": "withi18n-mixin",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Switching Languages",
+      "id": "switching-languages",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Interpolation",
+      "id": "interpolation",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Plural Forms",
+      "id": "plural-forms",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Namespaces",
+      "id": "namespaces",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Type Safety",
+      "id": "type-safety",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Best Practices",
+      "id": "best-practices",
+      "children": [
+        {
+          "level": 3,
+          "text": "1. Use Decorator (Recommended)",
+          "id": "1-use-decorator-recommended",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "2. Organize Translation Files",
+          "id": "2-organize-translation-files",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "3. Use HTTP Backend",
+          "id": "3-use-http-backend",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "4. Language Switcher Component",
+          "id": "4-language-switcher-component",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Troubleshooting",
+      "id": "troubleshooting",
+      "children": [
+        {
+          "level": 3,
+          "text": "Runtime Error",
+          "id": "runtime-error",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Translations Not Updating",
+          "id": "translations-not-updating",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Type Errors",
+          "id": "type-errors",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Translation Key Not Found",
+          "id": "translation-key-not-found",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "More Information",
+      "id": "more-information",
+      "children": []
+    }
+  ],
+  "guide/advanced/example-development-plan": [
+    {
+      "level": 1,
+      "text": "WSX Example Component Development Plan",
+      "id": "wsx-example-component-development-plan",
+      "children": [
+        {
+          "level": 2,
+          "text": "Goals",
+          "id": "goals",
+          "children": []
+        },
+        {
+          "level": 2,
+          "text": "Development Principles",
+          "id": "development-principles",
+          "children": []
+        },
+        {
+          "level": 2,
+          "text": "Phase 1: Core Feature Examples (1-2 weeks)",
+          "id": "phase-1-core-feature-examples-1-2-weeks",
+          "children": [
+            {
+              "level": 3,
+              "text": "1. Lifecycle Example",
+              "id": "1-lifecycle-example",
+              "children": []
+            },
+            {
+              "level": 3,
+              "text": "2. Attribute Observation Example",
+              "id": "2-attribute-observation-example",
+              "children": []
+            },
+            {
+              "level": 3,
+              "text": "3. Event System Example",
+              "id": "3-event-system-example",
+              "children": []
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "text": "Phase 2: Interaction Pattern Examples (2-3 weeks)",
+          "id": "phase-2-interaction-pattern-examples-2-3-weeks",
+          "children": [
+            {
+              "level": 3,
+              "text": "4. Form Integration Example",
+              "id": "4-form-integration-example",
+              "children": []
+            },
+            {
+              "level": 3,
+              "text": "5. Component Communication Example",
+              "id": "5-component-communication-example",
+              "children": []
+            },
+            {
+              "level": 3,
+              "text": "6. Dynamic Content Example",
+              "id": "6-dynamic-content-example",
+              "children": []
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "text": "Phase 3: Advanced Feature Examples (3-4 weeks)",
+          "id": "phase-3-advanced-feature-examples-3-4-weeks",
+          "children": [
+            {
+              "level": 3,
+              "text": "7. Async Data Example",
+              "id": "7-async-data-example",
+              "children": []
+            },
+            {
+              "level": 3,
+              "text": "8. Performance Optimization Example",
+              "id": "8-performance-optimization-example",
+              "children": []
+            },
+            {
+              "level": 3,
+              "text": "9. Native API Integration Example",
+              "id": "9-native-api-integration-example",
+              "children": []
+            },
+            {
+              "level": 3,
+              "text": "10. Composition Pattern Example",
+              "id": "10-composition-pattern-example",
+              "children": []
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "text": "Implementation Plan",
+          "id": "implementation-plan",
+          "children": [
+            {
+              "level": 3,
+              "text": "Week 1",
+              "id": "week-1",
+              "children": []
+            },
+            {
+              "level": 3,
+              "text": "Week 2",
+              "id": "week-2",
+              "children": []
+            },
+            {
+              "level": 3,
+              "text": "Week 3",
+              "id": "week-3",
+              "children": []
+            },
+            {
+              "level": 3,
+              "text": "Week 4",
+              "id": "week-4",
+              "children": []
+            },
+            {
+              "level": 3,
+              "text": "Future Plans",
+              "id": "future-plans",
+              "children": []
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "text": "Success Criteria",
+          "id": "success-criteria",
+          "children": []
+        },
+        {
+          "level": 2,
+          "text": "Example Component Template",
+          "id": "example-component-template",
+          "children": []
+        },
+        {
+          "level": 2,
+          "text": "Documentation Requirements",
+          "id": "documentation-requirements",
+          "children": []
+        }
+      ]
+    }
+  ],
+  "guide/advanced/dom-cache": [
+    {
+      "level": 2,
+      "text": "Overview",
+      "id": "overview",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Core Concepts",
+      "id": "core-concepts",
+      "children": [
+        {
+          "level": 3,
+          "text": "What is DOM Cache?",
+          "id": "what-is-dom-cache",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Cache Key Composition",
+          "id": "cache-key-composition",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "⚠️ Key Rule: Avoid Duplicate Keys",
+      "id": "key-rule-avoid-duplicate-keys",
+      "children": [
+        {
+          "level": 3,
+          "text": "Why?",
+          "id": "why",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Problem Example ❌",
+          "id": "problem-example",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Correct Solution ✅",
+          "id": "correct-solution",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Best Practices",
+      "id": "best-practices",
+      "children": [
+        {
+          "level": 3,
+          "text": "1. Use Different Key Prefixes for Different Locations",
+          "id": "1-use-different-key-prefixes-for-different-locations",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "2. Keep Key Consistency in Conditional Rendering",
+          "id": "2-keep-key-consistency-in-conditional-rendering",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "3. Use Semantic Prefixes for Dynamic Containers",
+          "id": "3-use-semantic-prefixes-for-dynamic-containers",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "4. Use Unique Identifiers for List Items",
+          "id": "4-use-unique-identifiers-for-list-items",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Runtime Warnings",
+      "id": "runtime-warnings",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Compile-time Checking",
+      "id": "compile-time-checking",
+      "children": [
+        {
+          "level": 3,
+          "text": "Installation and Configuration",
+          "id": "installation-and-configuration",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "ESLint Error Example",
+          "id": "eslint-error-example",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "FAQ",
+      "id": "faq",
+      "children": [
+        {
+          "level": 3,
+          "text": "Q: Why can&#39;t the same key be used in different parent containers?",
+          "id": "q-why-can39t-the-same-key-be-used-in-different-parent-containers",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Q: All lists in my application use , will there be a problem?",
+          "id": "q-all-lists-in-my-application-use-will-there-be-a-problem",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Q: Do I need to change the key in conditional rendering?",
+          "id": "q-do-i-need-to-change-the-key-in-conditional-rendering",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Q: What if my data items don&#39;t have unique IDs?",
+          "id": "q-what-if-my-data-items-don39t-have-unique-ids",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Summary",
+      "id": "summary",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Related Resources",
+      "id": "related-resources",
+      "children": []
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+[package]
+name = "pdf-wasm"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+# rlib: 允许 `cargo test` 在宿主目标上跑单元测试；cdylib: wasm-pack 产物
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+wasm-bindgen = "0.2"
+js-sys = "0.3"
+# Deflate/zlib for compress tool (RFC 0008)
+flate2 = { version = "1", features = ["rust_backend"] }
+# Image encode/decode for jpg-to-pdf, pdf-to-jpg, grayscale (RFC 0017, 0018, 0028)
+image = { version = "0.25", default-features = false, features = ["jpeg", "png", "webp"] }
+# Logging to browser console
+console_error_panic_hook = { version = "0.1", optional = true }
+
+[features]
+default = ["console_error_panic_hook"]
+
+[profile.release]
+# Optimise for size — critical for WASM binary budget (<1 MB gzipped per RFC 0057)
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"

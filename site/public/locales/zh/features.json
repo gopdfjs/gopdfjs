@@ -1,0 +1,36 @@
+{
+    "title": "为什么选择 GoPDF.js？",
+    "description": "为现代 Web 开发而构建，专注于简洁性、性能和开发体验。",
+    "features": {
+        "approachable": {
+            "title": "易于上手",
+            "description": "基于标准 Web Components 构建，提供直观的 JSX 语法和世界级的 TypeScript 支持。易于学习和使用。",
+            "icon": "🎯",
+            "details": {
+                "jsx": "JSX 语法",
+                "typescript": "TypeScript 优先",
+                "standards": "Web 标准"
+            }
+        },
+        "performant": {
+            "title": "高性能",
+            "description": "零依赖、原生 DOM 操作和编译器优化的渲染系统，几乎不需要手动优化。",
+            "icon": "⚡",
+            "details": {
+                "zero": "零依赖",
+                "native": "原生 DOM",
+                "optimized": "优化的渲染"
+            }
+        },
+        "versatile": {
+            "title": "灵活多变",
+            "description": "丰富的、可逐步采用的生态系统，从简单组件扩展到功能完整的应用程序。",
+            "icon": "🔧",
+            "details": {
+                "incremental": "逐步采用",
+                "ecosystem": "丰富的生态系统",
+                "scalable": "可扩展"
+            }
+        }
+    }
+}

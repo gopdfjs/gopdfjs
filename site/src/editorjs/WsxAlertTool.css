@@ -1,0 +1,112 @@
+/* WSX Alert Tool Styles */
+.wsx-alert-wrapper {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    border-radius: 8px;
+    margin: 12px 0;
+    transition: all 0.2s ease;
+}
+
+.wsx-alert-wrapper.info {
+    background-color: #3498db20;
+    border: 2px solid #3498db;
+}
+
+.wsx-alert-wrapper.warning {
+    background-color: #f39c1220;
+    border: 2px solid #f39c12;
+}
+
+.wsx-alert-wrapper.success {
+    background-color: #27ae6020;
+    border: 2px solid #27ae60;
+}
+
+.wsx-alert-wrapper.error {
+    background-color: #e74c3c20;
+    border: 2px solid #e74c3c;
+}
+
+.wsx-alert-icon {
+    font-size: 24px;
+    margin-right: 12px;
+    user-select: none;
+}
+
+.wsx-alert-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.alert-type-selector {
+    width: fit-content;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+}
+
+.alert-type-selector:hover {
+    border-color: #999;
+}
+
+.alert-type-selector:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 2px #3498db20;
+}
+
+.alert-message {
+    min-height: 24px;
+    outline: none;
+    color: #333;
+    font-size: 16px;
+    line-height: 1.5;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.alert-message[contenteditable="true"] {
+    cursor: text;
+}
+
+.alert-message[contenteditable="true"]:hover {
+    background-color: #f8f9fa;
+}
+
+.alert-message[contenteditable="true"]:focus {
+    background-color: #fff;
+    box-shadow: 0 0 0 2px #3498db20;
+}
+
+.alert-message:empty::before {
+    content: attr(placeholder);
+    color: #999;
+    font-style: italic;
+}
+
+/* Settings panel styles */
+.wsx-alert-settings {
+    padding: 16px;
+}
+
+.wsx-alert-settings label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.wsx-alert-settings p {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0;
+}

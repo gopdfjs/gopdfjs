@@ -1,0 +1,360 @@
+/** @jsxImportSource @wsxjs/wsx-core */
+
+import { LightComponent, autoRegister, createLogger } from "@wsxjs/wsx-core";
+import { i18n } from "@wsxjs/wsx-i18next";
+import EditorJS from "@editorjs/editorjs";
+import Header from "@editorjs/header";
+import Paragraph from "@editorjs/paragraph";
+import WsxAlertTool from "./WsxAlertTool.wsx";
+import WsxHighlightTool from "./WsxHighlightTool.wsx";
+import WsxCodeTool from "./WsxCodeTool.wsx";
+import WsxTableTool from "./WsxTableTool.wsx";
+import styles from "./EditorJSDemo.css?inline";
+
+const logger = createLogger("EditorJSDemo");
+
+@autoRegister({ tagName: "editorjs-demo" })
+@i18n("editorjs")
+export default class EditorJSDemo extends LightComponent {
+    private editor?: EditorJS;
+    private editorContainer?: HTMLElement;
+
+    constructor() {
+        super({
+            styles,
+            styleName: "editor-demo",
+            lightDOM: true, // 使用 Light DOM 以便更好地集成到页面中
+        });
+        logger.info("EditorJS Demo initialized");
+    }
+
+    render() {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const t = ((this as any).t as (key: string, options?: object) => string).bind(this);
+
+        return (
+            <div class="editor-demo-container">
+                <h1 class="demo-title">{t("title")}</h1>
+
+                <div class="editor-container">
+                    <h2 class="editor-title">{t("tryEditor")}</h2>
+                    <div
+                        ref={(el: HTMLElement) => {
+                            this.editorContainer = el;
+                        }}
+                        id="editorjs"
+                        class="editor-placeholder"
+                    />
+
+                    <div class="editor-actions">
+                        <button onClick={this.saveData} class="btn">
+                            {t("saveData")}
+                        </button>
+
+                        <button onClick={this.loadSampleData} class="btn btn-success">
+                            {t("loadSampleData")}
+                        </button>
+                    </div>
+                </div>
+                <div class="explanation-section">
+                    <h2 class="section-title">{t("explanation.title")}</h2>
+
+                    <div class="problem-solution-grid">
+                        <div class="problem-card">
+                            <h3 class="card-title">{t("explanation.traditionalWay")}</h3>
+                            <div class="problem-list">
+                                <div class="problem-item">
+                                    <h4>{t("explanation.problems.domManipulation.title")}</h4>
+                                    <p>{t("explanation.problems.domManipulation.description")}</p>
+                                    <pre class="code-example">
+                                        {t("explanation.problems.domManipulation.code")}
+                                    </pre>
+                                </div>
+
+                                <div class="problem-item">
+                                    <h4>{t("explanation.problems.typeSafety.title")}</h4>
+                                    <p>{t("explanation.problems.typeSafety.description")}</p>
+                                </div>
+
+                                <div class="problem-item">
+                                    <h4>{t("explanation.problems.stateManagement.title")}</h4>
+                                    <p>{t("explanation.problems.stateManagement.description")}</p>
+                                </div>
+
+                                <div class="problem-item">
+                                    <h4>{t("explanation.problems.styleIsolation.title")}</h4>
+                                    <p>{t("explanation.problems.styleIsolation.description")}</p>
+                                </div>
+
+                                <div class="problem-item">
+                                    <h4>{t("explanation.problems.maintainability.title")}</h4>
+                                    <p>{t("explanation.problems.maintainability.description")}</p>
+                                </div>
+
+                                <div class="problem-item">
+                                    <h4>{t("explanation.problems.reusability.title")}</h4>
+                                    <p>{t("explanation.problems.reusability.description")}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="solution-card">
+                            <h3 class="card-title">{t("explanation.solutions.title")}</h3>
+                            <div class="solution-list">
+                                <div class="solution-item">
+                                    <h4>{t("explanation.solutions.jsxSyntax.title")}</h4>
+                                    <p>{t("explanation.solutions.jsxSyntax.description")}</p>
+                                    <pre class="code-example">
+                                        {t("explanation.solutions.jsxSyntax.code")}
+                                    </pre>
+                                </div>
+
+                                <div class="solution-item">
+                                    <h4>{t("explanation.solutions.typescript.title")}</h4>
+                                    <p>{t("explanation.solutions.typescript.description")}</p>
+                                </div>
+
+                                <div class="solution-item">
+                                    <h4>{t("explanation.solutions.reactiveState.title")}</h4>
+                                    <p>{t("explanation.solutions.reactiveState.description")}</p>
+                                    <pre class="code-example">
+                                        {t("explanation.solutions.reactiveState.code")}
+                                    </pre>
+                                </div>
+
+                                <div class="solution-item">
+                                    <h4>{t("explanation.solutions.styleIsolation.title")}</h4>
+                                    <p>{t("explanation.solutions.styleIsolation.description")}</p>
+                                </div>
+
+                                <div class="solution-item">
+                                    <h4>{t("explanation.solutions.architecture.title")}</h4>
+                                    <p>{t("explanation.solutions.architecture.description")}</p>
+                                </div>
+
+                                <div class="solution-item">
+                                    <h4>{t("explanation.solutions.reusability.title")}</h4>
+                                    <p>{t("explanation.solutions.reusability.description")}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="benefits-section">
+                    <h2 class="benefits-title">{t("benefits.title")}</h2>
+                    <ul class="benefits-list">
+                        <li>
+                            <strong>{t("benefits.architecture.label")}</strong>{" "}
+                            {t("benefits.architecture.description")}
+                        </li>
+                        <li>
+                            <strong>{t("benefits.typeSafety.label")}</strong>{" "}
+                            {t("benefits.typeSafety.description")}
+                        </li>
+                        <li>
+                            <strong>{t("benefits.declarativeUI.label")}</strong>{" "}
+                            {t("benefits.declarativeUI.description")}
+                        </li>
+                        <li>
+                            <strong>{t("benefits.shadowDOM.label")}</strong>{" "}
+                            {t("benefits.shadowDOM.description")}
+                        </li>
+                        <li>
+                            <strong>{t("benefits.stateManagement.label")}</strong>{" "}
+                            {t("benefits.stateManagement.description")}
+                        </li>
+                        <li>
+                            <strong>{t("benefits.developerExperience.label")}</strong>{" "}
+                            {t("benefits.developerExperience.description")}
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>{t("info.customBlockTool.title")}</h3>
+                        <p>{t("info.customBlockTool.description")}</p>
+                        <div class="info-card-link">
+                            <a
+                                href="https://github.com/systembug/gopdf/tree/main/site/src/editorjs"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="github-link"
+                            >
+                                {t("info.viewSourceCode")}
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>{t("info.inlineTool.title")}</h3>
+                        <p>
+                            {t("info.inlineTool.description")} <kbd>Cmd+Shift+H</kbd>.
+                        </p>
+                        <div class="info-card-link">
+                            <a
+                                href="https://github.com/systembug/gopdf/tree/main/site/src/editorjs"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="github-link"
+                            >
+                                {t("info.viewSourceCode")}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <pre id="output" class="output-panel" />
+            </div>
+        );
+    }
+
+    protected onDisconnected() {
+        super.onDisconnected?.();
+        if (this.editor && typeof this.editor.destroy === "function") {
+            try {
+                this.editor.destroy();
+                logger.info("Editor destroyed");
+            } catch (error) {
+                logger.error("Error destroying editor", error);
+            }
+        }
+        this.editor = undefined;
+    }
+
+    protected onRendered() {
+        super.onRendered?.();
+        this.initializeEditor();
+    }
+
+    private initializeEditor() {
+        if (!this.editorContainer) return;
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const t = ((this as any).t as (key: string, options?: object) => string).bind(this);
+
+        this.editor = new EditorJS({
+            holder: this.editorContainer,
+            tools: {
+                header: {
+                    class: Header,
+                    config: {
+                        levels: [1, 2, 3, 4, 5, 6],
+                        defaultLevel: 2,
+                    },
+                    inlineToolbar: true,
+                },
+                paragraph: {
+                    class: Paragraph,
+                    inlineToolbar: true,
+                },
+                alert: {
+                    class: WsxAlertTool,
+                },
+                code: {
+                    class: WsxCodeTool,
+                },
+                table: {
+                    class: WsxTableTool,
+                },
+                highlight: WsxHighlightTool,
+            },
+            placeholder: t("editor.placeholder"),
+            data: {
+                blocks: [
+                    {
+                        type: "header",
+                        data: {
+                            text: t("editor.defaultData.welcome.text"),
+                            level: 2,
+                        },
+                    },
+                    {
+                        type: "paragraph",
+                        data: {
+                            text: t("editor.defaultData.welcome.description"),
+                        },
+                    },
+                    {
+                        type: "alert",
+                        data: {
+                            type: "info",
+                            message: t("editor.defaultData.welcome.alertMessage"),
+                        },
+                    },
+                ],
+            },
+            onReady: () => {
+                logger.info("Editor.js is ready");
+            },
+            onChange: (api, event) => {
+                logger.debug("Content changed", event);
+            },
+        });
+    }
+
+    private saveData = async () => {
+        if (!this.editor) return;
+
+        try {
+            const outputData = await this.editor.save();
+            const output = this.querySelector("#output") as HTMLPreElement;
+            if (output) {
+                output.textContent = JSON.stringify(outputData, null, 2);
+                output.classList.add("visible");
+            }
+            logger.info("Data saved", outputData);
+        } catch (error) {
+            logger.error("Saving failed", error);
+        }
+    };
+
+    private loadSampleData = () => {
+        if (!this.editor) return;
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const t = ((this as any).t as (key: string, options?: object) => string).bind(this);
+
+        const sampleData = {
+            blocks: [
+                {
+                    type: "header",
+                    data: {
+                        text: t("editor.sampleData.header.text"),
+                        level: 2,
+                    },
+                },
+                {
+                    type: "paragraph",
+                    data: {
+                        text: t("editor.sampleData.header.description"),
+                    },
+                },
+                {
+                    type: "alert",
+                    data: {
+                        type: "success",
+                        message: t("editor.sampleData.header.alertMessage"),
+                    },
+                },
+                {
+                    type: "paragraph",
+                    data: {
+                        text: t("editor.sampleData.highlight.description"),
+                    },
+                },
+                {
+                    type: "alert",
+                    data: {
+                        type: "warning",
+                        message: t("editor.sampleData.highlight.alertMessage"),
+                    },
+                },
+            ],
+        };
+
+        this.editor.render(sampleData);
+        logger.info("Sample data loaded");
+    };
+}

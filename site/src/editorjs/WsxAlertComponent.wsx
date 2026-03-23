@@ -1,0 +1,140 @@
+/** @jsxImportSource @wsxjs/wsx-core */
+import { WebComponent, autoRegister, createLogger } from "@wsxjs/wsx-core";
+
+const logger = createLogger("WsxAlertComponent");
+
+/**
+ * WSX Alert Component - A reusable Web Component for rendering alert blocks
+ *
+ * This demonstrates optimized WSX patterns:
+ * - Manual re-render control with WebComponent
+ * - Direct DOM updates for content to preserve cursor
+ * - Selective re-rendering for visual properties only
+ */
+@autoRegister({ tagName: "wsx-alert-component" })
+export default class WsxAlertComponent extends WebComponent {
+    // Simple state properties - manual re-render control
+    private alertType = "info";
+    private isReadOnly = false;
+
+    // Non-reactive message content to prevent unnecessary re-renders
+    private alertMessage = "";
+    private messageElement?: HTMLDivElement;
+
+    static get observedAttributes() {
+        return ["type", "message", "readonly"];
+    }
+
+    constructor() {
+        super();
+
+        logger.info("WSX Alert component initialized");
+    }
+
+    render() {
+        const icons = {
+            info: "ℹ️",
+            warning: "⚠️",
+            success: "✅",
+            error: "❌",
+        };
+
+        return (
+            <div class={`wsx-alert-wrapper ${this.alertType}`}>
+                <span class="wsx-alert-icon">{icons[this.alertType as keyof typeof icons]}</span>
+                <div class="wsx-alert-content">
+                    {!this.isReadOnly && (
+                        <select
+                            class="alert-type-selector"
+                            value={this.alertType}
+                            onchange={this.handleTypeChange}
+                        >
+                            <option value="info">Info</option>
+                            <option value="warning">Warning</option>
+                            <option value="success">Success</option>
+                            <option value="error">Error</option>
+                        </select>
+                    )}
+                    <div
+                        contentEditable={!this.isReadOnly ? "true" : "false"}
+                        class="alert-message"
+                        oninput={this.handleMessageInput}
+                        placeholder="Enter alert message..."
+                        ref={(element) => {
+                            this.messageElement = element as HTMLDivElement;
+                            this.initializeMessageContent();
+                        }}
+                    >
+                        {/* Content managed directly via DOM to avoid re-renders */}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    private handleTypeChange = (event: Event) => {
+        const select = event.target as HTMLSelectElement;
+        this.alertType = select.value;
+        logger.debug("Alert type changed", this.alertType);
+
+        // Manual re-render when visual properties change
+        this.rerender();
+
+        // Dispatch custom event using WSX pattern
+        this.dispatchEvent(new CustomEvent("typechange", { detail: this.alertType }));
+    };
+
+    private handleMessageInput = (event: Event) => {
+        const div = event.target as HTMLDivElement;
+        this.alertMessage = div.textContent || "";
+        logger.debug("Alert message updated", this.alertMessage);
+
+        // Dispatch custom event using WSX pattern
+        this.dispatchEvent(new CustomEvent("messagechange", { detail: this.alertMessage }));
+    };
+
+    private initializeMessageContent = () => {
+        if (this.messageElement && this.alertMessage) {
+            this.messageElement.textContent = this.alertMessage;
+        }
+    };
+
+    private updateMessageContent = (newMessage: string) => {
+        this.alertMessage = newMessage;
+        if (this.messageElement && this.messageElement !== document.activeElement) {
+            // Only update DOM if element is not focused (to avoid disrupting typing)
+            this.messageElement.textContent = this.alertMessage;
+        }
+    };
+
+    onAttributeChanged(name: string, _oldValue: string | null, newValue: string | null) {
+        switch (name) {
+            case "type":
+                this.alertType = newValue || "info";
+                this.rerender(); // Manual re-render when visual properties change
+                break;
+            case "message":
+                this.updateMessageContent(newValue || "");
+                // Message change does NOT trigger re-render
+                break;
+            case "readonly":
+                this.isReadOnly = newValue === "true";
+                this.rerender(); // Manual re-render when visual properties change
+                break;
+        }
+    }
+
+    // Public API for EditorJS integration
+    setData(type: string, message: string) {
+        this.alertType = type;
+        this.updateMessageContent(message);
+        this.rerender(); // Re-render for type change
+    }
+
+    getData() {
+        return {
+            type: this.alertType,
+            message: this.alertMessage,
+        };
+    }
+}

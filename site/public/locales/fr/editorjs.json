@@ -1,0 +1,125 @@
+{
+    "title": "EditorJS + GoPDF.js Demo",
+    "tryEditor": "Essayer l'éditeur",
+    "saveData": "Enregistrer les données",
+    "loadSampleData": "Charger des données d'exemple",
+    "explanation": {
+        "title": "Pourquoi le développement de plugins EditorJS est difficile (et comment WSX le résout)",
+        "traditionalWay": "❌ La méthode traditionnelle est difficile",
+        "problems": {
+            "domManipulation": {
+                "title": "1. Manipulation manuelle du DOM",
+                "description": "Vous devez créer, mettre à jour et gérer manuellement les éléments DOM en utilisant des API JavaScript verbeuses comme document.createElement, appendChild, setAttribute, etc. Cela conduit à des centaines de lignes de code répétitif.",
+                "code": "// Méthode traditionnelle - beaucoup de code répétitif\nconst wrapper = document.createElement('div');\nconst input = document.createElement('input');\ninput.setAttribute('type', 'text');\ninput.setAttribute('class', 'alert-input');\ninput.addEventListener('change', handleChange);\nwrapper.appendChild(input);\n// ... 50+ lignes de plus pour un composant simple"
+            },
+            "typeSafety": {
+                "title": "2. Pas de sécurité de type",
+                "description": "Les outils EditorJS sont écrits en JavaScript pur sans vérification de type. Vous découvrirez les bugs à l'exécution, pas pendant le développement. Les noms de propriétés, structures de données et signatures de méthodes sont tous sujets aux erreurs."
+            },
+            "stateManagement": {
+                "title": "3. Gestion d'état complexe",
+                "description": "Vous devez suivre manuellement l'état du composant, le synchroniser avec les données EditorJS, gérer les mises à jour et assurer la cohérence. Cela nécessite une gestion soigneuse des événements et une logique de synchronisation d'état dispersée dans tout votre code."
+            },
+            "styleIsolation": {
+                "title": "4. Problèmes d'isolation des styles",
+                "description": "Les styles fuient entre les outils et entrent en conflit avec les styles propres d'EditorJS. Vous devez utiliser des sélecteurs CSS complexes, des conventions de nommage BEM ou des solutions CSS-in-JS pour éviter les conflits."
+            },
+            "maintainability": {
+                "title": "5. Difficile à maintenir",
+                "description": "Le code devient un désordre d'opérations DOM impératives, d'écouteurs d'événements et de gestion d'état. Ajouter des fonctionnalités ou corriger des bugs nécessite de comprendre toute la base de code. La refactorisation est risquée et chronophage."
+            },
+            "reusability": {
+                "title": "6. Pas de réutilisabilité des composants",
+                "description": "Chaque outil est une classe monolithique avec tout mélangé. Vous ne pouvez pas facilement réutiliser les composants UI, partager la logique ou composer des outils complexes à partir de plus simples."
+            }
+        },
+        "solutions": {
+            "title": "✅ Comment WSX le résout",
+            "jsxSyntax": {
+                "title": "1. Syntaxe JSX déclarative",
+                "description": "Écrivez votre UI de manière déclarative avec JSX, comme React. Plus de manipulation manuelle du DOM - WSX s'en occupe pour vous.",
+                "code": "// Méthode WSX - propre et simple\nrender() {\n    return (\n        <div>\n            <wsx-alert-component\n                type={this.data.type}\n                message={this.data.message}\n                onchange={this.handleChange}\n            />\n        </div>\n    );\n}"
+            },
+            "typescript": {
+                "title": "2. Support TypeScript complet",
+                "description": "Obtenez la vérification de type à la compilation, l'autocomplétion et le support de refactorisation. Détectez les erreurs avant qu'elles n'atteignent la production. Props, événements et structures de données sûrs en type."
+            },
+            "reactiveState": {
+                "title": "3. État réactif intégré",
+                "description": "Utilisez le décorateur @state pour la réactivité automatique. Les changements d'état déclenchent automatiquement les mises à jour de l'UI. Aucune synchronisation manuelle nécessaire.",
+                "code": "@state()\nprivate message = '';\n\n// Met à jour automatiquement l'UI lors du changement\nthis.message = 'Nouvelle valeur';"
+            },
+            "styleIsolation": {
+                "title": "4. Isolation automatique des styles",
+                "description": "Les Web Components avec Shadow DOM fournissent une portée de style automatique. Vos styles sont encapsulés et n'entreront pas en conflit avec EditorJS ou d'autres outils."
+            },
+            "architecture": {
+                "title": "5. Architecture de composants propre",
+                "description": "Séparez les préoccupations : les composants UI gèrent le rendu, les outils gèrent l'intégration EditorJS. Facile à comprendre, tester et maintenir. La refactorisation est sûre et directe."
+            },
+            "reusability": {
+                "title": "6. Web Components réutilisables",
+                "description": "Construisez des composants réutilisables qui fonctionnent partout - dans EditorJS, pages autonomes ou autres frameworks. Composez des outils complexes à partir de composants simples."
+            }
+        }
+    },
+    "benefits": {
+        "title": "🚀 Avantages supplémentaires de WSX",
+        "architecture": {
+            "label": "Architecture basée sur les composants :",
+            "description": "Chaque outil est un Web Component autonome"
+        },
+        "typeSafety": {
+            "label": "Sécurité de type :",
+            "description": "Support TypeScript complet avec JSX"
+        },
+        "declarativeUI": {
+            "label": "UI déclarative :",
+            "description": "Construisez des UIs complexes avec JSX au lieu de manipulation manuelle du DOM"
+        },
+        "shadowDOM": {
+            "label": "Isolation Shadow DOM :",
+            "description": "Les styles sont automatiquement délimités"
+        },
+        "stateManagement": {
+            "label": "Gestion d'état intégrée :",
+            "description": "Mises à jour réactives sans bibliothèques externes"
+        },
+        "developerExperience": {
+            "label": "Expérience développeur :",
+            "description": "Rechargement à chaud, outils de débogage et structure de code propre"
+        }
+    },
+    "info": {
+        "customBlockTool": {
+            "title": "📦 Outil de bloc personnalisé",
+            "description": "Le WsxAlertTool démontre un outil de bloc personnalisé construit avec WSX. Il comprend la sélection de type, le contenu éditable et la persistance appropriée des données."
+        },
+        "inlineTool": {
+            "title": "✏️ Outil en ligne",
+            "description": "Le WsxHighlightTool montre comment créer des outils en ligne avec WSX. Essayez de sélectionner du texte et de cliquer sur le bouton de surbrillance ou utilisez"
+        },
+        "viewSourceCode": "Voir le code source sur GitHub →"
+    },
+    "editor": {
+        "placeholder": "Commencez à taper ou cliquez sur + pour ajouter des composants WSX - Alert, Code, Table et plus encore !",
+        "defaultData": {
+            "welcome": {
+                "text": "Bienvenue dans EditorJS avec WSX !",
+                "description": "Cet éditeur démontre comment GoPDF.js peut améliorer le développement de plugins EditorJS avec Web Components et JSX.",
+                "alertMessage": "Ceci est un bloc d'alerte WSX personnalisé. Essayez de changer le type ou d'éditer le message !"
+            }
+        },
+        "sampleData": {
+            "header": {
+                "text": "WSX améliore le développement de plugins EditorJS",
+                "description": "Avec WSX, vous pouvez construire des plugins EditorJS en utilisant des Web Components modernes et la syntaxe JSX. Cela fournit une meilleure structure, sécurité de type et expérience développeur.",
+                "alertMessage": "Données d'exemple chargées avec succès ! Ce bloc d'alerte est construit avec WSX."
+            },
+            "highlight": {
+                "description": "Essayez de sélectionner ce texte et d'utiliser l'outil de surbrillance (Cmd+Shift+H) pour voir l'outil en ligne WSX en action !",
+                "alertMessage": "Rappelez-vous : les composants WSX sont juste des Web Components natifs avec des superpouvoirs !"
+            }
+        }
+    }
+}

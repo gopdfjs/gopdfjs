@@ -1,0 +1,39 @@
+/** @jsxImportSource @wsxjs/wsx-core */
+/**
+ * Slot Card Component - WebComponent Version
+ * 通用的 Card 组件，支持 Shadow DOM 中的 slot 使用
+ *
+ * 使用方式：
+ * ```tsx
+ * <slot-card-web>
+ *   <span slot="header">Header Content</span>
+ *   <p>Main Content</p>
+ *   <button slot="footer">Footer Button</button>
+ * </slot-card-web>
+ * ```
+ */
+import { WebComponent, autoRegister } from "@wsxjs/wsx-core";
+import styles from "./SlotCardWeb.css?inline";
+
+@autoRegister({ tagName: "slot-card-web" })
+export default class SlotCardWeb extends WebComponent {
+    constructor() {
+        super({ styles });
+    }
+
+    render() {
+        return (
+            <div class="card">
+                <div class="card-header">
+                    <slot name="header">Default Header</slot>
+                </div>
+                <div class="card-body">
+                    <slot>Default Content</slot>
+                </div>
+                <div class="card-footer">
+                    <slot name="footer">Default Footer</slot>
+                </div>
+            </div>
+        );
+    }
+}

@@ -1,0 +1,259 @@
+/** @jsxImportSource @wsxjs/wsx-core */
+import { WebComponent, state, autoRegister, createLogger } from "@wsxjs/wsx-core";
+import styles from "./WsxCodeTool.css?inline";
+
+const logger = createLogger("WsxCodeComponent");
+
+/**
+ * WSX Code Component - Web Component for code editing
+ *
+ * This is the actual Web Component that handles the UI and interactions
+ * for the code block tool in EditorJS.
+ */
+@autoRegister({ tagName: "wsx-code-component" })
+export default class WsxCodeComponent extends WebComponent {
+    // Reactive state using @state decorator - automatically initialized
+    @state private language = "javascript";
+    @state private showLineNumbers = true;
+    @state private readonly = false;
+
+    // Non-reactive code content to prevent cursor issues
+    private codeValue = "";
+    private codeElement?: HTMLTextAreaElement;
+
+    // Direct code management
+    private code = () => this.codeValue;
+    private setCode = (value: string) => {
+        this.codeValue = value;
+        this.updateCodeElement();
+    };
+
+    private languages = [
+        "javascript",
+        "typescript",
+        "python",
+        "java",
+        "cpp",
+        "css",
+        "html",
+        "json",
+        "markdown",
+    ];
+
+    constructor() {
+        super({ styles });
+        logger.info("WsxCodeComponent initialized");
+    }
+
+    static get observedAttributes() {
+        return ["code", "language", "showlinenumbers", "readonly"];
+    }
+
+    protected onAttributeChanged(name: string, _oldValue: string, newValue: string) {
+        switch (name) {
+            case "code":
+                this.setCode(newValue || "");
+                break;
+            case "language":
+                this.language = newValue || "javascript";
+                break;
+            case "showlinenumbers":
+                this.showLineNumbers = newValue === "true";
+                break;
+            case "readonly":
+                this.readonly = newValue === "true";
+                break;
+        }
+    }
+
+    private updateCodeElement = () => {
+        if (this.codeElement && this.codeElement !== document.activeElement) {
+            this.codeElement.value = this.codeValue;
+        }
+    };
+
+    private initializeCodeElement = () => {
+        if (this.codeElement && this.codeValue) {
+            this.codeElement.value = this.codeValue;
+        }
+    };
+
+    render() {
+        return (
+            <div class="wsx-code-tool">
+                {/* Toolbar */}
+                <div class="code-toolbar">
+                    <div class="language-selector">
+                        <label>Language:</label>
+                        <select
+                            value={this.language}
+                            onChange={this.handleLanguageChange}
+                            class="language-select"
+                            disabled={this.readonly}
+                        >
+                            {this.languages.map((lang) => (
+                                <option key={lang} value={lang}>
+                                    {lang.charAt(0).toUpperCase() + lang.slice(1)}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div class="toolbar-options">
+                        <label class="checkbox-label">
+                            <input
+                                type="checkbox"
+                                checked={this.showLineNumbers}
+                                onChange={this.handleLineNumbersToggle}
+                                disabled={this.readonly}
+                            />
+                            Line Numbers
+                        </label>
+
+                        {!this.readonly && (
+                            <>
+                                <button
+                                    onClick={this.handleFormat}
+                                    class="format-btn"
+                                    title="Format Code"
+                                >
+                                    📝 Format
+                                </button>
+
+                                <button
+                                    onClick={this.handleCopy}
+                                    class="copy-btn"
+                                    title="Copy Code"
+                                >
+                                    📋 Copy
+                                </button>
+                            </>
+                        )}
+                    </div>
+                </div>
+
+                {/* Code Editor */}
+                <div class={`code-container ${this.showLineNumbers ? "with-line-numbers" : ""}`}>
+                    <textarea
+                        class="code-editor"
+                        placeholder={`Enter ${this.language} code here...`}
+                        onInput={this.handleCodeChange}
+                        spellcheck={false}
+                        data-language={this.language}
+                        readonly={this.readonly}
+                        ref={(element) => {
+                            this.codeElement = element as HTMLTextAreaElement;
+                            this.initializeCodeElement();
+                        }}
+                    />
+
+                    {this.showLineNumbers && (
+                        <div class="line-numbers">{this.renderLineNumbers()}</div>
+                    )}
+                </div>
+
+                {/* Preview */}
+                <div class="code-preview">
+                    <div class="preview-header">
+                        <span>Preview ({this.language})</span>
+                        <span class="char-count">{this.code().length} characters</span>
+                    </div>
+                    <pre class={`language-${this.language}`}>
+                        <code>{this.code() || "// Your code will appear here"}</code>
+                    </pre>
+                </div>
+            </div>
+        );
+    }
+
+    private handleLanguageChange = (event: Event) => {
+        const target = event.target as HTMLSelectElement;
+        this.language = target.value;
+        this.dispatchEvent(new CustomEvent("languagechange", { detail: target.value }));
+        logger.debug(`Language changed to: ${target.value}`);
+    };
+
+    private handleCodeChange = (event: Event) => {
+        const target = event.target as HTMLTextAreaElement;
+        this.codeValue = target.value;
+        this.dispatchEvent(new CustomEvent("codechange", { detail: target.value }));
+    };
+
+    private handleLineNumbersToggle = (event: Event) => {
+        const target = event.target as HTMLInputElement;
+        this.showLineNumbers = target.checked;
+        this.dispatchEvent(new CustomEvent("showlinenumberschange", { detail: target.checked }));
+    };
+
+    private handleFormat = () => {
+        const codeValue = this.code();
+        if (!codeValue.trim()) return;
+
+        try {
+            let formatted = codeValue;
+
+            // Simple formatting for demonstration
+            if (this.language === "json") {
+                formatted = JSON.stringify(JSON.parse(codeValue), null, 2);
+            } else if (this.language === "javascript" || this.language === "typescript") {
+                // Simple JS formatting
+                formatted = codeValue
+                    .replace(/;/g, ";\n")
+                    .replace(/{/g, "{\n")
+                    .replace(/}/g, "\n}")
+                    .split("\n")
+                    .map((line) => line.trim())
+                    .filter((line) => line)
+                    .join("\n");
+            }
+
+            this.codeValue = formatted;
+            this.updateCodeElement();
+            this.dispatchEvent(new CustomEvent("codechange", { detail: formatted }));
+            logger.info("Code formatted");
+        } catch (error) {
+            logger.error("Failed to format code:", error);
+        }
+    };
+
+    private handleCopy = async () => {
+        try {
+            await navigator.clipboard.writeText(this.code());
+
+            // Visual feedback
+            const copyBtn = this.shadowRoot?.querySelector(".copy-btn") as HTMLButtonElement;
+            if (copyBtn) {
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = "✅ Copied!";
+                copyBtn.classList.add("copied");
+
+                setTimeout(() => {
+                    copyBtn.textContent = originalText;
+                    copyBtn.classList.remove("copied");
+                }, 2000);
+            }
+
+            logger.info("Code copied to clipboard");
+        } catch (error) {
+            logger.error("Failed to copy code:", error);
+        }
+    };
+
+    private renderLineNumbers() {
+        const lines = this.code().split("\n");
+        return lines.map((_, index) => (
+            <div key={index} class="line-number">
+                {index + 1}
+            </div>
+        ));
+    }
+
+    // Public API for the EditorJS tool
+    getData() {
+        return {
+            code: this.code(),
+            language: this.language,
+            showLineNumbers: this.showLineNumbers,
+        };
+    }
+}

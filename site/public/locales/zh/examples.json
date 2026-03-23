@@ -1,0 +1,414 @@
+{
+    "simpleReactiveDemo": {
+        "title": "📱 简单响应式演示",
+        "message": "点击按钮！",
+        "count": "计数",
+        "increment": "+ 增加",
+        "reset": "🔄 重置",
+        "hint": "💡 状态变化会自动触发重新渲染！",
+        "clicked_one": "已点击 {{count}} 次！",
+        "clicked_other": "已点击 {{count}} 次！",
+        "resetMessage": "已重置！再次点击！"
+    },
+    "reactiveCounter": {
+        "title": "🔄 响应式计数器",
+        "subtitle": "你好 WSX 响应式！",
+        "step": "步长",
+        "stepSize": "步长大小：",
+        "theme": "主题：",
+        "themes": {
+            "light": "浅色",
+            "dark": "深色",
+            "blue": "蓝色"
+        },
+        "increment": "+{{step}}",
+        "decrement": "-{{step}}",
+        "reset": "重置",
+        "autoIncrement": {
+            "start": "开始自动增加",
+            "stop": "停止自动增加"
+        },
+        "placeholder": "输入消息...",
+        "history": {
+            "title": "历史记录（最近 10 条）：",
+            "clear": "清除历史"
+        },
+        "debugInfo": "调试信息",
+        "readyMessage": "准备计数！🚀",
+        "countReached": "计数达到 {{count}}！"
+    },
+    "todoList": {
+        "title": "📝 待办事项列表",
+        "webComponent": "（WebComponent）",
+        "lightComponent": "（LightComponent）",
+        "subtitle": "共 {{total}} 项，{{active}} 项进行中，{{completed}} 项已完成",
+        "placeholder": "添加新的待办事项...",
+        "add": "添加",
+        "filters": {
+            "all": "全部（{{count}}）",
+            "active": "进行中（{{count}}）",
+            "completed": "已完成（{{count}}）"
+        },
+        "empty": {
+            "all": "还没有待办事项。在上面添加一个吧！🎉",
+            "active": "没有进行中的待办事项。",
+            "completed": "没有已完成的待办事项。"
+        },
+        "delete": "删除",
+        "clearCompleted": "清除已完成",
+        "clearAll": "清除全部",
+        "debugInfo": "调试信息"
+    },
+    "userProfile": {
+        "title": "👤 用户资料",
+        "webComponent": "（WebComponent）",
+        "lightComponent": "（LightComponent）",
+        "subtitle": "演示 @state 装饰器与对象的使用",
+        "basicInfo": "基本信息",
+        "name": "姓名：",
+        "email": "邮箱：",
+        "age": "年龄：",
+        "preferences": "偏好设置",
+        "theme": "主题：",
+        "themes": {
+            "light": "浅色",
+            "dark": "深色"
+        },
+        "language": "语言：",
+        "languages": {
+            "en": "English",
+            "zh": "中文",
+            "es": "Español",
+            "fr": "Français"
+        },
+        "notifications": "启用通知",
+        "actions": {
+            "reset": "重置为默认值",
+            "updateLogin": "更新最后登录时间",
+            "replace": "替换整个资料"
+        },
+        "currentData": "当前资料数据"
+    },
+    "slotCard": {
+        "defaultHeader": "默认标题",
+        "defaultContent": "默认内容",
+        "defaultFooter": "默认页脚"
+    },
+    "examplesSection": {
+        "title": "交互式示例",
+        "description": "通过这些交互式示例探索 GoPDF.js 的功能。看看构建强大的 Web 组件是多么容易。",
+        "categories": {
+            "core": "核心功能",
+            "coreFeatures": {
+                "title": "核心组件类型",
+                "subtitle": "这些是 GoPDF.js 的基础构建块。掌握这些将释放框架的全部力量。"
+            },
+            "componentTypes": "组件类型",
+            "advanced": "高级功能",
+            "integrations": "集成"
+        },
+        "examples": {
+            "reactiveState": {
+                "title": "🔄 响应式状态",
+                "badge": "核心",
+                "description": "状态变化时自动重新渲染"
+            },
+            "router": {
+                "title": "🧭 路由导航",
+                "badge": "路由",
+                "description": "使用 WSX Router 组件在部分之间导航",
+                "home": "首页",
+                "features": "特性",
+                "ecosystem": "生态系统"
+            },
+            "webComponent": {
+                "title": "🌐 WebComponent 示例",
+                "badge": "@state 数组和对象",
+                "description": "完整的 WebComponent 示例，使用 Shadow DOM。包括 TodoList（数组响应式）和 UserProfile（对象响应式）组件。演示完整的 @state 装饰器功能，支持自动重新渲染。",
+                "link": "→ 查看 WebComponent 示例"
+            },
+            "lightComponent": {
+                "title": "💡 LightComponent 示例",
+                "badge": "@state 数组和对象",
+                "description": "完整的 LightComponent 示例，不使用 Shadow DOM。包括 TodoListLight（数组响应式）和 UserProfileLight（对象响应式）组件。样式可以从父级继承，便于主题化。",
+                "link": "→ 查看 LightComponent 示例"
+            },
+            "slots": {
+                "title": "🎯 插槽示例",
+                "badge": "Shadow 和 Light DOM",
+                "description": "学习如何在 WebComponent（Shadow DOM）和 LightComponent（Light DOM）中使用插槽。包括命名插槽、默认插槽以及组件嵌套的混合使用场景。",
+                "link": "→ 查看插槽示例"
+            },
+            "svg": {
+                "title": "SVG 图形",
+                "badge": "高级",
+                "description": "支持命名空间处理和动画的原生 SVG"
+            },
+            "colorPicker": {
+                "title": "颜色选择器",
+                "badge": "交互式",
+                "description": "具有颜色选择和状态管理的自定义 Web 组件"
+            },
+            "editorjs": {
+                "title": "📝 EditorJS 插件演示",
+                "badge": "集成",
+                "description": "使用 WSX 组件构建 EditorJS 插件，提供更好的开发体验",
+                "link": "→ 访问 EditorJS 演示页面体验"
+            }
+        }
+    },
+    "featuresSection": {
+        "title": "为什么选择 GoPDF.js？",
+        "description": "为现代 Web 开发而构建，专注于简洁性、性能和开发体验。",
+        "features": {
+            "approachable": {
+                "title": "易于上手",
+                "description": "基于标准 Web Components 构建，具有直观的 JSX 语法和世界级的 TypeScript 支持。易于学习和使用。",
+                "details": {
+                    "jsx": "JSX 语法",
+                    "typescript": "TypeScript 优先",
+                    "standards": "Web 标准"
+                }
+            },
+            "performant": {
+                "title": "高性能",
+                "description": "零依赖、原生 DOM 操作和编译器优化的渲染系统，很少需要手动优化。",
+                "details": {
+                    "zero": "零依赖",
+                    "native": "原生 DOM",
+                    "optimized": "优化的渲染"
+                }
+            },
+            "versatile": {
+                "title": "多功能",
+                "description": "丰富的、可逐步采用的生态系统，从简单组件扩展到功能完整的应用程序。",
+                "details": {
+                    "incremental": "逐步采用",
+                    "ecosystem": "丰富的生态系统",
+                    "scalable": "可扩展"
+                }
+            }
+        }
+    },
+    "quickStartSection": {
+        "title": "快速开始",
+        "description": "在几分钟内开始使用 GoPDF.js。使用 JSX 语法和 TypeScript 支持创建您的第一个 Web 组件。",
+        "installation": {
+            "title": "安装",
+            "copy": "📋 复制",
+            "copied": "✅ 已复制！",
+            "code": "npm install @wsxjs/wsx-core\n\n# 创建您的第一个组件\nimport { WebComponent } from '@wsxjs/wsx-core';\n\nclass MyButton extends WebComponent {\n    render() {\n        return <button>Hello WSX!</button>;\n    }\n}"
+        },
+        "steps": {
+            "install": {
+                "title": "安装",
+                "description": "通过 npm 安装 GoPDF.js"
+            },
+            "create": {
+                "title": "创建",
+                "description": "使用 JSX 创建您的第一个组件"
+            },
+            "build": {
+                "title": "构建",
+                "description": "构建并部署您的 Web 组件"
+            }
+        },
+        "router": {
+            "title": "🚀 路由示例",
+            "description": "此页面演示了 WSX Router 的实际应用！请注意：",
+            "points": {
+                "highlight": "导航链接会高亮显示活动页面",
+                "url": "URL 更改无需刷新页面",
+                "browser": "浏览器前进/后退按钮正常工作",
+                "sections": "每个部分都是按路由加载的独立组件"
+            },
+            "code": "<wsx-router>\n  <wsx-view route=\"/\" component=\"home-section\"></wsx-view>\n  <wsx-view route=\"/features\" component=\"features-section\"></wsx-view>\n  <wsx-view route=\"/quick-start\" component=\"quick-start-section\"></wsx-view>\n</wsx-router>"
+        }
+    },
+    "quickStartCode": {
+        "title": "60 秒快速开始",
+        "description": "安装 GoPDF.js 并在不到一分钟的时间内创建您的第一个组件。",
+        "codeTitle": "安装和示例"
+    },
+    "statsSection": {
+        "downloads": "npm 周下载量",
+        "stars": "GitHub 星标",
+        "runtimeSize": "运行时大小"
+    },
+    "performanceMetrics": {
+        "title": "性能",
+        "description": "GoPDF.js 提供原生性能，零运行时开销。无虚拟 DOM，无框架开销，纯 Web Components。",
+        "metrics": {
+            "runtimeSize": {
+                "value": "0 KB",
+                "label": "运行时大小",
+                "description": "无运行时库，纯构建时转换"
+            },
+            "nativePerformance": {
+                "value": "100%",
+                "label": "原生性能",
+                "description": "直接 DOM 操作，无虚拟 DOM 开销"
+            },
+            "noVirtualDOM": {
+                "value": "∞",
+                "label": "无虚拟 DOM",
+                "description": "直接使用浏览器 API"
+            }
+        }
+    },
+    "webComponentExamples": {
+        "title": "WebComponent 示例",
+        "description": "探索使用 Shadow DOM 和 @state 装饰器支持的 WebComponent 示例。这些组件演示了数组和对象的响应式状态管理。",
+        "todoList": {
+            "title": "📋 待办事项列表",
+            "badge": "@state 数组",
+            "description": "演示 WebComponent 中 @state 装饰器与数组的使用。显示添加、删除、更新和过滤操作，支持自动响应式更新。使用 Shadow DOM 实现样式隔离。"
+        },
+        "userProfile": {
+            "title": "👤 用户资料",
+            "badge": "@state 对象",
+            "description": "演示 WebComponent 中 @state 装饰器与对象的使用。显示对象属性更新、嵌套对象更新和整个对象替换，支持自动响应式更新。使用 Shadow DOM 实现样式隔离。"
+        },
+        "features": {
+            "title": "WebComponent 特性",
+            "items": {
+                "shadowDOM": {
+                    "label": "Shadow DOM：",
+                    "description": "与父页面完全样式隔离"
+                },
+                "stateDecorator": {
+                    "label": "@state 装饰器：",
+                    "description": "自动响应式状态管理"
+                },
+                "arraySupport": {
+                    "label": "数组支持：",
+                    "description": "完整的数组变更方法会触发重新渲染"
+                },
+                "objectSupport": {
+                    "label": "对象支持：",
+                    "description": "对象属性更新和替换会触发重新渲染"
+                },
+                "automaticRerender": {
+                    "label": "自动重新渲染：",
+                    "description": "状态变化会自动触发组件重新渲染"
+                }
+            }
+        }
+    },
+    "lightComponentExamples": {
+        "title": "LightComponent 示例",
+        "description": "探索不使用 Shadow DOM 的 LightComponent 示例。这些组件演示了数组和对象的响应式状态管理，样式可以从父页面继承。",
+        "todoList": {
+            "title": "📋 待办事项列表",
+            "badge": "@state 数组",
+            "description": "演示 LightComponent 中 @state 装饰器与数组的使用。显示添加、删除、更新和过滤操作，支持自动响应式更新。使用 Light DOM - 样式可以从父级继承。"
+        },
+        "userProfile": {
+            "title": "👤 用户资料",
+            "badge": "@state 对象",
+            "description": "演示 LightComponent 中 @state 装饰器与对象的使用。显示对象属性更新、嵌套对象更新和整个对象替换，支持自动响应式更新。使用 Light DOM - 样式可以从父级继承。"
+        },
+        "features": {
+            "title": "LightComponent 特性",
+            "items": {
+                "lightDOM": {
+                    "label": "Light DOM：",
+                    "description": "无 Shadow DOM - 样式可以从父级继承"
+                },
+                "stateDecorator": {
+                    "label": "@state 装饰器：",
+                    "description": "自动响应式状态管理"
+                },
+                "arraySupport": {
+                    "label": "数组支持：",
+                    "description": "完整的数组变更方法会触发重新渲染"
+                },
+                "objectSupport": {
+                    "label": "对象支持：",
+                    "description": "对象属性更新和替换会触发重新渲染"
+                },
+                "automaticRerender": {
+                    "label": "自动重新渲染：",
+                    "description": "状态变化会自动触发组件重新渲染"
+                },
+                "styleInheritance": {
+                    "label": "样式继承：",
+                    "description": "可以使用父页面的 CSS 以便于主题化"
+                }
+            }
+        }
+    },
+    "slotExamples": {
+        "title": "插槽示例",
+        "description": "探索 WebComponent（Shadow DOM）和 LightComponent（Light DOM）中的插槽使用，包括混合使用场景。",
+        "webComponent": {
+            "title": "🎯 WebComponent 插槽（Shadow DOM）",
+            "badge": "Shadow DOM",
+            "description": "演示 WebComponent 中 Shadow DOM 的插槽使用。插槽允许您将内容从 Light DOM 投影到 Shadow DOM。使用 ::slotted() CSS 选择器来样式化插槽内容。",
+            "header": "WebComponent 卡片标题",
+            "content": "这是 WebComponent 插槽中的主要内容。",
+            "content2": "插槽在 Shadow DOM 中完美工作！",
+            "button": "操作按钮",
+            "code": "<slot-card-web>\n  <span slot=\"header\">标题内容</span>\n  <p>主要内容</p>\n  <button slot=\"footer\">页脚按钮</button>\n</slot-card-web>"
+        },
+        "lightComponent": {
+            "title": "💡 LightComponent 插槽（Light DOM）",
+            "badge": "Light DOM",
+            "description": "演示 LightComponent 中 Light DOM 的插槽使用。插槽工作方式类似，但内容在 Light DOM 中，使其可被 Editor.js 等第三方库访问。",
+            "header": "LightComponent 卡片标题",
+            "content": "这是 LightComponent 插槽中的主要内容。",
+            "content2": "插槽在 Light DOM 中也能工作！",
+            "button": "操作按钮",
+            "code": "<slot-card-light>\n  <span slot=\"header\">标题内容</span>\n  <p>主要内容</p>\n  <button slot=\"footer\">页脚按钮</button>\n</slot-card-light>"
+        },
+        "mixedWebToLight": {
+            "title": "🔀 混合：WebComponent → LightComponent 插槽",
+            "badge": "混合使用",
+            "description": "包含 LightComponent（Light DOM）插槽的 WebComponent（Shadow DOM）。LightComponent 的插槽内容来自 WebComponent 的 render 方法。这演示了组件嵌套时插槽的工作方式。",
+            "header": "WebComponent 中的 LightComponent",
+            "content": "此 LightComponent 在 WebComponent（SlotExamples）内渲染。",
+            "content2": "插槽内容从 WebComponent 的 Shadow DOM 投影到 LightComponent 的 Light DOM！",
+            "button": "混合使用按钮",
+            "code": "// 在 WebComponent (SlotExamples) render() 中：\nreturn (\n  <div>\n    <slot-card-light>\n      <span slot=\"header\">标题</span>\n      <p>内容</p>\n      <button slot=\"footer\">按钮</button>\n    </slot-card-light>\n  </div>\n);"
+        },
+        "mixedLightToWeb": {
+            "title": "🔀 混合：LightComponent → WebComponent 插槽",
+            "badge": "混合使用",
+            "description": "包含 WebComponent（Shadow DOM）插槽的 LightComponent（Light DOM）。WebComponent 的插槽内容来自 LightComponent 的 render 方法。这演示了跨 Shadow DOM 边界时插槽的工作方式。",
+            "header": "LightComponent 中的 WebComponent",
+            "content": "此 WebComponent 在 LightComponent（App）内渲染。",
+            "content2": "插槽内容从 LightComponent 的 Light DOM 投影到 WebComponent 的 Shadow DOM！",
+            "button": "混合使用按钮",
+            "code": "// 在 LightComponent (App) render() 中：\nreturn (\n  <div>\n    <slot-card-web>\n      <span slot=\"header\">标题</span>\n      <p>内容</p>\n      <button slot=\"footer\">按钮</button>\n    </slot-card-web>\n  </div>\n);"
+        },
+        "features": {
+            "title": "插槽特性",
+            "items": {
+                "namedSlots": {
+                    "label": "命名插槽：",
+                    "description": "使用 slot=\"name\" 将内容投影到特定插槽"
+                },
+                "defaultSlot": {
+                    "label": "默认插槽：",
+                    "description": "没有 slot 属性的内容会进入默认插槽"
+                },
+                "shadowDOMSlots": {
+                    "label": "Shadow DOM 插槽：",
+                    "description": "使用 ::slotted() CSS 选择器来样式化插槽内容"
+                },
+                "lightDOMSlots": {
+                    "label": "Light DOM 插槽：",
+                    "description": "插槽在 Light DOM 中工作，使内容可被第三方库访问"
+                },
+                "mixedUsage": {
+                    "label": "混合使用：",
+                    "description": "您可以嵌套带有插槽的 WebComponent 和 LightComponent"
+                },
+                "smartRendering": {
+                    "label": "智能渲染：",
+                    "description": "我们优化的 connectedCallback 确保即使组件移动时插槽也能正常工作"
+                }
+            }
+        }
+    }
+}

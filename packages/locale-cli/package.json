@@ -1,0 +1,21 @@
+{
+  "name": "@gopdfjs/locale-cli",
+  "version": "0.1.0",
+  "private": true,
+  "description": "CLI to sync and prune next-intl locale JSON files against en-US.json",
+  "type": "module",
+  "bin": {
+    "gopdf-locale": "./bin/gopdf-locale.mjs"
+  },
+  "files": [
+    "bin",
+    "lib"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "test:coverage": "c8 --reporter=text --reporter=html --reporter=json-summary --include='lib/**/*.mjs' --exclude='bin/**' node --test test/*.test.mjs"
+  },
+  "devDependencies": {
+    "c8": "^10.1.3"
+  }
+}

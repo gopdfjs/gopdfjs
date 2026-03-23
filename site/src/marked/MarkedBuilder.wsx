@@ -1,0 +1,165 @@
+/** @jsxImportSource @wsxjs/wsx-core */
+/**
+ * Marked Builder Demo - Custom Renderer with WSX
+ *
+ * This demo shows how to use marked with custom renderers
+ * to override default rendering with WSX components
+ */
+
+import { LightComponent, autoRegister, createLogger, state } from "@wsxjs/wsx-core";
+import { i18n } from "@wsxjs/wsx-i18next";
+import styles from "./MarkedBuilder.css?inline";
+// Import marked components from package (includes Markdown component)
+import "@wsxjs/wsx-marked-components";
+
+const logger = createLogger("MarkedBuilder");
+
+@autoRegister({ tagName: "marked-builder" })
+@i18n("marked")
+export default class MarkedBuilder extends LightComponent {
+    @state private markdownInput: string = "";
+
+    constructor() {
+        super({
+            styles,
+            styleName: "marked-builder",
+            lightDOM: true,
+        });
+        logger.info("MarkedBuilder initialized");
+    }
+
+    protected onConnected() {
+        super.onConnected?.();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const t = ((this as any).t as (key: string, options?: object) => string).bind(this);
+        // 初始化示例 Markdown 内容
+        this.markdownInput = t("sampleMarkdown");
+    }
+
+    render() {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const t = ((this as any).t as (key: string, options?: object) => string).bind(this);
+
+        return (
+            <div class="marked-builder-container">
+                <h1 class="demo-title">{t("title")}</h1>
+                <p class="demo-description">{t("description")}</p>
+
+                <div class="demo-grid">
+                    {/* Markdown Input Section */}
+                    <div class="input-section">
+                        <h2 class="section-title">{t("input.title")}</h2>
+                        <textarea
+                            class="markdown-input"
+                            value={this.markdownInput}
+                            onInput={(e: Event) => {
+                                const target = e.target as HTMLTextAreaElement;
+                                this.markdownInput = target.value;
+                            }}
+                            placeholder={t("input.placeholder")}
+                        />
+                        <div class="input-actions">
+                            <button onClick={this.loadSample} class="btn btn-secondary">
+                                {t("input.loadSample")}
+                            </button>
+                            <button onClick={this.clearInput} class="btn btn-secondary">
+                                {t("input.clear")}
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Rendered Output Section */}
+                    <div class="output-section">
+                        <h2 class="section-title">{t("output.title")}</h2>
+                        <div class="pattern-info">
+                            <p class="pattern-description">
+                                <strong>{t("output.pattern2.title")}</strong>{" "}
+                                {t("output.pattern2.description")}
+                            </p>
+                        </div>
+                        <div class="renderer-output">
+                            <wsx-markdown markdown={this.markdownInput} />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Explanation Section */}
+                <div class="explanation-section">
+                    <h2 class="section-title">{t("explanation.title")}</h2>
+
+                    <div class="explanation-grid">
+                        <div class="explanation-card">
+                            <h3 class="card-title">{t("explanation.pattern2.title")}</h3>
+                            <p>{t("explanation.pattern2.description")}</p>
+                            <pre class="code-example">
+                                <code>{t("explanation.pattern2.code")}</code>
+                            </pre>
+                            <p>
+                                <strong>{t("explanation.pros")}</strong>{" "}
+                                {t("explanation.pattern2.pros")}
+                            </p>
+                            <p>
+                                <strong>{t("explanation.cons")}</strong>{" "}
+                                {t("explanation.pattern2.cons")}
+                            </p>
+                        </div>
+
+                        <div class="explanation-card">
+                            <h3 class="card-title">{t("explanation.components.title")}</h3>
+                            <p>{t("explanation.components.description")}</p>
+                            <pre class="code-example">
+                                <code>{t("explanation.components.code")}</code>
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Benefits Section */}
+                <div class="benefits-section">
+                    <h2 class="benefits-title">{t("benefits.title")}</h2>
+                    <ul class="benefits-list">
+                        <li>
+                            <strong>{t("benefits.typeSafety.label")}</strong>{" "}
+                            {t("benefits.typeSafety.description")}
+                        </li>
+                        <li>
+                            <strong>{t("benefits.reusability.label")}</strong>{" "}
+                            {t("benefits.reusability.description")}
+                        </li>
+                        <li>
+                            <strong>{t("benefits.interactivity.label")}</strong>{" "}
+                            {t("benefits.interactivity.description")}
+                        </li>
+                        <li>
+                            <strong>{t("benefits.styleIsolation.label")}</strong>{" "}
+                            {t("benefits.styleIsolation.description")}
+                        </li>
+                        <li>
+                            <strong>{t("benefits.maintainability.label")}</strong>{" "}
+                            {t("benefits.maintainability.description")}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        );
+    }
+
+    private loadSample = () => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const t = ((this as any).t as (key: string, options?: object) => string).bind(this);
+        const sampleMarkdown = t("sampleMarkdown");
+        this.markdownInput = sampleMarkdown;
+        const textarea = this.querySelector(".markdown-input") as HTMLTextAreaElement;
+        if (textarea) {
+            textarea.value = sampleMarkdown;
+        }
+    };
+
+    private clearInput = () => {
+        this.markdownInput = "";
+        const textarea = this.querySelector(".markdown-input") as HTMLTextAreaElement;
+        if (textarea) {
+            textarea.value = "";
+        }
+    };
+}

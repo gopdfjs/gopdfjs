@@ -1,0 +1,104 @@
+/** @jsxImportSource @wsxjs/wsx-core */
+import { createLogger } from "@wsxjs/wsx-core";
+import type { BlockTool, BlockToolConstructorOptions, BlockToolData } from "@editorjs/editorjs";
+import "./WsxTableTool.css";
+import "./WsxTableComponent.wsx";
+import type WsxTableComponent from "./WsxTableComponent.wsx";
+
+const logger = createLogger("WsxTableTool");
+
+export interface TableData extends BlockToolData {
+    headers: string[];
+    rows: string[][];
+    withHeadings: boolean;
+}
+
+/**
+ * WSX Table Tool - EditorJS Plugin using WSX Component
+ *
+ * Showcases WSX capabilities:
+ * - Complex state management
+ * - Dynamic DOM manipulation
+ * - Event delegation
+ * - Data persistence
+ */
+export default class WsxTableTool implements BlockTool {
+    private data: TableData;
+    private readOnly: boolean;
+    private component?: WsxTableComponent;
+    private wrapper?: HTMLElement;
+
+    static get toolbox() {
+        return {
+            title: "Table",
+            icon: "📊",
+        };
+    }
+
+    static get isReadOnlySupported() {
+        return true;
+    }
+
+    constructor(options?: BlockToolConstructorOptions<TableData>) {
+        this.data = options?.data || {
+            headers: ["Column 1", "Column 2"],
+            rows: [["", ""]],
+            withHeadings: true,
+        };
+        this.readOnly = options?.readOnly || false;
+        logger.info("WsxTableTool initialized");
+    }
+
+    render(): HTMLElement {
+        // Create a plain wrapper div for EditorJS
+        this.wrapper = (
+            <div>
+                <wsx-table-component
+                    headers={this.data.headers}
+                    rows={this.data.rows}
+                    withheadings={this.data.withHeadings}
+                    readonly={this.readOnly}
+                    ondatachange={(e: CustomEvent) => {
+                        this.data = e.detail;
+                        logger.info("Data changed in WSX Table Component", this.data);
+                    }}
+                    ref={(component) => {
+                        this.component = component;
+                    }}
+                />
+            </div>
+        );
+        return this.wrapper;
+    }
+
+    save(): TableData {
+        if (this.component) {
+            const componentData = this.component.getData();
+            this.data = {
+                headers: componentData.headers,
+                rows: componentData.rows,
+                withHeadings: componentData.withHeadings,
+            };
+        }
+        logger.info("Saving WSX table data", this.data);
+        return this.data;
+    }
+
+    validate(savedData: TableData): boolean {
+        return savedData.rows && savedData.rows.length > 0;
+    }
+
+    renderSettings(): HTMLElement {
+        return (
+            <div style="padding: 16px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: bold;">
+                    WSX Table Settings
+                </label>
+                <p style="color: #666; font-size: 14px;">
+                    This interactive table is built using WSX Web Components with advanced features
+                    like CSV export and dynamic row/column management.
+                </p>
+            </div>
+        );
+    }
+}

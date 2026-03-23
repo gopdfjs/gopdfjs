@@ -1,0 +1,54 @@
+{
+    "language": {
+        "switcher": {
+            "label": "言語",
+            "current": "現在の言語"
+        },
+        "names": {
+            "en": "English",
+            "zh": "中文",
+            "es": "Español",
+            "fr": "Français",
+            "de": "Deutsch",
+            "ja": "日本語",
+            "ko": "한국어"
+        }
+    },
+    "nav": {
+        "home": "ホーム",
+        "features": "機能",
+        "quickStart": "クイックスタート",
+        "examples": "例",
+        "useCases": "ユースケース",
+        "web": "Web",
+        "light": "Light",
+        "slots": "スロット",
+        "editorjs": "EditorJS",
+        "ecosystem": "エコシステム"
+    },
+    "footer": {
+        "tagline": "プログレッシブ Web Components フレームワーク",
+        "resources": "リソース",
+        "community": "コミュニティ",
+        "legal": "法的",
+        "documentation": "ドキュメント",
+        "githubRepo": "GitHub リポジトリ",
+        "examples": "例",
+        "blog": "ブログ",
+        "discordServer": "Discord サーバー",
+        "twitter": "Twitter",
+        "githubDiscussions": "GitHub ディスカッション",
+        "communityBlog": "コミュニティブログ",
+        "mitLicense": "MIT ライセンス",
+        "privacyPolicy": "プライバシーポリシー",
+        "termsOfService": "利用規約",
+        "copyright": "© 2026 GoPDF.js。MIT ライセンスの下で公開されています。",
+        "madeWith": "GoPDF.js チームが ❤️ で作成"
+    },
+    "notFound": {
+        "title": "ページが見つかりません",
+        "description": "お探しのページは存在しないか、移動された可能性があります。",
+        "goHome": "ホームに戻る",
+        "goBack": "戻る"
+    }
+}

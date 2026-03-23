@@ -1,0 +1,38 @@
+{
+    "title": "Inicio Rápido",
+    "description": "Comienza con GoPDF.js en minutos. Crea tu primer componente web con sintaxis JSX y soporte TypeScript.",
+    "installation": {
+        "title": "Instalación",
+        "copy": "📋 Copiar",
+        "copied": "✅ ¡Copiado!"
+    },
+    "steps": {
+        "install": {
+            "title": "Instalar",
+            "description": "Instala GoPDF.js vía npm"
+        },
+        "create": {
+            "title": "Crear",
+            "description": "Crea tu primer componente con JSX"
+        },
+        "build": {
+            "title": "Construir",
+            "description": "Construye y despliega tus componentes web"
+        }
+    },
+    "routerExample": {
+        "title": "🚀 Ejemplo de Router",
+        "description": "¡Esta página demuestra WSX Router en acción! Observa cómo:",
+        "points": {
+            "highlight": "Los enlaces de navegación resaltan la página activa",
+            "url": "La URL cambia sin refrescar la página",
+            "browser": "Los botones de atrás/adelante del navegador funcionan correctamente",
+            "components": "Cada sección es un componente separado cargado por ruta"
+        }
+    },
+    "codeExample": {
+        "title": "Comienza en 60 Segundos",
+        "description": "Instala GoPDF.js y crea tu primer componente en menos de un minuto.",
+        "titleInstallation": "Instalación y Ejemplo"
+    }
+}

@@ -1,0 +1,110 @@
+{
+  "guide/essentials/typescript-setup": {
+    "title": "TypeScript Configuration Guide",
+    "category": "guide/essentials",
+    "route": "/docs/guide/essentials/typescript-setup",
+    "order": 2,
+    "description": "This guide details how to correctly configure TypeScript in your project to use GoPDF.js.",
+    "prev": "/docs/guide/essentials/getting-started",
+    "next": null
+  },
+  "guide/essentials/getting-started": {
+    "title": "Getting Started",
+    "category": "guide/essentials",
+    "route": "/docs/guide/essentials/getting-started",
+    "order": 1,
+    "description": "Get started with GoPDF.js in 5 minutes, from installation to creating your first component",
+    "prev": null,
+    "next": "/docs/guide/essentials/typescript-setup"
+  },
+  "guide/core-concepts/wsx-design": {
+    "title": "GoPDF.js Design Documentation",
+    "category": "guide/core-concepts",
+    "route": "/docs/guide/core-concepts/wsx-design",
+    "order": 5,
+    "description": "GoPDF.js framework design documentation, including project structure, core APIs and mechanisms",
+    "prev": "/docs/guide/core-concepts/design-philosophy",
+    "next": null
+  },
+  "guide/core-concepts/web-components": {
+    "title": "WebComponent Guide",
+    "category": "guide/core-concepts",
+    "route": "/docs/guide/core-concepts/web-components",
+    "order": 1,
+    "description": "WebComponent is the standard custom element base class provided by GoPDF.js, using Shadow DOM to provide complete style isolation and encapsulation",
+    "prev": null,
+    "next": "/docs/guide/core-concepts/light-components"
+  },
+  "guide/core-concepts/light-components": {
+    "title": "LightComponent Usage Guide",
+    "category": "guide/core-concepts",
+    "route": "/docs/guide/core-concepts/light-components",
+    "order": 2,
+    "description": "LightComponent is a lightweight custom element base class provided by GoPDF.js, designed for scenarios that require integration with third-party libraries or use Light DOM",
+    "prev": "/docs/guide/core-concepts/web-components",
+    "next": "/docs/guide/core-concepts/jsx-support"
+  },
+  "guide/core-concepts/jsx-support": {
+    "title": "GoPDF.js JSX Support Documentation",
+    "category": "guide/core-concepts",
+    "route": "/docs/guide/core-concepts/jsx-support",
+    "order": 3,
+    "description": "GoPDF.js provides complete JSX support without relying on React or other frameworks. Through framework-level configuration, any project using WSX can get out-of-the-box JSX experience.",
+    "prev": "/docs/guide/core-concepts/light-components",
+    "next": "/docs/guide/core-concepts/design-philosophy"
+  },
+  "guide/core-concepts/design-philosophy": {
+    "title": "GoPDF.js Design Philosophy",
+    "category": "guide/core-concepts",
+    "route": "/docs/guide/core-concepts/design-philosophy",
+    "order": 4,
+    "description": "GoPDF.js is a native-first Web Components framework dedicated to providing the closest experience to native Web development",
+    "prev": "/docs/guide/core-concepts/jsx-support",
+    "next": "/docs/guide/core-concepts/wsx-design"
+  },
+  "guide/advanced/typescript-wsx-types": {
+    "title": "WSX Type System Guide",
+    "category": "guide/advanced",
+    "route": "/docs/guide/advanced/typescript-wsx-types",
+    "order": 2,
+    "description": "This guide details how the `.wsx` file type system works in GoPDF.js, maintenance methods, and best practices.",
+    "prev": "/docs/guide/advanced/dom-cache",
+    "next": "/docs/guide/advanced/i18next-integration"
+  },
+  "guide/advanced/publishing": {
+    "title": "GoPDF.js Publishing Guide",
+    "category": "guide/advanced",
+    "route": "/docs/guide/advanced/publishing",
+    "order": 4,
+    "description": "This guide explains how to publish all GoPDF.js packages using Turbo and Changesets.",
+    "prev": "/docs/guide/advanced/i18next-integration",
+    "next": "/docs/guide/advanced/example-development-plan"
+  },
+  "guide/advanced/i18next-integration": {
+    "title": "@wsxjs/wsx-i18next Usage Guide",
+    "category": "guide/advanced",
+    "route": "/docs/guide/advanced/i18next-integration",
+    "order": 3,
+    "description": "@wsxjs/wsx-i18next provides i18next internationalization support for GoPDF.js components, making it easy for your application to support multiple languages",
+    "prev": "/docs/guide/advanced/typescript-wsx-types",
+    "next": "/docs/guide/advanced/publishing"
+  },
+  "guide/advanced/example-development-plan": {
+    "title": "Example Component Development Plan",
+    "category": "guide/advanced",
+    "route": "/docs/guide/advanced/example-development-plan",
+    "order": 5,
+    "description": "Fully demonstrate GoPDF.js capabilities through rich example components, providing developers with best practice references",
+    "prev": "/docs/guide/advanced/publishing",
+    "next": null
+  },
+  "guide/advanced/dom-cache": {
+    "title": "DOM Cache and Key Best Practices",
+    "category": "guide/advanced",
+    "route": "/docs/guide/advanced/dom-cache",
+    "order": 1,
+    "description": "GoPDF.js uses DOM caching mechanism to optimize rendering performance and avoid unnecessary DOM element reconstruction",
+    "prev": null,
+    "next": "/docs/guide/advanced/typescript-wsx-types"
+  }
+}

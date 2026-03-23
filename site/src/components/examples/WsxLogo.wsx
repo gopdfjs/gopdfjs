@@ -1,0 +1,179 @@
+/** @jsxImportSource @wsxjs/wsx-core */
+/**
+ * GoPDF.js Logo Component
+ * 可复用的 Logo 组件，支持多种变体（图标、文字、完整）
+ */
+import { WebComponent, autoRegister } from "@wsxjs/wsx-core";
+
+@autoRegister({ tagName: "wsx-logo" })
+export default class WsxLogo extends WebComponent {
+    static observedAttributes = ["size", "color", "variant"];
+
+    private size: number = 32;
+    private color: string = "#dc2626";
+    private variant: "icon" | "text" | "full" = "icon";
+
+    constructor() {
+        super();
+    }
+
+    protected onConnected() {
+        super.onConnected?.();
+        // Initialize attributes
+        this.size = this.size || 32;
+        this.color = this.color || "#dc2626";
+        this.variant = this.variant || "icon";
+    }
+
+    protected onAttributeChanged(name: string, _oldValue: string, newValue: string) {
+        switch (name) {
+            case "size":
+                this.size = parseInt(newValue) || 32;
+                this.rerender();
+                break;
+            case "color":
+                this.color = newValue || "#dc2626";
+                this.rerender();
+                break;
+            case "variant":
+                this.variant = (newValue as "icon" | "text" | "full") || "icon";
+                this.rerender();
+                break;
+        }
+    }
+
+    render() {
+        if (this.variant === "text") {
+            return this.renderTextLogo();
+        } else if (this.variant === "full") {
+            return this.renderFullLogo();
+        } else {
+            return this.renderIconLogo();
+        }
+    }
+
+    private renderIconLogo() {
+        const strokeWidth = 2;
+        // If color is default red, use multi-tone (grey brackets). Otherwise monochrome.
+        const isDefaultColor = this.color === "#dc2626" || this.color === "#EF4444"; // Support both old and new default
+        const bracketColor = isDefaultColor ? "#4B5563" : this.color;
+        const wStroke = isDefaultColor ? "url(#wsx-logo-gradient)" : this.color;
+
+        return (
+            <svg
+                width={this.size}
+                height={this.size}
+                viewBox="0 0 24 24"
+                fill="none"
+                style="display: inline-block; vertical-align: middle;"
+            >
+                <defs>
+                    <linearGradient
+                        id="wsx-logo-gradient"
+                        x1="2"
+                        y1="2"
+                        x2="22"
+                        y2="22"
+                        gradientUnits="userSpaceOnUse"
+                    >
+                        <stop stop-color="#EF4444" />
+                        <stop offset="1" stop-color="#F97316" />
+                    </linearGradient>
+                </defs>
+                <path
+                    d="M4.8 7.2L1.2 12L4.8 16.8"
+                    stroke={bracketColor}
+                    stroke-width={strokeWidth}
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                />
+                <path
+                    d="M19.2 7.2L22.8 12L19.2 16.8"
+                    stroke={bracketColor}
+                    stroke-width={strokeWidth}
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                />
+                <path
+                    d="M8.4 8.4L10.2 15.6L12 11.4L13.8 15.6L15.6 8.4"
+                    stroke={wStroke}
+                    stroke-width={strokeWidth}
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                />
+            </svg>
+        );
+    }
+
+    private renderTextLogo() {
+        const fontSize = this.size * 0.6;
+        return (
+            <div
+                style={`display: inline-flex; align-items: center; font-size: ${fontSize}px; font-weight: 700; color: ${this.color}; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;`}
+            >
+                WSX
+            </div>
+        );
+    }
+
+    private renderFullLogo() {
+        const iconSize = this.size * 0.8;
+        const fontSize = this.size * 0.5;
+        const strokeWidth = 2;
+        const isDefaultColor = this.color === "#dc2626" || this.color === "#EF4444";
+        const bracketColor = isDefaultColor ? "#4B5563" : this.color;
+        const wStroke = isDefaultColor ? "url(#wsx-logo-gradient-full)" : this.color; // Unique ID for full variant
+
+        return (
+            <div style="display: inline-flex; align-items: center; gap: 8px;">
+                <svg
+                    width={iconSize}
+                    height={iconSize}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    style="display: inline-block;"
+                >
+                    <defs>
+                        <linearGradient
+                            id="wsx-logo-gradient-full"
+                            x1="2"
+                            y1="2"
+                            x2="22"
+                            y2="22"
+                            gradientUnits="userSpaceOnUse"
+                        >
+                            <stop stop-color="#EF4444" />
+                            <stop offset="1" stop-color="#F97316" />
+                        </linearGradient>
+                    </defs>
+                    <path
+                        d="M4.8 7.2L1.2 12L4.8 16.8"
+                        stroke={bracketColor}
+                        stroke-width={strokeWidth}
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+                    <path
+                        d="M19.2 7.2L22.8 12L19.2 16.8"
+                        stroke={bracketColor}
+                        stroke-width={strokeWidth}
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+                    <path
+                        d="M8.4 8.4L10.2 15.6L12 11.4L13.8 15.6L15.6 8.4"
+                        stroke={wStroke}
+                        stroke-width={strokeWidth}
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+                </svg>
+                <div
+                    style={`font-size: ${fontSize}px; font-weight: 700; color: ${this.color}; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;`}
+                >
+                    GoPDF.js
+                </div>
+            </div>
+        );
+    }
+}

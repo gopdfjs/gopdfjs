@@ -1,0 +1,205 @@
+/** @jsxImportSource @wsxjs/wsx-core */
+/**
+ * Stats Section - 展示 GoPDF.js 的统计数据
+ * 包括 npm downloads, GitHub stars 等
+ */
+import { LightComponent, autoRegister, state } from "@wsxjs/wsx-core";
+import styles from "./StatsSection.css?inline";
+
+@autoRegister({ tagName: "stats-section" })
+export class StatsSection extends LightComponent {
+    @state private downloads: string = "...";
+    @state private stars: string = "...";
+    @state private loading: boolean = true;
+
+    constructor() {
+        super({ styles });
+    }
+
+    protected onConnected(): void {
+        super.onConnected?.();
+        this.loadStats();
+    }
+
+    render() {
+        return (
+            <section class="stats-section">
+                <div class="container">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-icon">📦</div>
+                            <span class="stat-number">{this.downloads}</span>
+                            <span class="stat-label">npm downloads/week</span>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">⭐</div>
+                            <span class="stat-number">{this.stars}</span>
+                            <span class="stat-label">GitHub stars</span>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">📏</div>
+                            <span class="stat-number">100%</span>
+                            <span class="stat-label">Browser-local PDF</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        );
+    }
+
+    private async loadStats(): Promise<void> {
+        try {
+            // 从 API 或静态数据加载
+            this.downloads = await this.getNpmDownloads();
+            this.stars = await this.getGitHubStars();
+        } catch {
+            // AbortError 是预期的超时，不需要打印错误日志
+            // 如果内部方法都失败了，设置默认值
+            if (this.downloads === "...") {
+                this.downloads = "N/A";
+            }
+            if (this.stars === "...") {
+                this.stars = "N/A";
+            }
+        } finally {
+            this.loading = false;
+        }
+    }
+
+    /**
+     * 从 localStorage 获取缓存的数据
+     */
+    private getCachedData(key: string): { value: string; timestamp: number } | null {
+        try {
+            const cached = localStorage.getItem(`stats_${key}`);
+            if (cached) {
+                return JSON.parse(cached);
+            }
+        } catch {
+            // 忽略解析错误
+        }
+        return null;
+    }
+
+    /**
+     * 将数据缓存到 localStorage（缓存 1 小时）
+     */
+    private setCachedData(key: string, value: string): void {
+        try {
+            const data = {
+                value,
+                timestamp: Date.now(),
+            };
+            localStorage.setItem(`stats_${key}`, JSON.stringify(data));
+        } catch {
+            // 忽略存储错误（可能是隐私模式）
+        }
+    }
+
+    /**
+     * 检查缓存是否有效（1 小时内有效）
+     */
+    private isCacheValid(cached: { value: string; timestamp: number } | null): boolean {
+        if (!cached) return false;
+        const CACHE_DURATION = 60 * 60 * 1000; // 1 小时
+        return Date.now() - cached.timestamp < CACHE_DURATION;
+    }
+
+    /**
+     * 创建带超时的 AbortSignal（兼容性更好的实现）
+     */
+    private createTimeoutSignal(timeoutMs: number): AbortSignal {
+        const controller = new AbortController();
+        setTimeout(() => controller.abort(), timeoutMs);
+        return controller.signal;
+    }
+
+    /**
+     * 检查错误是否为 AbortError（超时错误）
+     * 兼容 DOMException 和 Error 两种类型，同时检查 name 和 message
+     */
+    private isAbortError(error: unknown): boolean {
+        if (!error) return false;
+        // 检查 Error 或 DOMException 的 name 属性
+        if (error instanceof Error || error instanceof DOMException) {
+            if (error.name === "AbortError") return true;
+            // 也检查错误消息中是否包含 "abort"（某些浏览器可能 name 不同但 message 包含 abort）
+            if (error.message && /abort/i.test(error.message)) return true;
+        }
+        // 检查是否为包含 "abort" 的错误对象
+        if (typeof error === "object" && "name" in error) {
+            const name = (error as { name?: string }).name;
+            if (name === "AbortError") return true;
+            // 检查 message 属性
+            if ("message" in error) {
+                const message = (error as { message?: string }).message;
+                if (message && /abort/i.test(message)) return true;
+            }
+        }
+        return false;
+    }
+
+    private async getNpmDownloads(): Promise<string> {
+        // 检查缓存
+        const cached = this.getCachedData("npm_downloads");
+        if (this.isCacheValid(cached)) {
+            return cached!.value;
+        }
+
+        // 直接使用 shields.io API（无 CORS 问题，无速率限制）
+        try {
+            const response = await fetch("https://img.shields.io/npm/dw/@gopdfjs/pdf-wasm.json", {
+                signal: this.createTimeoutSignal(5000),
+            });
+            if (response.ok) {
+                const data = await response.json();
+                // shields.io 返回格式: { value: "1.2k/week" }
+                const value = data.value?.replace("/week", "") || "N/A";
+                // 缓存结果
+                this.setCachedData("npm_downloads", value);
+                return value;
+            }
+        } catch {
+            // 如果请求失败，尝试使用缓存（即使过期）
+            if (cached) {
+                return cached.value;
+            }
+        }
+        return "N/A";
+    }
+
+    private async getGitHubStars(): Promise<string> {
+        // 检查缓存
+        const cached = this.getCachedData("github_stars");
+        if (this.isCacheValid(cached)) {
+            return cached!.value;
+        }
+
+        // 直接使用 shields.io API（无 CORS 问题，无速率限制）
+        try {
+            const response = await fetch("https://img.shields.io/github/stars/systembug/gopdf.json", {
+                signal: this.createTimeoutSignal(5000),
+            });
+            if (response.ok) {
+                const data = await response.json();
+                // shields.io 返回格式: { value: "500" }
+                const stars = parseInt(data.value || "0", 10);
+                let formattedStars: string;
+                if (stars >= 1000) {
+                    formattedStars = `${(stars / 1000).toFixed(1)}k`;
+                } else {
+                    formattedStars = stars.toString();
+                }
+                // 缓存结果
+                this.setCachedData("github_stars", formattedStars);
+                return formattedStars;
+            }
+        } catch {
+            // 如果请求失败，尝试使用缓存（即使过期）
+            if (cached) {
+                return cached.value;
+            }
+        }
+        return "N/A";
+    }
+}

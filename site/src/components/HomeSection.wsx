@@ -1,0 +1,112 @@
+/** @jsxImportSource @wsxjs/wsx-core */
+/**
+ * Home Section - 首页主区域
+ * 包含 Hero Section 和所有新增的价值主张组件
+ */
+import { WebComponent, autoRegister } from "@wsxjs/wsx-core";
+import { i18n } from "@wsxjs/wsx-i18next";
+import styles from "./HomeSection.css?inline";
+import "@wsxjs/wsx-base-components";
+import "@wsxjs/wsx-router";
+import "./ComparisonSection.wsx";
+import "./PerformanceMetrics.wsx";
+import "./QuickStartCode.wsx";
+import "./StatsSection.wsx";
+// Import example components from local examples directory
+import "./examples/WsxLogo.wsx";
+
+@autoRegister({ tagName: "home-section" })
+@i18n("home")
+export default class HomeSection extends WebComponent {
+    constructor() {
+        super({ styles });
+    }
+
+    render() {
+        return (
+            <div>
+                {/* Hero Section */}
+                <section class="hero-section">
+                    <div class="hero-background">
+                        <div class="hero-pattern"></div>
+                        <div class="hero-shapes">
+                            <div class="hero-shape hero-shape-1"></div>
+                            <div class="hero-shape hero-shape-2"></div>
+                            <div class="hero-shape hero-shape-3"></div>
+                        </div>
+                    </div>
+
+                    <div class="hero-content">
+                        <div class="hero-badge">
+                            <span class="badge-text">{this.t("hero.badge")}</span>
+                        </div>
+
+                        <div class="hero-logo">
+                            <wsx-logo variant="icon" size="80" color="#dc2626"></wsx-logo>
+                        </div>
+
+                        <h1 class="hero-title">
+                            <span class="title-main">{this.t("hero.title")}</span>
+                            <span class="title-subtitle">{this.t("hero.subtitle")}</span>
+                        </h1>
+
+                        <p class="hero-description">{this.t("hero.description")}</p>
+
+                        <div class="hero-actions">
+                            <wsx-link to="/quick-start" class="btn-primary">
+                                <wsx-svg-icon
+                                    name="play"
+                                    size="18"
+                                    color="white"
+                                    style="margin-right: 8px;"
+                                ></wsx-svg-icon>
+                                {this.t("hero.getStarted")}
+                            </wsx-link>
+
+                            <button class="btn-secondary" onClick={this.openPlayground}>
+                                <wsx-svg-icon
+                                    name="code"
+                                    size="18"
+                                    color="currentColor"
+                                    style="margin-right: 8px;"
+                                ></wsx-svg-icon>
+                                {this.t("hero.tryOnline")}
+                            </button>
+
+                            <button class="btn-ghost" onClick={this.openGitHub}>
+                                <wsx-svg-icon
+                                    name="github"
+                                    size="18"
+                                    color="currentColor"
+                                    style="margin-right: 8px;"
+                                ></wsx-svg-icon>
+                                {this.t("hero.viewGitHub")}
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                {/* 对比说明 */}
+                <comparison-section></comparison-section>
+
+                {/* 性能指标 */}
+                <performance-metrics></performance-metrics>
+
+                {/* 快速开始代码 */}
+                <quick-start-code></quick-start-code>
+
+                {/* 统计数据 */}
+                <stats-section></stats-section>
+            </div>
+        );
+    }
+
+    private openGitHub = (): void => {
+        window.open("https://github.com/systembug/gopdf", "_blank");
+    };
+
+    private openPlayground = (): void => {
+        // TODO: 链接到 Playground 页面（当实现后）
+        window.location.href = "/playground";
+    };
+}

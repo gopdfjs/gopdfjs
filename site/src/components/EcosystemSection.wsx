@@ -1,0 +1,126 @@
+/** @jsxImportSource @wsxjs/wsx-core */
+import { WebComponent, autoRegister } from "@wsxjs/wsx-core";
+import { i18n } from "@wsxjs/wsx-i18next";
+import styles from "./EcosystemSection.css?inline";
+import "@wsxjs/wsx-router";
+
+@autoRegister({ tagName: "ecosystem-section" })
+@i18n("ecosystem")
+export default class EcosystemSection extends WebComponent {
+    constructor() {
+        super({
+            styles,
+            styleName: "ecosystem-section",
+        });
+    }
+
+    render() {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const t = ((this as any).t as (key: string, options?: object) => string).bind(this);
+
+        return (
+            <section id="ecosystem" class="ecosystem-section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2 class="section-title">{t("title")}</h2>
+                        <p class="section-description">{t("description")}</p>
+                    </div>
+
+                    <div class="ecosystem-grid">
+                        <div class="ecosystem-card scroll-fade-in">
+                            <div class="ecosystem-icon">🔧</div>
+                            <h3>{t("core.title")}</h3>
+                            <p>{t("core.description")}</p>
+                            <div class="ecosystem-links">
+                                <a href="#" onClick={this.openDocs}>
+                                    {t("core.links.documentation")}
+                                </a>
+                                <a href="#" onClick={this.openGitHub}>
+                                    {t("core.links.github")}
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="ecosystem-card scroll-fade-in">
+                            <div class="ecosystem-icon">🧭</div>
+                            <h3>{t("router.title")}</h3>
+                            <p>{t("router.description")}</p>
+                            <div class="ecosystem-links">
+                                <a href="#" onClick={this.openDocs}>
+                                    {t("router.links.docs")}
+                                </a>
+                                <wsx-link to="/quick-start" class="ecosystem-demo">
+                                    {t("router.links.demo")}
+                                </wsx-link>
+                            </div>
+                        </div>
+
+                        <div class="ecosystem-card scroll-fade-in">
+                            <div class="ecosystem-icon">🎨</div>
+                            <h3>{t("baseComponents.title")}</h3>
+                            <p>{t("baseComponents.description")}</p>
+                            <div class="ecosystem-links">
+                                <a href="#" onClick={this.openDocs}>
+                                    {t("baseComponents.links.components")}
+                                </a>
+                                <wsx-link to="/examples" class="ecosystem-demo">
+                                    {t("baseComponents.links.examples")}
+                                </wsx-link>
+                            </div>
+                        </div>
+
+                        <div class="ecosystem-card scroll-fade-in">
+                            <div class="ecosystem-icon">⚡</div>
+                            <h3>{t("vitePlugin.title")}</h3>
+                            <p>{t("vitePlugin.description")}</p>
+                            <div class="ecosystem-links">
+                                <a href="#" onClick={this.openDocs}>
+                                    {t("vitePlugin.links.setupGuide")}
+                                </a>
+                                <a href="#" onClick={this.openGitHub}>
+                                    {t("vitePlugin.links.plugin")}
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="ecosystem-card scroll-fade-in">
+                            <div class="ecosystem-icon">🔍</div>
+                            <h3>{t("eslintPlugin.title")}</h3>
+                            <p>{t("eslintPlugin.description")}</p>
+                            <div class="ecosystem-links">
+                                <a href="#" onClick={this.openDocs}>
+                                    {t("eslintPlugin.links.rules")}
+                                </a>
+                                <a href="#" onClick={this.openGitHub}>
+                                    {t("eslintPlugin.links.plugin")}
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="ecosystem-card scroll-fade-in">
+                            <div class="ecosystem-icon">🧪</div>
+                            <h3>{t("testing.title")}</h3>
+                            <p>{t("testing.description")}</p>
+                            <div class="ecosystem-links">
+                                <a href="#" onClick={this.openDocs}>
+                                    {t("testing.links.guide")}
+                                </a>
+                                <a href="#" onClick={this.openGitHub}>
+                                    {t("testing.links.examples")}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        );
+    }
+
+    private openDocs = (): void => {
+        window.open("https://gopdf.fyi/docs", "_blank");
+    };
+
+    private openGitHub = (): void => {
+        window.open("https://github.com/systembug/gopdf", "_blank");
+    };
+}

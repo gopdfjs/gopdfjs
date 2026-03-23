@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s \"https://crates.io/api/v1/crates/lopdf\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); c=d[''''crate'''']; v=d[''''versions''''][0]; print\\(f''''lopdf: {c[name]} v{v[num]} | downloads={c[downloads]} | updated={v[updated_at]} | license={v[license]}''''\\)\")",
+      "Bash(curl -s \"https://crates.io/api/v1/crates/pdf\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); c=d[''''crate'''']; v=d[''''versions''''][0]; print\\(f''''pdf: {c[name]} v{v[num]} | downloads={c[downloads]} | updated={v[updated_at]} | license={v[license]}''''\\)\")",
+      "Read(//private/tmp/**)",
+      "Bash(rm -rf lopdf_analysis)",
+      "Bash(mkdir lopdf_analysis)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(gh api:*)"
+    ]
+  }
+}

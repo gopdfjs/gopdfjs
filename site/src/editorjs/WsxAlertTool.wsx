@@ -1,0 +1,93 @@
+/** @jsxImportSource @wsxjs/wsx-core */
+import { createLogger } from "@wsxjs/wsx-core";
+import type { BlockTool, BlockToolConstructorOptions, BlockToolData } from "@editorjs/editorjs";
+import "./WsxAlertTool.css";
+import "./WsxAlertComponent.wsx";
+import type WsxAlertComponent from "./WsxAlertComponent.wsx";
+const logger = createLogger("WsxAlertTool");
+
+export interface AlertData extends BlockToolData {
+    type: "info" | "warning" | "success" | "error";
+    message: string;
+}
+/**
+ * WSX Alert Tool - EditorJS Plugin using WSX Component
+ *
+ * This demonstrates how to wrap a WSX component for EditorJS integration.
+ * The WSX component handles the UI and state, while this class provides
+ * the EditorJS plugin interface.
+ */
+export default class WsxAlertTool implements BlockTool {
+    private data: AlertData;
+    private readOnly: boolean;
+    private component: WsxAlertComponent;
+    private wrapper: HTMLElement;
+
+    static get toolbox() {
+        return {
+            title: "WSX Alert",
+            icon: `<svg width="20" height="20" viewBox="0 0 24 24"><path d="M11 17h2v-6h-2v6zm1-8q.425 0 .713-.288T13 8q0-.425-.288-.713T12 7q-.425 0-.713.288T11 8q0 .425.288.713T12 9zm0 13q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.137 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.137T12 22z"/></svg>`,
+        };
+    }
+
+    static get isReadOnlySupported() {
+        return true;
+    }
+
+    constructor(options?: BlockToolConstructorOptions<AlertData>) {
+        this.data = options?.data || { type: "info", message: "" };
+        this.readOnly = options?.readOnly || false;
+    }
+
+    render() {
+        // Create a plain wrapper div for EditorJS
+        return (
+            <div>
+                <wsx-alert-component
+                    type={this.data.type}
+                    message={this.data.message}
+                    readonly={this.readOnly ? "true" : "false"}
+                    ontypechange={(e: CustomEvent) => {
+                        this.data.type = e.detail;
+                    }}
+                    onmessagechange={(e: CustomEvent) => {
+                        this.data.message = e.detail;
+                    }}
+                    ref={(component) => {
+                        this.component = component;
+                    }}
+                ></wsx-alert-component>
+            </div>
+        );
+    }
+
+    save(): AlertData {
+        if (this.component) {
+            const componentData = this.component.getData();
+            this.data = {
+                type: componentData.type as AlertData["type"],
+                message: componentData.message,
+            };
+        }
+        logger.info("Saving WSX alert data", this.data);
+        return this.data;
+    }
+
+    validate(savedData: AlertData): boolean {
+        return savedData.message.trim().length > 0;
+    }
+
+    renderSettings() {
+        return (
+            <div style="padding: 16px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: bold;">
+                    WSX Alert Settings
+                </label>
+                <p style="color: #666; font-size: 14px;">
+                    This alert is built using WSX Web Components, demonstrating how WSX makes
+                    EditorJS plugin development cleaner and more maintainable.
+                </p>
+            </div>
+        ) as unknown as HTMLElement;
+    }
+}

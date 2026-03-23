@@ -1,0 +1,6 @@
+/// Install the `console_error_panic_hook` so Rust panics appear in the browser
+/// console instead of silently aborting the Worker.
+pub fn set_panic_hook() {
+    #[cfg(feature = "console_error_panic_hook")]
+    console_error_panic_hook::set_once();
+}

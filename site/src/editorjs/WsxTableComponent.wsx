@@ -1,0 +1,420 @@
+/** @jsxImportSource @wsxjs/wsx-core */
+import { WebComponent, autoRegister, createLogger } from "@wsxjs/wsx-core";
+import styles from "./WsxTableTool.css?inline";
+
+const logger = createLogger("WsxTableComponent");
+
+interface TableData {
+    headers: string[];
+    rows: string[][];
+    withHeadings: boolean;
+}
+
+/**
+ * WSX Table Component - Web Component for table editing
+ *
+ * This is the actual Web Component that handles the UI and interactions
+ * for the table tool in EditorJS.
+ */
+@autoRegister({ tagName: "wsx-table-component" })
+export default class WsxTableComponent extends WebComponent {
+    // Simple state properties - manual re-render control
+    private tableData: TableData = {
+        headers: ["Column 1", "Column 2"],
+        rows: [["", ""]],
+        withHeadings: true,
+    };
+    private selectedCell: { row: number; col: number } | null = null;
+    private isReadonly = false;
+
+    // Store input element references for direct updates
+    private headerInputs = new Map<number, HTMLInputElement>();
+    private cellInputs = new Map<string, HTMLInputElement>();
+
+    constructor() {
+        super({ styles });
+        logger.info("WsxTableComponent initialized");
+    }
+
+    static get observedAttributes() {
+        return ["headers", "rows", "withheadings", "readonly"];
+    }
+
+    onAttributeChanged(name: string, oldValue: string, newValue: string) {
+        switch (name) {
+            case "headers":
+                try {
+                    const headers = JSON.parse(newValue || '["Column 1", "Column 2"]');
+                    this.tableData = { ...this.tableData, headers };
+                    this.rerender();
+                } catch (e) {
+                    logger.error("Failed to parse headers:", e);
+                }
+                break;
+            case "rows":
+                try {
+                    const rows = JSON.parse(newValue || '[["", ""]]');
+                    this.tableData = { ...this.tableData, rows };
+                    this.rerender();
+                } catch (e) {
+                    logger.error("Failed to parse rows:", e);
+                }
+                break;
+            case "withheadings":
+                this.tableData = { ...this.tableData, withHeadings: newValue === "true" };
+                this.rerender();
+                break;
+            case "readonly":
+                this.isReadonly = newValue === "true";
+                this.rerender();
+                break;
+        }
+    }
+
+    private updateTableData(updates: Partial<TableData>) {
+        this.tableData = { ...this.tableData, ...updates };
+        this.dispatchEvent(new CustomEvent("datachange", { detail: this.tableData }));
+    }
+
+    render() {
+        const data = this.tableData;
+
+        return (
+            <div class="wsx-table-tool">
+                {/* Toolbar */}
+                {!this.isReadonly && (
+                    <div class="table-toolbar">
+                        <div class="table-controls">
+                            <label class="checkbox-label">
+                                <input
+                                    type="checkbox"
+                                    checked={data.withHeadings}
+                                    onChange={this.handleHeadingsToggle}
+                                />
+                                Headers
+                            </label>
+
+                            <button onClick={this.addColumn} class="btn btn-sm">
+                                + Column
+                            </button>
+
+                            <button onClick={this.addRow} class="btn btn-sm">
+                                + Row
+                            </button>
+
+                            <button onClick={this.removeColumn} class="btn btn-sm btn-danger">
+                                - Column
+                            </button>
+
+                            <button onClick={this.removeRow} class="btn btn-sm btn-danger">
+                                - Row
+                            </button>
+                        </div>
+
+                        <div class="table-info">
+                            {data.rows.length} rows × {data.headers.length} columns
+                        </div>
+                    </div>
+                )}
+
+                {/* Table */}
+                <div class="table-container">
+                    <table class="data-table">
+                        {data.withHeadings && (
+                            <thead>
+                                <tr>
+                                    {data.headers.map((header, colIndex) => (
+                                        <th key={colIndex}>
+                                            <input
+                                                type="text"
+                                                placeholder={`Column ${colIndex + 1}`}
+                                                onInput={(e) =>
+                                                    this.updateHeader(
+                                                        colIndex,
+                                                        (e.target as HTMLInputElement).value
+                                                    )
+                                                }
+                                                class="cell-input header-input"
+                                                readonly={this.isReadonly}
+                                                ref={(element) => {
+                                                    if (element) {
+                                                        this.initializeHeaderInput(
+                                                            element as HTMLInputElement,
+                                                            colIndex,
+                                                            header
+                                                        );
+                                                    }
+                                                }}
+                                            />
+                                        </th>
+                                    ))}
+                                </tr>
+                            </thead>
+                        )}
+
+                        <tbody>
+                            {data.rows.map((row, rowIndex) => (
+                                <tr key={rowIndex}>
+                                    {row.map((cell, colIndex) => (
+                                        <td
+                                            key={`${rowIndex}-${colIndex}`}
+                                            class={this.getCellClass(rowIndex, colIndex)}
+                                            onClick={() => this.selectCell(rowIndex, colIndex)}
+                                        >
+                                            <input
+                                                type="text"
+                                                placeholder="Enter data..."
+                                                onInput={(e) =>
+                                                    this.updateCell(
+                                                        rowIndex,
+                                                        colIndex,
+                                                        (e.target as HTMLInputElement).value
+                                                    )
+                                                }
+                                                ref={(element) => {
+                                                    if (element) {
+                                                        this.initializeCellInput(
+                                                            element as HTMLInputElement,
+                                                            rowIndex,
+                                                            colIndex,
+                                                            cell
+                                                        );
+                                                    }
+                                                }}
+                                                onFocus={() => this.selectCell(rowIndex, colIndex)}
+                                                onBlur={() => {
+                                                    this.selectedCell = null;
+                                                    this.rerender();
+                                                }}
+                                                class="cell-input"
+                                                readonly={this.isReadonly}
+                                            />
+                                        </td>
+                                    ))}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
+                {/* Table Actions */}
+                {!this.isReadonly && (
+                    <div class="table-actions">
+                        <button onClick={this.exportCSV} class="btn btn-outline">
+                            📄 Export CSV
+                        </button>
+
+                        <button onClick={this.clearTable} class="btn btn-outline">
+                            🗑️ Clear All
+                        </button>
+
+                        <button onClick={this.fillSample} class="btn btn-outline">
+                            🎲 Sample Data
+                        </button>
+                    </div>
+                )}
+
+                {/* Cell Info */}
+                {this.selectedCell && (
+                    <div class="cell-info">
+                        Selected: Row {this.selectedCell.row + 1}, Column{" "}
+                        {this.selectedCell.col + 1}
+                    </div>
+                )}
+            </div>
+        );
+    }
+
+    private getCellClass(rowIndex: number, colIndex: number): string {
+        const selected = this.selectedCell;
+        const isSelected = selected && selected.row === rowIndex && selected.col === colIndex;
+        return `table-cell ${isSelected ? "selected" : ""}`;
+    }
+
+    private selectCell(row: number, col: number) {
+        if (!this.isReadonly) {
+            this.selectedCell = { row, col };
+            this.rerender();
+        }
+    }
+
+    private initializeHeaderInput = (
+        element: HTMLInputElement,
+        colIndex: number,
+        value: string
+    ) => {
+        this.headerInputs.set(colIndex, element);
+        element.value = value;
+    };
+
+    private initializeCellInput = (
+        element: HTMLInputElement,
+        rowIndex: number,
+        colIndex: number,
+        value: string
+    ) => {
+        const key = `${rowIndex}-${colIndex}`;
+        this.cellInputs.set(key, element);
+        element.value = value;
+    };
+
+    private updateHeader(colIndex: number, value: string) {
+        const newHeaders = [...this.tableData.headers];
+        newHeaders[colIndex] = value;
+
+        // Update data without triggering re-render (inputs already have the value)
+        this.updateTableData({ headers: newHeaders });
+    }
+
+    private updateCell(rowIndex: number, colIndex: number, value: string) {
+        const newRows = this.tableData.rows.map((row, rIndex) =>
+            rIndex === rowIndex
+                ? row.map((cell, cIndex) => (cIndex === colIndex ? value : cell))
+                : row
+        );
+
+        // Update data without triggering re-render (inputs already have the value)
+        this.updateTableData({ rows: newRows });
+    }
+
+    private updateInputElements() {
+        const data = this.tableData;
+
+        // Update header inputs only if they're not focused
+        data.headers.forEach((header, colIndex) => {
+            const input = this.headerInputs.get(colIndex);
+            if (input && input !== document.activeElement) {
+                input.value = header;
+            }
+        });
+
+        // Update cell inputs only if they're not focused
+        data.rows.forEach((row, rowIndex) => {
+            row.forEach((cell, colIndex) => {
+                const key = `${rowIndex}-${colIndex}`;
+                const input = this.cellInputs.get(key);
+                if (input && input !== document.activeElement) {
+                    input.value = cell;
+                }
+            });
+        });
+    }
+
+    private handleHeadingsToggle = (event: Event) => {
+        const target = event.target as HTMLInputElement;
+        this.updateTableData({ withHeadings: target.checked });
+        this.rerender(); // Re-render for structural change
+    };
+
+    private addColumn = () => {
+        const newHeaders = [
+            ...this.tableData.headers,
+            `Column ${this.tableData.headers.length + 1}`,
+        ];
+        const newRows = this.tableData.rows.map((row) => [...row, ""]);
+
+        this.updateTableData({
+            headers: newHeaders,
+            rows: newRows,
+        });
+
+        // Re-render for structural change
+        this.rerender();
+        // Update inputs after re-render
+        setTimeout(() => this.updateInputElements(), 0);
+        logger.info("Column added");
+    };
+
+    private addRow = () => {
+        const newRow = new Array(this.tableData.headers.length).fill("");
+
+        this.updateTableData({
+            rows: [...this.tableData.rows, newRow],
+        });
+
+        // Re-render for structural change
+        this.rerender();
+        // Update inputs after re-render
+        setTimeout(() => this.updateInputElements(), 0);
+        logger.info("Row added");
+    };
+
+    private removeColumn = () => {
+        const data = this.tableData();
+        if (data.headers.length <= 1) return;
+
+        const newHeaders = data.headers.slice(0, -1);
+        const newRows = data.rows.map((row) => row.slice(0, -1));
+
+        this.updateTableData({
+            headers: newHeaders,
+            rows: newRows,
+        });
+
+        logger.info("Column removed");
+    };
+
+    private removeRow = () => {
+        const data = this.tableData();
+        if (data.rows.length <= 1) return;
+
+        this.updateTableData({
+            rows: data.rows.slice(0, -1),
+        });
+
+        logger.info("Row removed");
+    };
+
+    private exportCSV = () => {
+        const data = this.tableData();
+        let csvContent = "";
+
+        if (data.withHeadings) {
+            csvContent += data.headers.join(",") + "\n";
+        }
+
+        csvContent += data.rows
+            .map((row) => row.map((cell) => `"${cell.replace(/"/g, '""')}`).join(","))
+            .join("\n");
+
+        const blob = new Blob([csvContent], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "table-data.csv";
+        a.click();
+        URL.revokeObjectURL(url);
+
+        logger.info("Table exported as CSV");
+    };
+
+    private clearTable = () => {
+        const data = this.tableData();
+        const emptyRows = data.rows.map((row) => row.map(() => ""));
+
+        this.updateTableData({ rows: emptyRows });
+
+        logger.info("Table cleared");
+    };
+
+    private fillSample = () => {
+        const sampleData = {
+            headers: ["Product", "Price", "Stock", "Category"],
+            rows: [
+                ["MacBook Pro", "$2,399", "15", "Laptops"],
+                ["iPhone 14", "$999", "42", "Phones"],
+                ["AirPods Pro", "$249", "128", "Audio"],
+                ["iPad Air", "$599", "33", "Tablets"],
+            ],
+            withHeadings: true,
+        };
+
+        this.updateTableData(sampleData);
+        logger.info("Sample data loaded");
+    };
+
+    // Public API for the EditorJS tool
+    getData(): TableData {
+        return this.tableData;
+    }
+}

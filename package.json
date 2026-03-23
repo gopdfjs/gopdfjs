@@ -1,0 +1,23 @@
+{
+  "name": "gopdf-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.27.0",
+  "scripts": {
+    "dev": "pangu",
+    "dev:turbo": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "build:wasm": "pnpm --filter=@gopdfjs/pdf-wasm build:wasm",
+    "build:wasm:dev": "pnpm --filter=@gopdfjs/pdf-wasm build:dev",
+    "validate": "pnpm test && pnpm lint && pnpm build",
+    "test": "turbo run test",
+    "test:coverage": "turbo run test:coverage",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@systembug/pangu": "^0.0.13",
+    "husky": "^9.1.7",
+    "turbo": "latest"
+  }
+}
