@@ -1,57 +1,83 @@
-# GoPDF.fyi - Free & Private Online PDF Tools
+# GoPDF.js — WASM PDF library
 
-**GoPDF.fyi** is a professional-grade, browser-native PDF processing platform built for convenience and perfected for privacy. Every tool runs 100% locally in your browser — your documents never touch a server.
+**`@gopdfjs/pdf-wasm`** is a browser-first PDF toolkit built from **Rust**, compiled to **WebAssembly**, and invoked from a **dedicated Web Worker**. PDF bytes stay on the client: work is offloaded from the main thread without uploading files to a server.
 
-![GoPDF Logo](file:///Users/albert.li/.gemini/antigravity/brain/13c1fe1b-40e1-439d-9e1b-8bf6fcb2657b/gopdf_logo_minimalist_v2_1774151049261.png)
+## What you get
 
-## 🚀 Key Features
-- **100% Native**: Powered by `pdf-lib` and `pdfjs-dist` for client-side processing.
-- **Privacy First**: No file uploads. No server-side storage. Purely local data handling.
-- **Massive Inventory**: 17 existing tools and 34+ proposed advanced tools.
-- **Global Support**: Fully internationalized (i18n) with 11 supported locales.
-- **Technical Rigor**: 56 standardized RFCs documenting every planned and implemented function.
+- **Rust core** (`packages/pdf-wasm/`, crate `pdf-wasm`) — `wasm-bindgen` + size-tuned release profile (see `Cargo.toml`).
+- **Worker boundary** — WASM runs in a Worker; `ArrayBuffer`s are **transferred** (not copied) when calling into the worker.
+- **TypeScript API** — ergonomic async functions that return `Promise<Uint8Array>` for binary results.
 
-## 🏗️ Architecture (Monorepo)
-The project is structured as a Turborepo-managed monorepo for maximum scalability and code reuse:
-- **`site`**: **@gopdfjs** 官网（与 [wsxjs/site](https://github.com/wsxjs/wsxjs/tree/main/site) **同功能全集**：UnoCSS、wsx-press 文档、Router、EditorJS/Marked/SlideJS/CalendarJS 示例、多语言）；品牌与仓库指向 GoPDF，`gopdf-app` 根元素，Pages 默认 `base`=`/gopdf/`。
-- **`demos/react`**: 最小对照页，本地验证 **pdf.js** 与 **`@gopdfjs/pdf-wasm`**（见该目录 `README.md`）。
-- **`packages/ui`**: Shared React components and design system (Tailwind).
-- **`packages/i18n`**: Shared routing and locale management.
+### Public API (high level)
 
-## 🛠️ Technical Stack
-- **Framework**: [Vite](https://vitejs.dev/) + React 19 + React Router
-- **Styling**: Tailwind CSS
-- **i18n**: `use-intl` + `@gopdfjs/i18n`（locale 前缀路由）
-- **PDF Engine**: `@pdf-lib/pdf-lib` & `pdfjs-dist`
-- **Package Manager**: `pnpm`
-- **Build System**: `Turbo`
+| Export | Role |
+|--------|------|
+| `compressPdf(bytes, level, onProgress?)` | Re-compress Flate streams (`"low"` \| `"recommended"` \| `"extreme"`) |
+| `encodeImages(...)` | Encode RGBA frames to JPEG/PNG (see JSDoc in `packages/pdf-wasm/index.ts`) |
+| `splitEncodedImages` | Helpers for length-prefixed image blobs from `encodeImages` |
+| `grayscalePdf(bytes)` | Convert embedded color images to DeviceGray |
+| `linearizePdf(bytes)` | Linearize for Fast Web View |
 
-## 🏁 Getting Started
+Design notes and roadmap: `docs/rfc/0058-wasm-pdf-library-charter.md`, worker layout: `docs/rfc/0057-rust-wasm-worker-architecture.md`.
 
-### Prerequisites
-- Node.js 18+
-- pnpm 8+
+## Install & use (app code)
 
-### Installation
+In this monorepo, depend on **`@gopdfjs/pdf-wasm`** via `workspace:*` (see `demos/react`). The package is currently **private** here; wiring for publishing to a registry is separate from the library code itself.
+
+In a Vite/React app (or any bundler that supports `new URL(..., import.meta.url)` for Workers):
+
+```ts
+import { compressPdf } from "@gopdfjs/pdf-wasm";
+
+const out = await compressPdf(inputBytes, "recommended", (p) => {
+  console.log("progress", p);
+});
+```
+
+Ensure the Worker and WASM assets resolve correctly in your bundler (Vite projects usually need no extra config beyond normal ESM).
+
+## Build the WASM binary (contributors)
+
+Prerequisites: **Rust**, target **`wasm32-unknown-unknown`**, and **`wasm-pack`**.
+
+From the repository root:
+
 ```bash
 pnpm install
+pnpm build:wasm
 ```
 
-### Development
-Start all workspaces in development mode:
+Dev build (faster iteration, larger artifact):
+
 ```bash
-pnpm dev
+pnpm build:wasm:dev
 ```
 
-### Build
-Build all workspaces for production:
+Artifacts land under `packages/pdf-wasm/pkg/`. Without a successful `build:wasm`, imports that load the Worker/WASM will fail at runtime.
+
+## Monorepo layout (this repository)
+
+| Path | Purpose |
+|------|---------|
+| **`packages/pdf-wasm`** | Rust crate + TS host (`index.ts`) + Worker (`worker.ts`) — **this README’s focus** |
+| **`site`** | Vite + React marketing/docs app (`@gopdfjs/site`); may compose pdf.js / pdf-lib and WASM where needed |
+| **`demos/react`** | Minimal page to exercise `pdfjs-dist` next to `@gopdfjs/pdf-wasm` — see `demos/react/README.md` |
+| **`packages/i18n`**, **`packages/ui`**, **`packages/locale-cli`** | Shared i18n, UI, and tooling |
+
+Root scripts:
+
 ```bash
-pnpm build
+pnpm dev          # dev via monorepo orchestration
+pnpm build        # turbo build
+pnpm test         # turbo test
+pnpm validate     # test + lint + build
 ```
 
-## 📚 Documentation
-- **Technical RFCs**: See `docs/rfc/` for tool specifications. **WASM 库目标与分层**：`docs/rfc/0058-wasm-pdf-library-charter.md`；**Worker 与矩阵**：`docs/rfc/0057-rust-wasm-worker-architecture.md`。
-- **Walkthrough**: See `walkthrough.md` for a summary of recent major updates.
+## Documentation
+
+- **RFCs**: `docs/rfc/` — tool specs and architecture.
+- **Site-specific** notes: `site/README.md`.
 
 ---
-Built with ❤️ for Convenience. Perfected for You.
+
+GoPDF.js is built for **local, private PDF processing** in the browser; the WASM library is the place where Rust-backed operations live.
