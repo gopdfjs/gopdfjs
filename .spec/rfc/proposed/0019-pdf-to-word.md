@@ -34,7 +34,7 @@ tests:
 |----|------|------|
 | **L3 应用** | 路由、选文件、下载、进度条、免责声明 | `site/`（Vite + React） |
 | **L2 编排** | 单例 Worker、可转移 `ArrayBuffer`、进度、`{ id, op, payload }`（RFC 0057 §5） | `packages/pdf-wasm/worker.ts` 增加 `op: 'pdf_to_docx'`，转调 **L1** |
-| **L1 WASM** | **`pdf_to_docx(bytes: &[u8]) -> Vec<u8>`**（或接受进度回调的变体） | `packages/pdf-wasm/src/*.rs` → `wasm-pack` 产物；**新增** `lib.rs` 导出与 **Cargo 依赖**（见 §4） |
+| **L1 WASM** | **`pdf_to_docx(bytes: &[u8]) -> Vec<u8>`**（或接受进度回调的变体） | 新 crate 或 `crates/gopdf-*` + `crates/pdf-wasm` 导出；**禁止**在 `packages/pdf-wasm/` 放 Rust 源码 |
 
 **禁止**：在 **主线程** 跑整册转换。长任务仅在 **Worker** 内执行；主线程只做 UI。
 

@@ -25,7 +25,7 @@ description: >-
 
 - **架构**：`.spec/rfc/charter/0057-rust-wasm-worker-architecture.md`
 - **WASM 边界与 crate 分层**：`.spec/rfc/charter/0058-wasm-pdf-library-charter.md`
-- **Rust workspace**：`crates/gopdf-*` + `crates/pdf-wasm`；`packages/pdf-wasm` 仅薄 JS
+- **Rust workspace**：`crates/README.md` — 算法在 `crates/gopdf-*`；**仅**根目录 `pnpm build:wasm` / `pnpm test:rust`；禁止在 `packages/pdf-wasm/` 放 Rust
 - **具名专家**：`docs/persona/albert-li.md`、`maya-okonkwo.md`、`daniel-kowalski.md`、`linus-torvalds.md`
 - **子代理委托**：`.claude/agents/`（与 `docs/persona/*.md` 对应）；索引见 `.claude/agents/README.md`
 

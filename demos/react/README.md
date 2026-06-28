@@ -12,7 +12,7 @@
 在仓库根目录执行（需已安装 Rust + `wasm32-unknown-unknown` + `wasm-pack`）：
 
 ```bash
-pnpm --filter=@gopdfjs/pdf-wasm build:wasm
+pnpm build:wasm
 ```
 
 未执行时，`pkg/` 不存在，Worker 会报错。

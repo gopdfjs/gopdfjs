@@ -15,6 +15,13 @@
 
 **Rust**：根目录 `Cargo.toml` workspace（`crates/gopdf-*` 算法 + `crates/pdf-wasm` 绑定）；`packages/pdf-wasm` 仅为薄 JS Worker 代理。
 
+**Cargo workspace 约定**（详见 `crates/README.md`）：
+
+- 算法 crate 一律在 `crates/gopdf-*`；禁止在 `packages/pdf-wasm/` 放 `.rs` / `Cargo.toml`
+- 构建 WASM：仅在仓库根目录 `pnpm build:wasm`（`wasm-pack` 目标 `crates/pdf-wasm` → `packages/pdf-wasm/pkg/`）
+- Rust 单测：仓库根目录 `pnpm test:rust` 或 `cargo test --workspace`
+- 共享依赖声明在根 `Cargo.toml` `[workspace.dependencies]`，子 crate 用 `*.workspace = true`
+
 ## 技术栈
 
 主应用为 **Vite + React + React Router** 的静态 SPA（`pnpm --filter=@gopdfjs/site dev|build`）。文案与路由共享包为 `@gopdfjs/i18n`（`use-intl` + locale 前缀）。若需查 Next.js 文档，仅在与历史 RFC 对照时参考，默认实现以 Vite 为准。

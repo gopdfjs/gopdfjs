@@ -5,16 +5,15 @@ edition.workspace = true
 description = "wasm-bindgen facade for GoPDF browser PDF tools"
 
 [lib]
-# rlib: host `cargo test`; cdylib: wasm-pack WASM artifact
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-wasm-bindgen = "0.2"
-js-sys = "0.3"
-gopdf-compress = { path = "../gopdf-compress" }
-gopdf-image = { path = "../gopdf-image" }
-gopdf-linearize = { path = "../gopdf-linearize" }
-console_error_panic_hook = { version = "0.1", optional = true }
+wasm-bindgen.workspace = true
+js-sys.workspace = true
+gopdf-compress.workspace = true
+gopdf-image.workspace = true
+gopdf-linearize.workspace = true
+console_error_panic_hook = { workspace = true, optional = true }
 
 [features]
 default = ["console_error_panic_hook"]

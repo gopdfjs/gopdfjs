@@ -5,4 +5,4 @@ edition.workspace = true
 description = "RGBA encode and PDF image grayscale (RFC 0017, 0018, 0028)"
 
 [dependencies]
-image = { version = "0.25", default-features = false, features = ["jpeg", "png", "webp"] }
+image.workspace = true

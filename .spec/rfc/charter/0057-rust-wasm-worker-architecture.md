@@ -123,7 +123,7 @@ pnpm build:wasm
 | `grayscale` | `grayscale_pdf` | RFC 0028 |
 | `linearize` | `linearize_pdf` | RFC 0042 |
 
-源码以仓库中 `packages/pdf-wasm/worker.ts`、`packages/pdf-wasm/src/lib.rs` 为准。
+源码以 `crates/pdf-wasm/src/lib.rs`（WASM 导出）与各 `crates/gopdf-*/src/lib.rs`（算法）为准；Worker 协议见 `packages/pdf-wasm/worker.ts`。
 
 ### 5.3 主机 API（`index.ts`）
 
@@ -172,13 +172,13 @@ const parts = splitEncodedImages(packed);
 
 ## 8. Testing strategy
 
-- Rust：`wasm-bindgen-test` / `wasm-pack test`（按需）。
-- 前端：`demos/react` 提供 pdf.js 与 `@gopdfjs/pdf-wasm` 的最小对照；集成测试可用 Vitest + Mock Worker。
-- 微基准：Rust `criterion`；端到端：`performance.now()`。
+- **Rust（workspace）**：仓库根目录 `cargo test --workspace`（或 `pnpm test:rust`）。`gopdf-*` 在宿主目标上跑单元测试；`pdf-wasm` crate 的 `rlib` 目标参与同一 workspace 测试。
+- **WASM 产物**：`pnpm build:wasm`（根目录；`wasm-pack` 仅针对 `crates/pdf-wasm`）。
+- **前端**：`demos/react` 最小对照；`@gopdfjs/tools` / `@gopdfjs/pdf-wasm` Vitest；RFC `ready/` 工具加 Playwright（`.spec/e2e/`）。
 
 ## 9. Success criteria
 
-- [x] `wasm-pack build` 成功生成 `pkg/`
+- [x] 根目录 `pnpm build:wasm` 成功生成 `packages/pdf-wasm/pkg/`
 - [ ] Worker 处理 10 MB 级 PDF 稳定（按工具覆盖）
 - [ ] 压缩等工具相对纯 JS 路径明显降延迟（以产品页实测为准）
 - [ ] WASM 处理期间主线程无明显卡顿

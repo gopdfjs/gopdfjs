@@ -25,7 +25,7 @@ RFCs live under tier folders. A tool graduates to `ready/` only when **unit + Pl
 | `packages/pdf-wasm` | Thin JS Worker proxy only |
 | `packages/tools` | Product-facing orchestration (`runCompressPdf`, stats, …) |
 
-Build WASM: `pnpm build:wasm` · Host tests: `cargo test --workspace` · E2E: `pnpm test:e2e`
+Build WASM: `pnpm build:wasm`（根目录）· Rust tests: `pnpm test:rust` · JS tests: `pnpm --filter=@gopdfjs/tools test` · E2E: `pnpm test:e2e`
 
 ## Inventory
 

@@ -143,18 +143,19 @@ Phase 2 压缩、灰度等操作仅修改部分 stream bytes，采用 PDF 增量
 ### 3.2.3 文件结构
 
 ```
-packages/pdf-wasm/src/
-  pdf/
-    mod.rs       — 公开 re-exports，Document / Object / PdfError 类型
-    xref.rs      — xref table + xref stream + ObjStm 索引（约 400–600 行）
-    parser.rs    — object 解析：dict, stream, array, name, string（约 300–400 行）
-    writer.rs    — 增量更新写回（约 200–300 行）
-    types.rs     — Object enum, ObjectId, Dictionary, Stream 定义（约 200 行）
-  ops/
-    compress.rs  — Phase 1（已有字节扫描）+ Phase 2（使用 pdf/ 层）
-    grayscale.rs — 整册灰度（当前已实现；Phase 2 可迁移到 pdf/ 层）
-    linearize.rs — 线性化
-    analyze.rs   — RFC 0061 Understand PDF（metadata + 页数 + 图像 XObject 统计）
+crates/
+  gopdf-compress/src/lib.rs   # Phase 1 流压缩（已落地）
+  gopdf-image/src/lib.rs      # 图像编码 / 灰度（已落地）
+  gopdf-linearize/src/lib.rs  # 线性化（已落地）
+  pdf-wasm/src/
+    lib.rs                    # wasm-bindgen 导出（薄层）
+    pdf/                      # 规划：Object Layer（§3.2，未落地）
+      mod.rs
+      xref.rs
+      parser.rs
+      writer.rs
+      types.rs
+  # 未来 Phase 2 / RFC 0061 等可增 gopdf-analyze、扩展 gopdf-compress
 ```
 
 ### 3.2.4 对象层与工具的关系
@@ -198,7 +199,7 @@ ttf-parser 依赖不引入；字体数据在 RFC 0019 阶段单独评估。
 
 ## 4. Implemented WASM surface（与代码一致）
 
-以下导出在 `lib.rs` 与 `worker.ts` 中已实现，主机侧见 `index.ts`：
+以下导出在 `crates/pdf-wasm/src/lib.rs` 与 `packages/pdf-wasm/worker.ts` 中已实现，主机侧见 `packages/pdf-wasm/index.ts`：
 
 | Rust / Worker `op` | TS 导出 | 说明 |
 |--------------------|---------|------|
@@ -233,7 +234,7 @@ ttf-parser 依赖不引入；字体数据在 RFC 0019 阶段单独评估。
 
 ## 7. Success criteria（库层面）
 
-- [x] `wasm-pack build --target web --out-dir pkg` 可生成 `pkg/`
+- [x] 根目录 `pnpm build:wasm`（`wasm-pack build crates/pdf-wasm`）可生成 `packages/pdf-wasm/pkg/`
 - [x] Worker 协议支持进度与最终 `Uint8Array` 可转移回主线程
 - [ ] 各工具页按矩阵完成 L2 调用（产品进度，非本 charter 独占）
 

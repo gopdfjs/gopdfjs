@@ -111,7 +111,7 @@ function WasmDemoPage() {
           msg.includes("pdf_wasm")
         ) {
           pushLog(
-            "Hint: run `pnpm --filter=@gopdfjs/pdf-wasm build:wasm` from repo root.",
+            "Hint: run `pnpm build:wasm` from repo root.",
           );
         }
       } finally {

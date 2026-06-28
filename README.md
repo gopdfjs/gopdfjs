@@ -72,8 +72,9 @@ Root scripts:
 ```bash
 pnpm dev          # dev via monorepo orchestration
 pnpm build        # turbo build
-pnpm build:wasm   # wasm-pack → packages/pdf-wasm/pkg
-pnpm test         # turbo test + cargo test (via @gopdfjs/pdf-wasm)
+pnpm build:wasm   # wasm-pack → packages/pdf-wasm/pkg (crates/pdf-wasm)
+pnpm test:rust    # cargo test --workspace
+pnpm test         # test:rust + turbo vitest
 pnpm test:e2e     # Playwright (.spec/e2e)
 pnpm validate     # test + lint + build
 ```

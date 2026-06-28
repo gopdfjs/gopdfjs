@@ -10,9 +10,9 @@
     "./worker": "./worker.ts"
   },
   "scripts": {
-    "test": "cargo test --manifest-path ../../Cargo.toml --workspace && vitest run",
-    "build:wasm": "wasm-pack build ../../crates/pdf-wasm --target web --out-dir ../../packages/pdf-wasm/pkg --release",
-    "build:dev": "wasm-pack build ../../crates/pdf-wasm --target web --out-dir ../../packages/pdf-wasm/pkg --dev",
+    "test": "vitest run",
+    "build:wasm": "pnpm -w run build:wasm",
+    "build:dev": "pnpm -w run build:wasm:dev",
     "build": "pnpm run build:wasm && vite build",
     "clean": "rm -rf pkg dist"
   },

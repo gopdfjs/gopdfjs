@@ -10,9 +10,10 @@
     "lint": "turbo lint",
     "build:wasm": "PATH=\"$HOME/.cargo/bin:$PATH\" wasm-pack build crates/pdf-wasm --target web --out-dir packages/pdf-wasm/pkg --release",
     "build:wasm:dev": "PATH=\"$HOME/.cargo/bin:$PATH\" wasm-pack build crates/pdf-wasm --target web --out-dir packages/pdf-wasm/pkg --dev",
+    "test:rust": "cargo test --workspace",
     "pretest:e2e": "test -f packages/pdf-wasm/pkg/pdf_wasm_bg.wasm || pnpm build:wasm",
-    "validate": "pnpm test && pnpm lint && pnpm build",
-    "test": "turbo run test",
+    "validate": "pnpm test:rust && pnpm test && pnpm lint && pnpm build",
+    "test": "pnpm test:rust && turbo run test",
     "test:coverage": "turbo run test:coverage",
     "test:e2e": "playwright test -c .spec/e2e/playwright.config.ts",
     "prepare": "husky"
