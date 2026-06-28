@@ -1,0 +1,8 @@
+[package]
+name = "gopdf-compress"
+version.workspace = true
+edition.workspace = true
+description = "PDF FlateDecode stream recompression (RFC 0008 Phase 1)"
+
+[dependencies]
+flate2 = { version = "1", features = ["rust_backend"] }

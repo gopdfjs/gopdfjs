@@ -18,7 +18,7 @@
 | `grayscalePdf(bytes)` | Convert embedded color images to DeviceGray |
 | `linearizePdf(bytes)` | Linearize for Fast Web View |
 
-Design notes and roadmap: `docs/rfc/0058-wasm-pdf-library-charter.md`, worker layout: `docs/rfc/0057-rust-wasm-worker-architecture.md`.
+Design notes and roadmap: `.spec/rfc/charter/0058-wasm-pdf-library-charter.md`, worker layout: `.spec/rfc/charter/0057-rust-wasm-worker-architecture.md`.
 
 ## Install & use (app code)
 
@@ -59,23 +59,28 @@ Artifacts land under `packages/pdf-wasm/pkg/`. Without a successful `build:wasm`
 
 | Path | Purpose |
 |------|---------|
-| **`packages/pdf-wasm`** | Rust crate + TS host (`index.ts`) + Worker (`worker.ts`) — **this README’s focus** |
-| **`site`** | Vite + React marketing/docs app (`@gopdfjs/site`); may compose pdf.js / pdf-lib and WASM where needed |
-| **`demos/react`** | Minimal page to exercise `pdfjs-dist` next to `@gopdfjs/pdf-wasm` — see `demos/react/README.md` |
-| **`packages/i18n`**, **`packages/ui`**, **`packages/locale-cli`** | Shared i18n, UI, and tooling |
+| **`crates/gopdf-*`** | Rust PDF algorithms (host-testable `rlib`) |
+| **`crates/pdf-wasm`** | Thin `wasm-bindgen` `cdylib` |
+| **`packages/pdf-wasm`** | Thin JS Worker proxy (`@gopdfjs/pdf-wasm`) |
+| **`packages/tools`** | L2 tool orchestration (`@gopdfjs/tools`) |
+| **`site`** | Vite + React SPA (`@gopdfjs/site`) |
+| **`demos/react`** | WASM tool demo (e.g. Compress) — see `demos/react/README.md` |
+| **`packages/i18n`**, **`packages/ui`**, **`packages/locale-cli`** | Shared i18n, UI, locale CLI |
 
 Root scripts:
 
 ```bash
 pnpm dev          # dev via monorepo orchestration
 pnpm build        # turbo build
-pnpm test         # turbo test
+pnpm build:wasm   # wasm-pack → packages/pdf-wasm/pkg
+pnpm test         # turbo test + cargo test (via @gopdfjs/pdf-wasm)
+pnpm test:e2e     # Playwright (.spec/e2e)
 pnpm validate     # test + lint + build
 ```
 
 ## Documentation
 
-- **RFCs**: `docs/rfc/` — tool specs and architecture.
+- **RFCs**: `.spec/rfc/` — tiered specs (`charter/`, `implemented/`, `proposed/`, `pending/`, `ready/`).
 - **Site-specific** notes: `site/README.md`.
 
 ---

@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@gopdfjs/pdf-wasm": "workspace:*",
+    "@gopdfjs/tools": "workspace:*",
     "pdfjs-dist": "^5.5.207",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "react-router-dom": "^6.28.0"
   },
   "devDependencies": {
     "@types/react": "^19",

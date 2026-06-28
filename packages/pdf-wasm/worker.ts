@@ -20,8 +20,8 @@ import init, {
   linearize_pdf,
 } from "./pkg/pdf_wasm.js";
 
-// Initialize WASM once when the Worker starts (top-level await in module Worker)
-await init();
+// Register handler before WASM init so early postMessage is not dropped.
+const wasmReady = init();
 
 type Op =
   | {
@@ -33,6 +33,7 @@ type Op =
   | { op: "linearize";  payload: { bytes: Uint8Array } };
 
 self.onmessage = async (e: MessageEvent<{ id: number } & Op>) => {
+  await wasmReady;
   const { id, op, payload } = e.data;
 
   try {

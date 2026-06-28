@@ -23,8 +23,9 @@ description: >-
 
 ## 必读仓库上下文
 
-- **架构**：`docs/rfc/0057-rust-wasm-worker-architecture.md`
-- **WASM 边界与已实现 op**：`docs/rfc/0058-wasm-pdf-library-charter.md`
+- **架构**：`.spec/rfc/charter/0057-rust-wasm-worker-architecture.md`
+- **WASM 边界与 crate 分层**：`.spec/rfc/charter/0058-wasm-pdf-library-charter.md`
+- **Rust workspace**：`crates/gopdf-*` + `crates/pdf-wasm`；`packages/pdf-wasm` 仅薄 JS
 - **具名专家**：`docs/persona/albert-li.md`、`maya-okonkwo.md`、`daniel-kowalski.md`、`linus-torvalds.md`
 - **子代理委托**：`.claude/agents/`（与 `docs/persona/*.md` 对应）；索引见 `.claude/agents/README.md`
 

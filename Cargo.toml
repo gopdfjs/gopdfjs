@@ -1,0 +1,19 @@
+[workspace]
+members = [
+    "crates/gopdf-compress",
+    "crates/gopdf-image",
+    "crates/gopdf-linearize",
+    "crates/pdf-wasm",
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+
+[profile.release]
+# Optimise for size — critical for WASM binary budget (<1 MB gzipped per RFC 0057)
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"

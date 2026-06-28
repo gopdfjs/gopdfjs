@@ -29,4 +29,5 @@ pnpm --filter=@gopdfjs/demo-react dev
 ## 生产站 vs 本 demo
 
 - 正式站点在 **`site/`**，工具页以 pdf.js / pdf-lib 为主，需要 WASM 的能力再接入 `@gopdfjs/pdf-wasm`。
+- **`/tools/compress`**：最小 Compress 工具页，经 `@gopdfjs/tools` 调用 WASM（需先 `pnpm build:wasm`）。
 - 本目录刻意不依赖 `site`、`@gopdfjs/ui`、i18n，仅保留与 WASM 联调相关的依赖。

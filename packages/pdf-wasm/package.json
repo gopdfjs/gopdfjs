@@ -10,9 +10,9 @@
     "./worker": "./worker.ts"
   },
   "scripts": {
-    "test": "cargo test",
-    "build:wasm": "wasm-pack build --target web --out-dir pkg --release",
-    "build:dev": "wasm-pack build --target web --out-dir pkg --dev",
+    "test": "cargo test --manifest-path ../../Cargo.toml --workspace && vitest run",
+    "build:wasm": "wasm-pack build ../../crates/pdf-wasm --target web --out-dir ../../packages/pdf-wasm/pkg --release",
+    "build:dev": "wasm-pack build ../../crates/pdf-wasm --target web --out-dir ../../packages/pdf-wasm/pkg --dev",
     "build": "pnpm run build:wasm && vite build",
     "clean": "rm -rf pkg dist"
   },
@@ -21,6 +21,7 @@
     "vite": "^5",
     "vite-plugin-dts": "^3",
     "vite-plugin-top-level-await": "^1",
-    "vite-plugin-wasm": "^3"
+    "vite-plugin-wasm": "^3",
+    "vitest": "^3.0.0"
   }
 }

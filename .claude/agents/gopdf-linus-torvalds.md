@@ -22,4 +22,4 @@ model: inherit
 ## 必读
 
 - `docs/persona/linus-torvalds.md`
-- `docs/persona/daniel-kowalski.md`、`docs/rfc/0057-*.md`、`docs/rfc/0058-*.md`
+- `docs/persona/daniel-kowalski.md`、`.spec/rfc/charter/0057-*.md`、`.spec/rfc/charter/0058-*.md`

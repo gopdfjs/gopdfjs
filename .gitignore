@@ -16,8 +16,9 @@ dist/
 build/
 .next/
 
-# Rust / wasm-pack (@gopdfjs/pdf-wasm)
+# Rust / wasm-pack (workspace root + packages/pdf-wasm output)
 target/
+Cargo.lock
 packages/pdf-wasm/pkg/
 
 # Tests & coverage (Vitest)

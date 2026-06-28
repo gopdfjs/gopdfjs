@@ -1,10 +1,12 @@
 import { useCallback, useState } from "react";
+import { Link, Route, Routes } from "react-router-dom";
 import {
   compressPdf,
   grayscalePdf,
   linearizePdf,
   type CompressionLevel,
 } from "@gopdfjs/pdf-wasm";
+import CompressToolPage from "./CompressToolPage";
 import { downloadPdfBytes } from "./downloadBlob";
 import { getPdfPageCount } from "./pdfjsPageCount";
 
@@ -12,7 +14,7 @@ const ACCEPT_PDF = "application/pdf" as const;
 
 const COMPRESS_LEVELS: CompressionLevel[] = ["low", "recommended", "extreme"];
 
-export default function App() {
+function WasmDemoPage() {
   const [fileName, setFileName] = useState<string | null>(null);
   const [bytes, setBytes] = useState<Uint8Array | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
@@ -142,7 +144,10 @@ export default function App() {
       <p style={{ color: "#444" }}>
         主站大量能力走 <strong>pdf.js / pdf-lib</strong>；压缩、线性化、整册灰度等由{" "}
         <strong>Rust → WASM</strong>（<code>@gopdfjs/pdf-wasm</code>
-        ）完成。本页用于本地验证两条链路是否都正常。
+        ）完成。本页用于本地验证两条链路是否都正常。{" "}
+        <Link to="/tools/compress" style={{ color: "#f97316" }}>
+          Open Compress tool →
+        </Link>
       </p>
 
       <section style={{ marginTop: 20 }}>
@@ -221,5 +226,14 @@ export default function App() {
         </pre>
       </section>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<WasmDemoPage />} />
+      <Route path="/tools/compress" element={<CompressToolPage />} />
+    </Routes>
   );
 }
