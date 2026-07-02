@@ -18,7 +18,7 @@
 | `grayscalePdf(bytes)` | Convert embedded color images to DeviceGray |
 | `linearizePdf(bytes)` | Linearize for Fast Web View |
 
-Design notes and roadmap: `.spec/rfc/charter/0058-wasm-pdf-library-charter.md`, worker layout: `.spec/rfc/charter/0057-rust-wasm-worker-architecture.md`.
+Design notes and roadmap: `.spec/rfc/0058-wasm-pdf-library-charter.md`, worker layout: `.spec/rfc/0057-rust-wasm-worker-architecture.md`.
 
 ## Install & use (app code)
 
@@ -81,7 +81,9 @@ pnpm validate     # test + lint + build
 
 ## Documentation
 
-- **RFCs**: `.spec/rfc/` — tiered specs (`charter/`, `implemented/`, `proposed/`, `pending/`, `ready/`).
+- **Roadmap**: [.spec/ROADMAP.md](./.spec/ROADMAP.md) — phases and RFC registry
+- **Tasks**: [.spec/TASK_TRACKING.md](./.spec/TASK_TRACKING.md) — current work items
+- **RFC specs**: `.spec/rfc/` — flat active RFCs; archives: `completed/`, `pending/`, `rejected/`; template: `.spec/rfc/_template.md`
 - **Site-specific** notes: `site/README.md`.
 
 ---

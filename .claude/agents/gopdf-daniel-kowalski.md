@@ -22,4 +22,4 @@ WASM 专注 **L1 算力与字节管道**：Worker 内跑重活，避免主线程
 ## 必读
 
 - `docs/persona/daniel-kowalski.md`
-- `crates/`、`packages/pdf-wasm/`、`.spec/rfc/charter/0057-*.md`、`.spec/rfc/charter/0058-*.md`
+- `crates/`、`packages/pdf-wasm/`、`.spec/rfc/0057-*.md`、`.spec/rfc/0058-*.md`

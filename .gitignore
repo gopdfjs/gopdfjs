@@ -58,3 +58,5 @@ logs/
 test-results/
 playwright-report/
 blob-report/
+.codegraph/
+graphify-out/

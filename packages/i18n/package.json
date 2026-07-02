@@ -11,7 +11,8 @@
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0",
-    "react-router-dom": "^6.28.0 || ^7.0.0"
+    "react-router-dom": "^6.28.0 || ^7.0.0",
+    "use-intl": "^4.8.0"
   },
   "devDependencies": {
     "@types/react": "^19",
@@ -21,6 +22,7 @@
     "react-dom": "19.2.4",
     "react-router-dom": "^6.28.0",
     "typescript": "^5",
+    "use-intl": "^4.8.3",
     "vitest": "^3.0.0"
   }
 }

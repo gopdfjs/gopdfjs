@@ -15,41 +15,6 @@
       "content": "Installation\n\n\n\n Configuration\n\n 1. TypeScript Configuration\n\nRecommended: Use the @wsxjs/wsx-tsconfig package includes all required configurations:\n\n\n\nManual Configuration if not using @wsxjs/wsx-tsconfig:\n\n\n\n> ⚠️ Important: If using the @state decorator, you must configure:\n> - experimentalDecorators: true - Enable decorator syntax\n> - useDefineForClassFields: false - Ensure decorators are compatible with class fields\n>\n> Additionally, you must configure @wsxjs/wsx-vite-plugin in vite.config.t"
     },
     {
-      "id": "guide/core-concepts/wsx-design",
-      "title": "GoPDF.js Design Documentation",
-      "category": "guide/core-concepts",
-      "route": "/docs/guide/core-concepts/wsx-design",
-      "content": "I. Framework Introduction\n\nGoPDF.js is a modern Web Components framework that focuses on JSX syntax and TypeScript support, completely zero dependency on React, dedicated to the ultimate development experience of native WebComponent capabilities.\n\n- Core Philosophy: WebComponent + JSX + TypeScript, ultimate type safety and development efficiency.\n- wsx files: Web Component with JSX, using .wsx extension, equivalent to TSX syntax for WebComponent.\n- Self-validation: The examples directory is the "
-    },
-    {
-      "id": "guide/core-concepts/web-components",
-      "title": "WebComponent Guide",
-      "category": "guide/core-concepts",
-      "route": "/docs/guide/core-concepts/web-components",
-      "content": "Overview\n\nWebComponent is the standard custom element base class provided by GoPDF.js, using Shadow DOM to provide complete style isolation and encapsulation. It is the preferred choice for building reusable UI components, especially suitable for scenarios requiring style isolation and complete encapsulation.\n\n Why Use WebComponent?\n\n Use Cases\n\n1. Reusable UI Components\n   - Common components like buttons, inputs, cards, etc.\n   - Components requiring complete style isolation\n   - Component lib"
-    },
-    {
-      "id": "guide/core-concepts/light-components",
-      "title": "LightComponent Usage Guide",
-      "category": "guide/core-concepts",
-      "route": "/docs/guide/core-concepts/light-components",
-      "content": "Overview\n\nLightComponent is a lightweight custom element base class provided by GoPDF.js, designed for scenarios that require integration with third-party libraries or use Light DOM. It directly inherits from HTMLElement, does not use Shadow DOM, and provides complete reactive state management and JSX support.\n\n Why Use LightComponent?\n\n Use Cases\n\n1. Third-party Library Integration\n   - Integration with libraries like EditorJS, Chart.js, etc.\n   - Libraries need direct access to DOM elements\n  "
-    },
-    {
-      "id": "guide/core-concepts/jsx-support",
-      "title": "GoPDF.js JSX Support Documentation",
-      "category": "guide/core-concepts",
-      "route": "/docs/guide/core-concepts/jsx-support",
-      "content": "Overview\n\nGoPDF.js provides complete JSX support without relying on React or other frameworks. Through framework-level configuration, any project using WSX can get out-of-the-box JSX experience.\n\n Core Features\n\n- ✅ Zero React Dependency: Completely independent JSX implementation\n- ✅ Framework-level Support: No additional configuration needed in consumer projects\n- ✅ TypeScript Native Support: Complies with TypeScript standard mechanisms\n- ✅ IDE Friendly: Complete type hints and error checking\n-"
-    },
-    {
-      "id": "guide/core-concepts/design-philosophy",
-      "title": "GoPDF.js Design Philosophy",
-      "category": "guide/core-concepts",
-      "route": "/docs/guide/core-concepts/design-philosophy",
-      "content": "Overview\n\nGoPDF.js is a native-first Web Components framework dedicated to providing the closest experience to native Web development while maintaining the convenience of modern frameworks.\n\n Core Design Principles\n\n 1. Native-First\n\nGoPDF.js prioritizes native Web standards and APIs over creating abstraction layers.\n\n Example: class vs className\n\n\n\nDesign Rationale:\n- class is the standard HTML attribute name\n- Avoids JavaScript reserved word conflicts\n- More aligned with native Web development"
-    },
-    {
       "id": "guide/advanced/typescript-wsx-types",
       "title": "WSX Type System Guide",
       "category": "guide/advanced",
@@ -83,6 +48,41 @@
       "category": "guide/advanced",
       "route": "/docs/guide/advanced/dom-cache",
       "content": "Overview\n\nGoPDF.js uses DOM caching mechanism to optimize rendering performance and avoid unnecessary DOM element reconstruction. Understanding how to correctly use the key attribute is crucial for ensuring application correctness and performance.\n\n Core Concepts\n\n What is DOM Cache?\n\nDOM cache is a performance optimization technique that:\n- Reuses existing DOM elements instead of destroying and rebuilding\n- Only updates changed attributes and child elements\n- Identifies and matches elements thr"
+    },
+    {
+      "id": "guide/core-concepts/wsx-design",
+      "title": "GoPDF.js Design Documentation",
+      "category": "guide/core-concepts",
+      "route": "/docs/guide/core-concepts/wsx-design",
+      "content": "I. Framework Introduction\n\nGoPDF.js is a modern Web Components framework that focuses on JSX syntax and TypeScript support, completely zero dependency on React, dedicated to the ultimate development experience of native WebComponent capabilities.\n\n- Core Philosophy: WebComponent + JSX + TypeScript, ultimate type safety and development efficiency.\n- wsx files: Web Component with JSX, using .wsx extension, equivalent to TSX syntax for WebComponent.\n- Self-validation: The examples directory is the "
+    },
+    {
+      "id": "guide/core-concepts/web-components",
+      "title": "WebComponent Guide",
+      "category": "guide/core-concepts",
+      "route": "/docs/guide/core-concepts/web-components",
+      "content": "Overview\n\nWebComponent is the standard custom element base class provided by GoPDF.js, using Shadow DOM to provide complete style isolation and encapsulation. It is the preferred choice for building reusable UI components, especially suitable for scenarios requiring style isolation and complete encapsulation.\n\n Why Use WebComponent?\n\n Use Cases\n\n1. Reusable UI Components\n   - Common components like buttons, inputs, cards, etc.\n   - Components requiring complete style isolation\n   - Component lib"
+    },
+    {
+      "id": "guide/core-concepts/light-components",
+      "title": "LightComponent Usage Guide",
+      "category": "guide/core-concepts",
+      "route": "/docs/guide/core-concepts/light-components",
+      "content": "Overview\n\nLightComponent is a lightweight custom element base class provided by GoPDF.js, designed for scenarios that require integration with third-party libraries or use Light DOM. It directly inherits from HTMLElement, does not use Shadow DOM, and provides complete reactive state management and JSX support.\n\n Why Use LightComponent?\n\n Use Cases\n\n1. Third-party Library Integration\n   - Integration with libraries like EditorJS, Chart.js, etc.\n   - Libraries need direct access to DOM elements\n  "
+    },
+    {
+      "id": "guide/core-concepts/jsx-support",
+      "title": "GoPDF.js JSX Support Documentation",
+      "category": "guide/core-concepts",
+      "route": "/docs/guide/core-concepts/jsx-support",
+      "content": "Overview\n\nGoPDF.js provides complete JSX support without relying on React or other frameworks. Through framework-level configuration, any project using WSX can get out-of-the-box JSX experience.\n\n Core Features\n\n- ✅ Zero React Dependency: Completely independent JSX implementation\n- ✅ Framework-level Support: No additional configuration needed in consumer projects\n- ✅ TypeScript Native Support: Complies with TypeScript standard mechanisms\n- ✅ IDE Friendly: Complete type hints and error checking\n-"
+    },
+    {
+      "id": "guide/core-concepts/design-philosophy",
+      "title": "GoPDF.js Design Philosophy",
+      "category": "guide/core-concepts",
+      "route": "/docs/guide/core-concepts/design-philosophy",
+      "content": "Overview\n\nGoPDF.js is a native-first Web Components framework dedicated to providing the closest experience to native Web development while maintaining the convenience of modern frameworks.\n\n Core Design Principles\n\n 1. Native-First\n\nGoPDF.js prioritizes native Web standards and APIs over creating abstraction layers.\n\n Example: class vs className\n\n\n\nDesign Rationale:\n- class is the standard HTML attribute name\n- Avoids JavaScript reserved word conflicts\n- More aligned with native Web development"
     }
   ],
   "options": {

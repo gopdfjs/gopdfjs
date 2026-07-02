@@ -22,4 +22,4 @@ model: inherit
 ## 必读
 
 - `docs/persona/maya-okonkwo.md`
-- `.spec/rfc/charter/0057-rust-wasm-worker-architecture.md`、`.spec/rfc/charter/0058-wasm-pdf-library-charter.md`
+- `.spec/rfc/0057-rust-wasm-worker-architecture.md`、`.spec/rfc/0058-wasm-pdf-library-charter.md`

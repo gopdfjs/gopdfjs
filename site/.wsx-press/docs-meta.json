@@ -17,51 +17,6 @@
     "prev": null,
     "next": "/docs/guide/essentials/typescript-setup"
   },
-  "guide/core-concepts/wsx-design": {
-    "title": "GoPDF.js Design Documentation",
-    "category": "guide/core-concepts",
-    "route": "/docs/guide/core-concepts/wsx-design",
-    "order": 5,
-    "description": "GoPDF.js framework design documentation, including project structure, core APIs and mechanisms",
-    "prev": "/docs/guide/core-concepts/design-philosophy",
-    "next": null
-  },
-  "guide/core-concepts/web-components": {
-    "title": "WebComponent Guide",
-    "category": "guide/core-concepts",
-    "route": "/docs/guide/core-concepts/web-components",
-    "order": 1,
-    "description": "WebComponent is the standard custom element base class provided by GoPDF.js, using Shadow DOM to provide complete style isolation and encapsulation",
-    "prev": null,
-    "next": "/docs/guide/core-concepts/light-components"
-  },
-  "guide/core-concepts/light-components": {
-    "title": "LightComponent Usage Guide",
-    "category": "guide/core-concepts",
-    "route": "/docs/guide/core-concepts/light-components",
-    "order": 2,
-    "description": "LightComponent is a lightweight custom element base class provided by GoPDF.js, designed for scenarios that require integration with third-party libraries or use Light DOM",
-    "prev": "/docs/guide/core-concepts/web-components",
-    "next": "/docs/guide/core-concepts/jsx-support"
-  },
-  "guide/core-concepts/jsx-support": {
-    "title": "GoPDF.js JSX Support Documentation",
-    "category": "guide/core-concepts",
-    "route": "/docs/guide/core-concepts/jsx-support",
-    "order": 3,
-    "description": "GoPDF.js provides complete JSX support without relying on React or other frameworks. Through framework-level configuration, any project using WSX can get out-of-the-box JSX experience.",
-    "prev": "/docs/guide/core-concepts/light-components",
-    "next": "/docs/guide/core-concepts/design-philosophy"
-  },
-  "guide/core-concepts/design-philosophy": {
-    "title": "GoPDF.js Design Philosophy",
-    "category": "guide/core-concepts",
-    "route": "/docs/guide/core-concepts/design-philosophy",
-    "order": 4,
-    "description": "GoPDF.js is a native-first Web Components framework dedicated to providing the closest experience to native Web development",
-    "prev": "/docs/guide/core-concepts/jsx-support",
-    "next": "/docs/guide/core-concepts/wsx-design"
-  },
   "guide/advanced/typescript-wsx-types": {
     "title": "WSX Type System Guide",
     "category": "guide/advanced",
@@ -106,5 +61,50 @@
     "description": "GoPDF.js uses DOM caching mechanism to optimize rendering performance and avoid unnecessary DOM element reconstruction",
     "prev": null,
     "next": "/docs/guide/advanced/typescript-wsx-types"
+  },
+  "guide/core-concepts/wsx-design": {
+    "title": "GoPDF.js Design Documentation",
+    "category": "guide/core-concepts",
+    "route": "/docs/guide/core-concepts/wsx-design",
+    "order": 5,
+    "description": "GoPDF.js framework design documentation, including project structure, core APIs and mechanisms",
+    "prev": "/docs/guide/core-concepts/design-philosophy",
+    "next": null
+  },
+  "guide/core-concepts/web-components": {
+    "title": "WebComponent Guide",
+    "category": "guide/core-concepts",
+    "route": "/docs/guide/core-concepts/web-components",
+    "order": 1,
+    "description": "WebComponent is the standard custom element base class provided by GoPDF.js, using Shadow DOM to provide complete style isolation and encapsulation",
+    "prev": null,
+    "next": "/docs/guide/core-concepts/light-components"
+  },
+  "guide/core-concepts/light-components": {
+    "title": "LightComponent Usage Guide",
+    "category": "guide/core-concepts",
+    "route": "/docs/guide/core-concepts/light-components",
+    "order": 2,
+    "description": "LightComponent is a lightweight custom element base class provided by GoPDF.js, designed for scenarios that require integration with third-party libraries or use Light DOM",
+    "prev": "/docs/guide/core-concepts/web-components",
+    "next": "/docs/guide/core-concepts/jsx-support"
+  },
+  "guide/core-concepts/jsx-support": {
+    "title": "GoPDF.js JSX Support Documentation",
+    "category": "guide/core-concepts",
+    "route": "/docs/guide/core-concepts/jsx-support",
+    "order": 3,
+    "description": "GoPDF.js provides complete JSX support without relying on React or other frameworks. Through framework-level configuration, any project using WSX can get out-of-the-box JSX experience.",
+    "prev": "/docs/guide/core-concepts/light-components",
+    "next": "/docs/guide/core-concepts/design-philosophy"
+  },
+  "guide/core-concepts/design-philosophy": {
+    "title": "GoPDF.js Design Philosophy",
+    "category": "guide/core-concepts",
+    "route": "/docs/guide/core-concepts/design-philosophy",
+    "order": 4,
+    "description": "GoPDF.js is a native-first Web Components framework dedicated to providing the closest experience to native Web development",
+    "prev": "/docs/guide/core-concepts/jsx-support",
+    "next": "/docs/guide/core-concepts/wsx-design"
   }
 }

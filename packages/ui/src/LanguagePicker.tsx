@@ -1,21 +1,15 @@
 "use client";
 import { useLocale } from "use-intl";
-import { useRouter, usePathname, locales, type AppLocale } from "@gopdfjs/i18n";
+import {
+  localeLabels,
+  useRouter,
+  usePathname,
+  locales,
+  type AppLocale,
+} from "@gopdfjs/i18n";
 import { useState, useRef, useEffect } from "react";
 import { Globe, ChevronDown, Check } from "lucide-react";
-const localeNames: Record<string, string> = {
-  "en-US": "English (US)",
-  "en-GB": "English (UK)",
-  "en-CA": "English (CA)",
-  "zh-CN": "简体中文",
-  "zh-TW": "繁體中文",
-  "ja": "日本語",
-  "ko": "한국어",
-  "fr": "Français",
-  "es": "Español",
-  "de": "Deutsch",
-  "ru": "Русский"
-};
+
 export default function LanguagePicker() {
   const locale = useLocale();
   const router = useRouter();
@@ -41,7 +35,7 @@ export default function LanguagePicker() {
         className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-gray-100 transition-colors text-sm font-medium text-gray-600"
       >
         <Globe className="w-4 h-4" />
-        <span className="hidden sm:inline">{localeNames[locale] || locale}</span>
+        <span className="hidden sm:inline">{localeLabels[locale as AppLocale] ?? locale}</span>
         <ChevronDown className={`w-3 h-3 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
@@ -52,7 +46,7 @@ export default function LanguagePicker() {
               onClick={() => select(l)}
               className="w-full flex items-center justify-between px-3 py-2 text-sm text-gray-700 hover:bg-brand-light hover:text-brand rounded-lg transition-colors group"
             >
-              <span>{localeNames[l]}</span>
+              <span>{localeLabels[l]}</span>
               {locale === l && <Check className="w-4 h-4 text-brand" />}
             </button>
           ))}

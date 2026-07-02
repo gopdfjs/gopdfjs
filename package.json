@@ -13,6 +13,8 @@
     "test:rust": "cargo test --workspace",
     "pretest:e2e": "test -f packages/pdf-wasm/pkg/pdf_wasm_bg.wasm || pnpm build:wasm",
     "validate": "pnpm test:rust && pnpm test && pnpm lint && pnpm build",
+    "locale:check": "node packages/locale-cli/bin/gopdf-locale.mjs check",
+    "locale:sync": "node packages/locale-cli/bin/gopdf-locale.mjs sync --messages-dir=site/messages",
     "test": "pnpm test:rust && turbo run test",
     "test:coverage": "turbo run test:coverage",
     "test:e2e": "playwright test -c .spec/e2e/playwright.config.ts",

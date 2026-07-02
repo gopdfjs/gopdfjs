@@ -270,6 +270,871 @@
       "children": []
     }
   ],
+  "guide/advanced/typescript-wsx-types": [
+    {
+      "level": 2,
+      "text": "Table of Contents",
+      "id": "table-of-contents",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Why Does Each Package Need wsx.d.ts?",
+      "id": "why-does-each-package-need-wsxdts",
+      "children": [
+        {
+          "level": 3,
+          "text": "Problem Background",
+          "id": "problem-background",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "TypeScript Module Type Declaration Limitations",
+          "id": "typescript-module-type-declaration-limitations",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Actual Verification Results",
+          "id": "actual-verification-results",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Industry Best Practices",
+          "id": "industry-best-practices",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "References",
+          "id": "references",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "How to Maintain Type Consistency?",
+      "id": "how-to-maintain-type-consistency",
+      "children": [
+        {
+          "level": 3,
+          "text": "Automatic Synchronization Mechanism",
+          "id": "automatic-synchronization-mechanism",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Pre-commit Hook",
+          "id": "pre-commit-hook",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "CI/CD Verification",
+          "id": "cicd-verification",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Developer Guide",
+      "id": "developer-guide",
+      "children": [
+        {
+          "level": 3,
+          "text": "Modifying Type Definitions",
+          "id": "modifying-type-definitions",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Adding New Package",
+          "id": "adding-new-package",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Checking Type Consistency",
+          "id": "checking-type-consistency",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Troubleshooting",
+      "id": "troubleshooting",
+      "children": [
+        {
+          "level": 3,
+          "text": "Problem 1: TypeScript Error",
+          "id": "problem-1-typescript-error",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Problem 2: IDE Shows &quot;React is not in scope&quot; Error",
+          "id": "problem-2-ide-shows-quotreact-is-not-in-scopequot-error",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Problem 3: CI Verification Failed &quot;wsx.d.ts files are inconsistent&quot;",
+          "id": "problem-3-ci-verification-failed-quotwsxdts-files-are-inconsistentquot",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Problem 4: Pre-commit Hook Not Automatically Running",
+          "id": "problem-4-pre-commit-hook-not-automatically-running",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Problem 5: Newly Created Package Cannot Recognize .wsx Files",
+          "id": "problem-5-newly-created-package-cannot-recognize-wsx-files",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Summary",
+      "id": "summary",
+      "children": []
+    }
+  ],
+  "guide/advanced/publishing": [
+    {
+      "level": 2,
+      "text": "Prerequisites",
+      "id": "prerequisites",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Publishing Workflow",
+      "id": "publishing-workflow",
+      "children": [
+        {
+          "level": 3,
+          "text": "Method 1: Using Automated Publishing Script (Recommended)",
+          "id": "method-1-using-automated-publishing-script-recommended",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Phase 1: Version Management (Optional)",
+      "id": "phase-1-version-management-optional",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Phase 2: Publish to NPM",
+      "id": "phase-2-publish-to-npm",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Best Practice Features",
+      "id": "best-practice-features",
+      "children": [
+        {
+          "level": 3,
+          "text": "Method 2: Manual Publishing Workflow",
+          "id": "method-2-manual-publishing-workflow",
+          "children": [
+            {
+              "level": 4,
+              "text": "Step 1: Create Changeset",
+              "id": "step-1-create-changeset",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "Step 2: Build and Test",
+              "id": "step-2-build-and-test",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "Step 3: Apply Version Updates",
+              "id": "step-3-apply-version-updates",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "Step 4: Rebuild",
+              "id": "step-4-rebuild",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "Step 5: Publish to NPM",
+              "id": "step-5-publish-to-npm",
+              "children": []
+            },
+            {
+              "level": 4,
+              "text": "Step 6: Commit and Push",
+              "id": "step-6-commit-and-push",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Turbo Advantages",
+      "id": "turbo-advantages",
+      "children": [
+        {
+          "level": 3,
+          "text": "1. Parallel Build",
+          "id": "1-parallel-build",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "2. Smart Caching",
+          "id": "2-smart-caching",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "3. Dependency Awareness",
+          "id": "3-dependency-awareness",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "4. Incremental Build",
+          "id": "4-incremental-build",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Common Commands",
+      "id": "common-commands",
+      "children": [
+        {
+          "level": 3,
+          "text": "Build Related",
+          "id": "build-related",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Code Quality",
+          "id": "code-quality",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Changeset Related",
+          "id": "changeset-related",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Publishing Checklist",
+      "id": "publishing-checklist",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Troubleshooting",
+      "id": "troubleshooting",
+      "children": [
+        {
+          "level": 3,
+          "text": "Build Failure",
+          "id": "build-failure",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Version Conflict",
+          "id": "version-conflict",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Publishing Failure",
+          "id": "publishing-failure",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "CI/CD Integration",
+      "id": "cicd-integration",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Related Documentation",
+      "id": "related-documentation",
+      "children": []
+    }
+  ],
+  "guide/advanced/i18next-integration": [
+    {
+      "level": 2,
+      "text": "Installation",
+      "id": "installation",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Prerequisites",
+      "id": "prerequisites",
+      "children": [
+        {
+          "level": 3,
+          "text": "TypeScript Configuration",
+          "id": "typescript-configuration",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Vite Configuration (Required)",
+          "id": "vite-configuration-required",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Quick Start",
+      "id": "quick-start",
+      "children": [
+        {
+          "level": 3,
+          "text": "1. Initialize i18n",
+          "id": "1-initialize-i18n",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "2. Use Decorator (Recommended)",
+          "id": "2-use-decorator-recommended",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "3. Use useTranslation + @state",
+          "id": "3-use-usetranslation-state",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "4. Use Mixin",
+          "id": "4-use-mixin",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Configuration Options",
+      "id": "configuration-options",
+      "children": [
+        {
+          "level": 3,
+          "text": "Basic Configuration",
+          "id": "basic-configuration",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Using HTTP Backend (Recommended)",
+          "id": "using-http-backend-recommended",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Language Detection",
+          "id": "language-detection",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "API Reference",
+      "id": "api-reference",
+      "children": [
+        {
+          "level": 3,
+          "text": "initI18n(config?)",
+          "id": "initi18nconfig",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "@i18n(namespace?)",
+          "id": "i18nnamespace",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "useTranslation(namespace?)",
+          "id": "usetranslationnamespace",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "withI18n(Base, defaultNamespace?)",
+          "id": "withi18nbase-defaultnamespace",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Reactive Mechanism",
+      "id": "reactive-mechanism",
+      "children": [
+        {
+          "level": 3,
+          "text": "@i18n Decorator",
+          "id": "i18n-decorator",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "useTranslation + @state",
+          "id": "usetranslation-state",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "withI18n Mixin",
+          "id": "withi18n-mixin",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Switching Languages",
+      "id": "switching-languages",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Interpolation",
+      "id": "interpolation",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Plural Forms",
+      "id": "plural-forms",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Namespaces",
+      "id": "namespaces",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Type Safety",
+      "id": "type-safety",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Best Practices",
+      "id": "best-practices",
+      "children": [
+        {
+          "level": 3,
+          "text": "1. Use Decorator (Recommended)",
+          "id": "1-use-decorator-recommended",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "2. Organize Translation Files",
+          "id": "2-organize-translation-files",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "3. Use HTTP Backend",
+          "id": "3-use-http-backend",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "4. Language Switcher Component",
+          "id": "4-language-switcher-component",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Troubleshooting",
+      "id": "troubleshooting",
+      "children": [
+        {
+          "level": 3,
+          "text": "Runtime Error",
+          "id": "runtime-error",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Translations Not Updating",
+          "id": "translations-not-updating",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Type Errors",
+          "id": "type-errors",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Translation Key Not Found",
+          "id": "translation-key-not-found",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "More Information",
+      "id": "more-information",
+      "children": []
+    }
+  ],
+  "guide/advanced/example-development-plan": [
+    {
+      "level": 1,
+      "text": "WSX Example Component Development Plan",
+      "id": "wsx-example-component-development-plan",
+      "children": [
+        {
+          "level": 2,
+          "text": "Goals",
+          "id": "goals",
+          "children": []
+        },
+        {
+          "level": 2,
+          "text": "Development Principles",
+          "id": "development-principles",
+          "children": []
+        },
+        {
+          "level": 2,
+          "text": "Phase 1: Core Feature Examples (1-2 weeks)",
+          "id": "phase-1-core-feature-examples-1-2-weeks",
+          "children": [
+            {
+              "level": 3,
+              "text": "1. Lifecycle Example",
+              "id": "1-lifecycle-example",
+              "children": []
+            },
+            {
+              "level": 3,
+              "text": "2. Attribute Observation Example",
+              "id": "2-attribute-observation-example",
+              "children": []
+            },
+            {
+              "level": 3,
+              "text": "3. Event System Example",
+              "id": "3-event-system-example",
+              "children": []
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "text": "Phase 2: Interaction Pattern Examples (2-3 weeks)",
+          "id": "phase-2-interaction-pattern-examples-2-3-weeks",
+          "children": [
+            {
+              "level": 3,
+              "text": "4. Form Integration Example",
+              "id": "4-form-integration-example",
+              "children": []
+            },
+            {
+              "level": 3,
+              "text": "5. Component Communication Example",
+              "id": "5-component-communication-example",
+              "children": []
+            },
+            {
+              "level": 3,
+              "text": "6. Dynamic Content Example",
+              "id": "6-dynamic-content-example",
+              "children": []
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "text": "Phase 3: Advanced Feature Examples (3-4 weeks)",
+          "id": "phase-3-advanced-feature-examples-3-4-weeks",
+          "children": [
+            {
+              "level": 3,
+              "text": "7. Async Data Example",
+              "id": "7-async-data-example",
+              "children": []
+            },
+            {
+              "level": 3,
+              "text": "8. Performance Optimization Example",
+              "id": "8-performance-optimization-example",
+              "children": []
+            },
+            {
+              "level": 3,
+              "text": "9. Native API Integration Example",
+              "id": "9-native-api-integration-example",
+              "children": []
+            },
+            {
+              "level": 3,
+              "text": "10. Composition Pattern Example",
+              "id": "10-composition-pattern-example",
+              "children": []
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "text": "Implementation Plan",
+          "id": "implementation-plan",
+          "children": [
+            {
+              "level": 3,
+              "text": "Week 1",
+              "id": "week-1",
+              "children": []
+            },
+            {
+              "level": 3,
+              "text": "Week 2",
+              "id": "week-2",
+              "children": []
+            },
+            {
+              "level": 3,
+              "text": "Week 3",
+              "id": "week-3",
+              "children": []
+            },
+            {
+              "level": 3,
+              "text": "Week 4",
+              "id": "week-4",
+              "children": []
+            },
+            {
+              "level": 3,
+              "text": "Future Plans",
+              "id": "future-plans",
+              "children": []
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "text": "Success Criteria",
+          "id": "success-criteria",
+          "children": []
+        },
+        {
+          "level": 2,
+          "text": "Example Component Template",
+          "id": "example-component-template",
+          "children": []
+        },
+        {
+          "level": 2,
+          "text": "Documentation Requirements",
+          "id": "documentation-requirements",
+          "children": []
+        }
+      ]
+    }
+  ],
+  "guide/advanced/dom-cache": [
+    {
+      "level": 2,
+      "text": "Overview",
+      "id": "overview",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Core Concepts",
+      "id": "core-concepts",
+      "children": [
+        {
+          "level": 3,
+          "text": "What is DOM Cache?",
+          "id": "what-is-dom-cache",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Cache Key Composition",
+          "id": "cache-key-composition",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "⚠️ Key Rule: Avoid Duplicate Keys",
+      "id": "key-rule-avoid-duplicate-keys",
+      "children": [
+        {
+          "level": 3,
+          "text": "Why?",
+          "id": "why",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Problem Example ❌",
+          "id": "problem-example",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Correct Solution ✅",
+          "id": "correct-solution",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Best Practices",
+      "id": "best-practices",
+      "children": [
+        {
+          "level": 3,
+          "text": "1. Use Different Key Prefixes for Different Locations",
+          "id": "1-use-different-key-prefixes-for-different-locations",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "2. Keep Key Consistency in Conditional Rendering",
+          "id": "2-keep-key-consistency-in-conditional-rendering",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "3. Use Semantic Prefixes for Dynamic Containers",
+          "id": "3-use-semantic-prefixes-for-dynamic-containers",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "4. Use Unique Identifiers for List Items",
+          "id": "4-use-unique-identifiers-for-list-items",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Runtime Warnings",
+      "id": "runtime-warnings",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Compile-time Checking",
+      "id": "compile-time-checking",
+      "children": [
+        {
+          "level": 3,
+          "text": "Installation and Configuration",
+          "id": "installation-and-configuration",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "ESLint Error Example",
+          "id": "eslint-error-example",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "FAQ",
+      "id": "faq",
+      "children": [
+        {
+          "level": 3,
+          "text": "Q: Why can&#39;t the same key be used in different parent containers?",
+          "id": "q-why-can39t-the-same-key-be-used-in-different-parent-containers",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Q: All lists in my application use , will there be a problem?",
+          "id": "q-all-lists-in-my-application-use-will-there-be-a-problem",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Q: Do I need to change the key in conditional rendering?",
+          "id": "q-do-i-need-to-change-the-key-in-conditional-rendering",
+          "children": []
+        },
+        {
+          "level": 3,
+          "text": "Q: What if my data items don&#39;t have unique IDs?",
+          "id": "q-what-if-my-data-items-don39t-have-unique-ids",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "text": "Summary",
+      "id": "summary",
+      "children": []
+    },
+    {
+      "level": 2,
+      "text": "Related Resources",
+      "id": "related-resources",
+      "children": []
+    }
+  ],
   "guide/core-concepts/wsx-design": [
     {
       "level": 2,
@@ -1367,871 +2232,6 @@
       "level": 2,
       "text": "Summary",
       "id": "summary",
-      "children": []
-    }
-  ],
-  "guide/advanced/typescript-wsx-types": [
-    {
-      "level": 2,
-      "text": "Table of Contents",
-      "id": "table-of-contents",
-      "children": []
-    },
-    {
-      "level": 2,
-      "text": "Why Does Each Package Need wsx.d.ts?",
-      "id": "why-does-each-package-need-wsxdts",
-      "children": [
-        {
-          "level": 3,
-          "text": "Problem Background",
-          "id": "problem-background",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "TypeScript Module Type Declaration Limitations",
-          "id": "typescript-module-type-declaration-limitations",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "Actual Verification Results",
-          "id": "actual-verification-results",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "Industry Best Practices",
-          "id": "industry-best-practices",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "References",
-          "id": "references",
-          "children": []
-        }
-      ]
-    },
-    {
-      "level": 2,
-      "text": "How to Maintain Type Consistency?",
-      "id": "how-to-maintain-type-consistency",
-      "children": [
-        {
-          "level": 3,
-          "text": "Automatic Synchronization Mechanism",
-          "id": "automatic-synchronization-mechanism",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "Pre-commit Hook",
-          "id": "pre-commit-hook",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "CI/CD Verification",
-          "id": "cicd-verification",
-          "children": []
-        }
-      ]
-    },
-    {
-      "level": 2,
-      "text": "Developer Guide",
-      "id": "developer-guide",
-      "children": [
-        {
-          "level": 3,
-          "text": "Modifying Type Definitions",
-          "id": "modifying-type-definitions",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "Adding New Package",
-          "id": "adding-new-package",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "Checking Type Consistency",
-          "id": "checking-type-consistency",
-          "children": []
-        }
-      ]
-    },
-    {
-      "level": 2,
-      "text": "Troubleshooting",
-      "id": "troubleshooting",
-      "children": [
-        {
-          "level": 3,
-          "text": "Problem 1: TypeScript Error",
-          "id": "problem-1-typescript-error",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "Problem 2: IDE Shows &quot;React is not in scope&quot; Error",
-          "id": "problem-2-ide-shows-quotreact-is-not-in-scopequot-error",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "Problem 3: CI Verification Failed &quot;wsx.d.ts files are inconsistent&quot;",
-          "id": "problem-3-ci-verification-failed-quotwsxdts-files-are-inconsistentquot",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "Problem 4: Pre-commit Hook Not Automatically Running",
-          "id": "problem-4-pre-commit-hook-not-automatically-running",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "Problem 5: Newly Created Package Cannot Recognize .wsx Files",
-          "id": "problem-5-newly-created-package-cannot-recognize-wsx-files",
-          "children": []
-        }
-      ]
-    },
-    {
-      "level": 2,
-      "text": "Summary",
-      "id": "summary",
-      "children": []
-    }
-  ],
-  "guide/advanced/publishing": [
-    {
-      "level": 2,
-      "text": "Prerequisites",
-      "id": "prerequisites",
-      "children": []
-    },
-    {
-      "level": 2,
-      "text": "Publishing Workflow",
-      "id": "publishing-workflow",
-      "children": [
-        {
-          "level": 3,
-          "text": "Method 1: Using Automated Publishing Script (Recommended)",
-          "id": "method-1-using-automated-publishing-script-recommended",
-          "children": []
-        }
-      ]
-    },
-    {
-      "level": 2,
-      "text": "Phase 1: Version Management (Optional)",
-      "id": "phase-1-version-management-optional",
-      "children": []
-    },
-    {
-      "level": 2,
-      "text": "Phase 2: Publish to NPM",
-      "id": "phase-2-publish-to-npm",
-      "children": []
-    },
-    {
-      "level": 2,
-      "text": "Best Practice Features",
-      "id": "best-practice-features",
-      "children": [
-        {
-          "level": 3,
-          "text": "Method 2: Manual Publishing Workflow",
-          "id": "method-2-manual-publishing-workflow",
-          "children": [
-            {
-              "level": 4,
-              "text": "Step 1: Create Changeset",
-              "id": "step-1-create-changeset",
-              "children": []
-            },
-            {
-              "level": 4,
-              "text": "Step 2: Build and Test",
-              "id": "step-2-build-and-test",
-              "children": []
-            },
-            {
-              "level": 4,
-              "text": "Step 3: Apply Version Updates",
-              "id": "step-3-apply-version-updates",
-              "children": []
-            },
-            {
-              "level": 4,
-              "text": "Step 4: Rebuild",
-              "id": "step-4-rebuild",
-              "children": []
-            },
-            {
-              "level": 4,
-              "text": "Step 5: Publish to NPM",
-              "id": "step-5-publish-to-npm",
-              "children": []
-            },
-            {
-              "level": 4,
-              "text": "Step 6: Commit and Push",
-              "id": "step-6-commit-and-push",
-              "children": []
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "level": 2,
-      "text": "Turbo Advantages",
-      "id": "turbo-advantages",
-      "children": [
-        {
-          "level": 3,
-          "text": "1. Parallel Build",
-          "id": "1-parallel-build",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "2. Smart Caching",
-          "id": "2-smart-caching",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "3. Dependency Awareness",
-          "id": "3-dependency-awareness",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "4. Incremental Build",
-          "id": "4-incremental-build",
-          "children": []
-        }
-      ]
-    },
-    {
-      "level": 2,
-      "text": "Common Commands",
-      "id": "common-commands",
-      "children": [
-        {
-          "level": 3,
-          "text": "Build Related",
-          "id": "build-related",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "Code Quality",
-          "id": "code-quality",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "Changeset Related",
-          "id": "changeset-related",
-          "children": []
-        }
-      ]
-    },
-    {
-      "level": 2,
-      "text": "Publishing Checklist",
-      "id": "publishing-checklist",
-      "children": []
-    },
-    {
-      "level": 2,
-      "text": "Troubleshooting",
-      "id": "troubleshooting",
-      "children": [
-        {
-          "level": 3,
-          "text": "Build Failure",
-          "id": "build-failure",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "Version Conflict",
-          "id": "version-conflict",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "Publishing Failure",
-          "id": "publishing-failure",
-          "children": []
-        }
-      ]
-    },
-    {
-      "level": 2,
-      "text": "CI/CD Integration",
-      "id": "cicd-integration",
-      "children": []
-    },
-    {
-      "level": 2,
-      "text": "Related Documentation",
-      "id": "related-documentation",
-      "children": []
-    }
-  ],
-  "guide/advanced/i18next-integration": [
-    {
-      "level": 2,
-      "text": "Installation",
-      "id": "installation",
-      "children": []
-    },
-    {
-      "level": 2,
-      "text": "Prerequisites",
-      "id": "prerequisites",
-      "children": [
-        {
-          "level": 3,
-          "text": "TypeScript Configuration",
-          "id": "typescript-configuration",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "Vite Configuration (Required)",
-          "id": "vite-configuration-required",
-          "children": []
-        }
-      ]
-    },
-    {
-      "level": 2,
-      "text": "Quick Start",
-      "id": "quick-start",
-      "children": [
-        {
-          "level": 3,
-          "text": "1. Initialize i18n",
-          "id": "1-initialize-i18n",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "2. Use Decorator (Recommended)",
-          "id": "2-use-decorator-recommended",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "3. Use useTranslation + @state",
-          "id": "3-use-usetranslation-state",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "4. Use Mixin",
-          "id": "4-use-mixin",
-          "children": []
-        }
-      ]
-    },
-    {
-      "level": 2,
-      "text": "Configuration Options",
-      "id": "configuration-options",
-      "children": [
-        {
-          "level": 3,
-          "text": "Basic Configuration",
-          "id": "basic-configuration",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "Using HTTP Backend (Recommended)",
-          "id": "using-http-backend-recommended",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "Language Detection",
-          "id": "language-detection",
-          "children": []
-        }
-      ]
-    },
-    {
-      "level": 2,
-      "text": "API Reference",
-      "id": "api-reference",
-      "children": [
-        {
-          "level": 3,
-          "text": "initI18n(config?)",
-          "id": "initi18nconfig",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "@i18n(namespace?)",
-          "id": "i18nnamespace",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "useTranslation(namespace?)",
-          "id": "usetranslationnamespace",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "withI18n(Base, defaultNamespace?)",
-          "id": "withi18nbase-defaultnamespace",
-          "children": []
-        }
-      ]
-    },
-    {
-      "level": 2,
-      "text": "Reactive Mechanism",
-      "id": "reactive-mechanism",
-      "children": [
-        {
-          "level": 3,
-          "text": "@i18n Decorator",
-          "id": "i18n-decorator",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "useTranslation + @state",
-          "id": "usetranslation-state",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "withI18n Mixin",
-          "id": "withi18n-mixin",
-          "children": []
-        }
-      ]
-    },
-    {
-      "level": 2,
-      "text": "Switching Languages",
-      "id": "switching-languages",
-      "children": []
-    },
-    {
-      "level": 2,
-      "text": "Interpolation",
-      "id": "interpolation",
-      "children": []
-    },
-    {
-      "level": 2,
-      "text": "Plural Forms",
-      "id": "plural-forms",
-      "children": []
-    },
-    {
-      "level": 2,
-      "text": "Namespaces",
-      "id": "namespaces",
-      "children": []
-    },
-    {
-      "level": 2,
-      "text": "Type Safety",
-      "id": "type-safety",
-      "children": []
-    },
-    {
-      "level": 2,
-      "text": "Best Practices",
-      "id": "best-practices",
-      "children": [
-        {
-          "level": 3,
-          "text": "1. Use Decorator (Recommended)",
-          "id": "1-use-decorator-recommended",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "2. Organize Translation Files",
-          "id": "2-organize-translation-files",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "3. Use HTTP Backend",
-          "id": "3-use-http-backend",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "4. Language Switcher Component",
-          "id": "4-language-switcher-component",
-          "children": []
-        }
-      ]
-    },
-    {
-      "level": 2,
-      "text": "Troubleshooting",
-      "id": "troubleshooting",
-      "children": [
-        {
-          "level": 3,
-          "text": "Runtime Error",
-          "id": "runtime-error",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "Translations Not Updating",
-          "id": "translations-not-updating",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "Type Errors",
-          "id": "type-errors",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "Translation Key Not Found",
-          "id": "translation-key-not-found",
-          "children": []
-        }
-      ]
-    },
-    {
-      "level": 2,
-      "text": "More Information",
-      "id": "more-information",
-      "children": []
-    }
-  ],
-  "guide/advanced/example-development-plan": [
-    {
-      "level": 1,
-      "text": "WSX Example Component Development Plan",
-      "id": "wsx-example-component-development-plan",
-      "children": [
-        {
-          "level": 2,
-          "text": "Goals",
-          "id": "goals",
-          "children": []
-        },
-        {
-          "level": 2,
-          "text": "Development Principles",
-          "id": "development-principles",
-          "children": []
-        },
-        {
-          "level": 2,
-          "text": "Phase 1: Core Feature Examples (1-2 weeks)",
-          "id": "phase-1-core-feature-examples-1-2-weeks",
-          "children": [
-            {
-              "level": 3,
-              "text": "1. Lifecycle Example",
-              "id": "1-lifecycle-example",
-              "children": []
-            },
-            {
-              "level": 3,
-              "text": "2. Attribute Observation Example",
-              "id": "2-attribute-observation-example",
-              "children": []
-            },
-            {
-              "level": 3,
-              "text": "3. Event System Example",
-              "id": "3-event-system-example",
-              "children": []
-            }
-          ]
-        },
-        {
-          "level": 2,
-          "text": "Phase 2: Interaction Pattern Examples (2-3 weeks)",
-          "id": "phase-2-interaction-pattern-examples-2-3-weeks",
-          "children": [
-            {
-              "level": 3,
-              "text": "4. Form Integration Example",
-              "id": "4-form-integration-example",
-              "children": []
-            },
-            {
-              "level": 3,
-              "text": "5. Component Communication Example",
-              "id": "5-component-communication-example",
-              "children": []
-            },
-            {
-              "level": 3,
-              "text": "6. Dynamic Content Example",
-              "id": "6-dynamic-content-example",
-              "children": []
-            }
-          ]
-        },
-        {
-          "level": 2,
-          "text": "Phase 3: Advanced Feature Examples (3-4 weeks)",
-          "id": "phase-3-advanced-feature-examples-3-4-weeks",
-          "children": [
-            {
-              "level": 3,
-              "text": "7. Async Data Example",
-              "id": "7-async-data-example",
-              "children": []
-            },
-            {
-              "level": 3,
-              "text": "8. Performance Optimization Example",
-              "id": "8-performance-optimization-example",
-              "children": []
-            },
-            {
-              "level": 3,
-              "text": "9. Native API Integration Example",
-              "id": "9-native-api-integration-example",
-              "children": []
-            },
-            {
-              "level": 3,
-              "text": "10. Composition Pattern Example",
-              "id": "10-composition-pattern-example",
-              "children": []
-            }
-          ]
-        },
-        {
-          "level": 2,
-          "text": "Implementation Plan",
-          "id": "implementation-plan",
-          "children": [
-            {
-              "level": 3,
-              "text": "Week 1",
-              "id": "week-1",
-              "children": []
-            },
-            {
-              "level": 3,
-              "text": "Week 2",
-              "id": "week-2",
-              "children": []
-            },
-            {
-              "level": 3,
-              "text": "Week 3",
-              "id": "week-3",
-              "children": []
-            },
-            {
-              "level": 3,
-              "text": "Week 4",
-              "id": "week-4",
-              "children": []
-            },
-            {
-              "level": 3,
-              "text": "Future Plans",
-              "id": "future-plans",
-              "children": []
-            }
-          ]
-        },
-        {
-          "level": 2,
-          "text": "Success Criteria",
-          "id": "success-criteria",
-          "children": []
-        },
-        {
-          "level": 2,
-          "text": "Example Component Template",
-          "id": "example-component-template",
-          "children": []
-        },
-        {
-          "level": 2,
-          "text": "Documentation Requirements",
-          "id": "documentation-requirements",
-          "children": []
-        }
-      ]
-    }
-  ],
-  "guide/advanced/dom-cache": [
-    {
-      "level": 2,
-      "text": "Overview",
-      "id": "overview",
-      "children": []
-    },
-    {
-      "level": 2,
-      "text": "Core Concepts",
-      "id": "core-concepts",
-      "children": [
-        {
-          "level": 3,
-          "text": "What is DOM Cache?",
-          "id": "what-is-dom-cache",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "Cache Key Composition",
-          "id": "cache-key-composition",
-          "children": []
-        }
-      ]
-    },
-    {
-      "level": 2,
-      "text": "⚠️ Key Rule: Avoid Duplicate Keys",
-      "id": "key-rule-avoid-duplicate-keys",
-      "children": [
-        {
-          "level": 3,
-          "text": "Why?",
-          "id": "why",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "Problem Example ❌",
-          "id": "problem-example",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "Correct Solution ✅",
-          "id": "correct-solution",
-          "children": []
-        }
-      ]
-    },
-    {
-      "level": 2,
-      "text": "Best Practices",
-      "id": "best-practices",
-      "children": [
-        {
-          "level": 3,
-          "text": "1. Use Different Key Prefixes for Different Locations",
-          "id": "1-use-different-key-prefixes-for-different-locations",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "2. Keep Key Consistency in Conditional Rendering",
-          "id": "2-keep-key-consistency-in-conditional-rendering",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "3. Use Semantic Prefixes for Dynamic Containers",
-          "id": "3-use-semantic-prefixes-for-dynamic-containers",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "4. Use Unique Identifiers for List Items",
-          "id": "4-use-unique-identifiers-for-list-items",
-          "children": []
-        }
-      ]
-    },
-    {
-      "level": 2,
-      "text": "Runtime Warnings",
-      "id": "runtime-warnings",
-      "children": []
-    },
-    {
-      "level": 2,
-      "text": "Compile-time Checking",
-      "id": "compile-time-checking",
-      "children": [
-        {
-          "level": 3,
-          "text": "Installation and Configuration",
-          "id": "installation-and-configuration",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "ESLint Error Example",
-          "id": "eslint-error-example",
-          "children": []
-        }
-      ]
-    },
-    {
-      "level": 2,
-      "text": "FAQ",
-      "id": "faq",
-      "children": [
-        {
-          "level": 3,
-          "text": "Q: Why can&#39;t the same key be used in different parent containers?",
-          "id": "q-why-can39t-the-same-key-be-used-in-different-parent-containers",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "Q: All lists in my application use , will there be a problem?",
-          "id": "q-all-lists-in-my-application-use-will-there-be-a-problem",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "Q: Do I need to change the key in conditional rendering?",
-          "id": "q-do-i-need-to-change-the-key-in-conditional-rendering",
-          "children": []
-        },
-        {
-          "level": 3,
-          "text": "Q: What if my data items don&#39;t have unique IDs?",
-          "id": "q-what-if-my-data-items-don39t-have-unique-ids",
-          "children": []
-        }
-      ]
-    },
-    {
-      "level": 2,
-      "text": "Summary",
-      "id": "summary",
-      "children": []
-    },
-    {
-      "level": 2,
-      "text": "Related Resources",
-      "id": "related-resources",
       "children": []
     }
   ]
