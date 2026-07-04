@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/implemented/0021-protect-pdf.md
----
-rfc: "0021"
-tier: implemented
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/completed/0021-protect-pdf.md
 
 # RFC 0021 - Protect PDF
 
@@ -48,12 +36,13 @@ The browser's `SubtleCrypto` API (specifically `crypto.subtle.encrypt` with AES-
 
 ## 6. Implementation status (2026-06-28)
 
-| Layer | State | Notes |
-|-------|-------|-------|
-| **L3 product** | **Done** (assumed) | `/tools/protect` on gopdf.fyi; `@gopdfjs/ui` Header nav |
-| **L1 WASM** | **N/A** | Per RFC §5 — pdf-lib crypto JS path ([0057](../0057-rust-wasm-worker-architecture.md)) |
-| **Monorepo L3** | **Not in repo** | Tool runner not in tracked git; UI shell only |
-| **L2 `packages/tools`** | **Not started** | No orchestration package source |
-| **Tests** | **Not done** | No `.spec/e2e/tools/protect.spec.ts` |
+| Surface | Package | Runtime | State | Notes |
+|---------|---------|---------|-------|-------|
+| **npm** | `@gopdfjs/runners` | isomorphic | **Partial** | `protectPdf()` — one pkg, Node + browser |
+| **CLI** | `gopdf-cli protect` | node | **Planned** | thin wrapper over npm above |
+| **Rust / WASM** | — | — | Web Crypto (Node + browser) | per RFC + [0057](../0057-rust-wasm-worker-architecture.md) |
+| **Vitest** | — | — | **Partial** | `packages/runners` |
+| **Browser e2e** | — | browser | **Not done** | `demos/react/e2e/tools/protect-pdf.spec.ts` |
+| **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: **PARTIAL** — product **Implemented** per RFC §4; monorepo **unverified**. Strict **Done** requires E2E + optional `packages/tools` per [TASK_TRACKING](../../TASK_TRACKING.md).
+**Verdict**: **PARTIAL** — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-wasm-pdf-library-charter.md)). CLI wraps npm; no forked logic.

@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/proposed/0061-understand-pdf.md
----
-rfc: "0061"
-tier: proposed
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0061-understand-pdf.md
 
 # RFC 0061 - Understand PDF
 
@@ -33,7 +21,7 @@ This matches the original spec below. Implementation lives in the **product app*
 
 ### 2.2 Planned upgrade (L1 — RFC 0058)
 
-**Target**: `analyze_pdf` Worker `op` in `@gopdfjs/pdf-wasm`, backed by PDF Object Layer (RFC 0058 §3.2). Metadata, page count, and image XObject stats without full pdf.js page render. **Not started** in `packages/pdf-wasm/src/`.
+**Target**: `analyze_pdf` Worker `op` in `@gopdfjs/engine`, backed by PDF Object Layer (RFC 0058 §3.2). Metadata, page count, and image XObject stats without full pdf.js page render. **Not started** in `packages/engine/src/`.
 
 ### 2.3 Extracted details (acceptance)
   - **Basic File Info**: original file name, precise file size (in bytes, KB, MB).
@@ -54,11 +42,14 @@ This matches the original spec below. Implementation lives in the **product app*
 
 ## 5. Implementation status (2026-06-28)
 
-| Layer | State | Notes |
-|-------|-------|-------|
-| **L3 product** | **Done** (assumed) | Live on gopdf.fyi; not verifiable in monorepo git |
-| **L1 WASM** | **Not started** | No `analyze_pdf` in `lib.rs` / `worker.ts` |
-| **Monorepo** | **Not started** | No tool route/tests under `site/` or `packages/tools` |
-| **Tests** | **Not done** | No E2E |
+| Surface | Package | Runtime | State | Notes |
+|---------|---------|---------|-------|-------|
+| **npm** | `@gopdfjs/inspect` | isomorphic | **Partial** | JS metadata until L1 lands |
+| **npm** | `@gopdfjs/engine` | isomorphic (target) | **Not started** | planned `analyzePdf()` in same engine pkg |
+| **CLI** | `gopdf-cli inspect` | node | **Planned** | thin wrapper over npm above |
+| **Rust / WASM** | — | — | Planned `analyze_pdf` | per RFC + [0057](../0057-rust-wasm-worker-architecture.md) |
+| **Vitest** | — | — | **Partial** | `packages/inspect + packages/engine` |
+| **Browser e2e** | — | browser | **Not done** | `demos/react/e2e/tools/understand-pdf.spec.ts` |
+| **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: Treat as **Implemented (L3)** for product; **Proposed (L1)** for WASM upgrade. Track L1 under TASK_TRACKING P2.
+**Verdict**: **PARTIAL** — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-wasm-pdf-library-charter.md)). CLI wraps npm; no forked logic.

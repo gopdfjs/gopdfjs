@@ -1,16 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/charter/0057-rust-wasm-worker-architecture.md
----
-rfc: "0057"
-tier: charter
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0057-rust-wasm-worker-architecture.md
-
 # RFC 0057 - Rust/WASM Web Worker Architecture
 
 - **Status**: Accepted
@@ -39,30 +26,34 @@ tests:
 
 ## 3. Package structure
 
-| 层 | 包 / crate |
-|----|------------|
-| L1 算法 | `crates/gopdf-compress`, `crates/gopdf-image`, `crates/gopdf-linearize` |
-| WASM 绑定 | `crates/pdf-wasm`（`wasm-bindgen` 导出） |
-| Worker + 薄 JS | `packages/pdf-wasm`（`@gopdfjs/pdf-wasm`） |
-| L2 编排 | `packages/tools`（`@gopdfjs/tools`） |
+| 组件 | 位置 |
+|------|------|
+| Rust 算法 | `crates/gopdf-compress`, `crates/gopdf-image`, … |
+| WASM 绑定 | `crates/gopdf-wasm` |
+| 浏览器 WASM npm | `packages/engine`（`@gopdfjs/engine` — **单包目标**；browser Worker + Node 同 pkg） |
+| JS / TS npm 库 | `packages/runners`, `render`, … — **单包 isomorphic 优先** |
+| Node CLI | `packages/pdf-cli`（**`gopdf-cli`** — 薄包装 npm） |
 
 ```
-Cargo.toml                    # workspace root
-crates/
-  gopdf-compress/src/lib.rs   # RFC 0008
-  gopdf-image/src/lib.rs      # RFC 0017/0018/0028
-  gopdf-linearize/src/lib.rs  # RFC 0042
-  pdf-wasm/src/lib.rs         # thin wasm-bindgen facade
-packages/
-  pdf-wasm/
-    index.ts                  # Promise API → Worker
-    workerClient.ts           # postMessage protocol only
-    worker.ts                 # routes ops to WASM
-    workerClient.ts           # postMessage protocol only
-    pkg/                      # wasm-pack output (gitignore)
-  tools/
-    src/compress/run.ts       # runCompressPdf + stats
+Cargo.toml
+crates/gopdf-*     → 算法 + gopdf-wasm
+packages/*         → @gopdfjs/* npm（**单包优先**；必要时才 browser + -node）
+packages/pdf-cli/  → gopdf-cli（Node 薄包装）
+demos/react/       → 浏览器本地测试（private）
+site/              → 文档（private）
 ```
+
+### 3.1 Repository roles
+
+| 路径 | 用途 | 发布 |
+|------|------|------|
+| **`crates/`** | Rust；`pnpm build:wasm` → `packages/engine/pkg/` | 否 |
+| **`packages/`** | 全部 `@gopdfjs/*` + CLI | 是 |
+| **`demos/react/`** | 浏览器 smoke / e2e | 否 |
+| **`site/`** | OSS 文档 | 否 |
+
+**RFC 交付物 = 尽可能少的 npm 包 + CLI 薄包装**。单 pkg 不可行时才拆分 — 见 **RFC 0058 §2.3**。
+
 
 ## 4. Build pipeline
 
@@ -77,17 +68,17 @@ rustup target add wasm32-unknown-unknown
 
 ```bash
 pnpm build:wasm
-# wasm-pack build crates/pdf-wasm --target web --out-dir packages/pdf-wasm/pkg --release
+# wasm-pack build crates/gopdf-wasm --target web --out-dir ../../packages/engine/pkg --release
 ```
 
 `--target web` 产出 ES module，供 Worker `import` 使用。
 
 ### 4.3 Vite 消费方配置（`site/`、`demos/react/`）
 
-宿主应用为 **Vite + React**，不再使用 Next/Turbopack。消费 `@gopdfjs/pdf-wasm` 时在应用的 `vite.config.ts` 中：
+宿主应用为 **Vite + React**，不再使用 Next/Turbopack。消费 `@gopdfjs/engine` 时在应用的 `vite.config.ts` 中：
 
-- 使用 **`vite-plugin-wasm`** 与 **`vite-plugin-top-level-await`**（与 `pdf-wasm` 包内 library build 一致）。
-- **`optimizeDeps.exclude`** 中包含 `@gopdfjs/pdf-wasm`，避免预打包破坏 Worker + `.wasm` 解析。
+- 使用 **`vite-plugin-wasm`** 与 **`vite-plugin-top-level-await`**（与 `@gopdfjs/engine` 包内 library build 一致）。
+- **`optimizeDeps.exclude`** 中包含 `@gopdfjs/engine`，避免预打包破坏 Worker + `.wasm` 解析。
 - **`worker.format: 'es'`**，并在 `worker.plugins` 中重复挂载 wasm / top-level-await 插件。
 - 若需从 workspace 读取 `pkg/*.wasm`，为 `server.fs.allow` 配置 monorepo 根（见 `demos/react/vite.config.ts`）。
 
@@ -97,7 +88,7 @@ pnpm build:wasm
 
 ```json
 {
-  "name": "@gopdfjs/pdf-wasm",
+  "name": "@gopdfjs/engine",
   "type": "module",
   "main": "./index.ts",
   "exports": {
@@ -126,7 +117,7 @@ pnpm build:wasm
 | `grayscale` | `grayscale_pdf` | RFC 0028 |
 | `linearize` | `linearize_pdf` | RFC 0042 |
 
-源码以 `crates/pdf-wasm/src/lib.rs`（WASM 导出）与各 `crates/gopdf-*/src/lib.rs`（算法）为准；Worker 协议见 `packages/pdf-wasm/worker.ts`。
+源码以 `crates/gopdf-wasm/src/lib.rs`（WASM 导出）与各 `crates/gopdf-*/src/lib.rs`（算法）为准；Worker 协议见 `packages/engine/worker.ts`。
 
 ### 5.3 主机 API（`index.ts`）
 
@@ -139,7 +130,7 @@ import {
   splitEncodedImages,
   grayscalePdf,
   linearizePdf,
-} from "@gopdfjs/pdf-wasm";
+} from "@gopdfjs/engine";
 
 // 压缩（支持进度）
 const out = await compressPdf(bytes, "recommended", (f) => {
@@ -164,7 +155,7 @@ const parts = splitEncodedImages(packed);
 | 0042 | Web Optimize | **Rust/WASM** | `linearizePdf` — **stub only**（见 RFC 0042 §6）；pdf-lib 不做 linearization |
 | 0006 | Merge PDF | **JS (pdf-lib)** | 结构合并，非 CPU 热点 |
 | 0007 | Split PDF | **JS (pdf-lib)** | 同上 |
-| 0019 | PDF to Word | **Rust/WASM 优先** | **L1**：`pdf_to_docx`（`packages/pdf-wasm`）；Worker 仅编排与进度。见 **RFC 0019** |
+| 0019 | PDF to Word | **Rust/WASM 优先** | **L1**：`pdf_to_docx`（`packages/engine`）；Worker 仅编排与进度。见 **RFC 0019** |
 | 0020 | OCR PDF | **JS (tesseract.js)** | 已有 WASM |
 | 0021 | Protect PDF | **JS (SubtleCrypto)** | 硬件加速 |
 | all others | Various | **JS** | 无充分证据前不升 WASM |
@@ -175,14 +166,14 @@ const parts = splitEncodedImages(packed);
 
 ## 8. Testing strategy
 
-- **Rust（workspace）**：仓库根目录 `cargo test --workspace`（或 `pnpm test:rust`）。`gopdf-*` 在宿主目标上跑单元测试；`pdf-wasm` crate 的 `rlib` 目标参与同一 workspace 测试。
-- **WASM 产物**：`pnpm build:wasm`（根目录；`wasm-pack` 仅针对 `crates/pdf-wasm`）。
-- **前端**：`demos/react` 最小对照；`@gopdfjs/tools` / `@gopdfjs/pdf-wasm` Vitest；RFC `ready/` 工具加 Playwright（`.spec/e2e/`）。
+- **Rust（workspace）**：仓库根目录 `cargo test --workspace`（或 `pnpm test:rust`）。`gopdf-*` 在宿主目标上跑单元测试；`gopdf-wasm` crate 的 `rlib` 目标参与同一 workspace 测试。
+- **WASM 产物**：`pnpm build:wasm`（根目录；`wasm-pack` 仅针对 `crates/gopdf-wasm`）。
+- **前端**：`demos/react` smoke + Playwright `demos/react/e2e/`；各 `packages/*` Vitest（skill **`gopdf-e2e`**）。
 
 ## 9. Success criteria
 
-- [x] 根目录 `pnpm build:wasm` 成功生成 `packages/pdf-wasm/pkg/`
+- [x] 根目录 `pnpm build:wasm` 成功生成 `packages/engine/pkg/`
 - [ ] Worker 处理 10 MB 级 PDF 稳定（按工具覆盖）
 - [ ] 压缩等工具相对纯 JS 路径明显降延迟（以产品页实测为准）
 - [ ] WASM 处理期间主线程无明显卡顿
-- [ ] `pdf_wasm_bg.wasm` gzip 后体积目标 &lt; 1 MB（持续监控）
+- [ ] `gopdf_wasm_bg.wasm` gzip 后体积目标 &lt; 1 MB（持续监控）

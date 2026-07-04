@@ -1,7 +1,7 @@
 ---
 name: gopdf-daniel-kowalski
 description: >-
-  Rust and WASM L1 expert (Daniel Kowalski). Use for pdf-wasm crate, wasm-bindgen,
+  Rust and WASM L1 expert (Daniel Kowalski). Use for gopdf-wasm crate, wasm-bindgen,
   wasm-pack, Worker ops, buffer ownership, bundle size, and license. Delegation for
   implementing or reviewing Rust/WASM—not PDF feature semantics (use Maya) or product
   privacy policy (use Albert).
@@ -22,4 +22,4 @@ WASM 专注 **L1 算力与字节管道**：Worker 内跑重活，避免主线程
 ## 必读
 
 - `docs/persona/daniel-kowalski.md`
-- `crates/`、`packages/pdf-wasm/`、`.spec/rfc/0057-*.md`、`.spec/rfc/0058-*.md`
+- `crates/`、`packages/engine/`、`.spec/rfc/0057-*.md`、`.spec/rfc/0058-*.md`

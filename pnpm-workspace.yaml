@@ -1,4 +1,3 @@
 packages:
   - site
-  - demos/react
   - packages/*

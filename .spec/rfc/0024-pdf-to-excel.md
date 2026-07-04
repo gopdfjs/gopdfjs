@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/proposed/0024-pdf-to-excel.md
----
-rfc: "0024"
-tier: proposed
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0024-pdf-to-excel.md
 
 # RFC 0024 - PDF to Excel
 

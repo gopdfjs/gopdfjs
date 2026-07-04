@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/proposed/0050-job-app-creator.md
----
-rfc: "0050"
-tier: proposed
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0050-job-app-creator.md
 
 # RFC 0050 - Job Application Creator
 

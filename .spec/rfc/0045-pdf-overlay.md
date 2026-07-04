@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/proposed/0045-pdf-overlay.md
----
-rfc: "0045"
-tier: proposed
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0045-pdf-overlay.md
 
 # RFC 0045 - PDF Overlay (Letterhead)
 

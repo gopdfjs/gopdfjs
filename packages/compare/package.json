@@ -1,0 +1,27 @@
+{
+  "name": "@gopdfjs/compare",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@gopdfjs/render": "workspace:*",
+    "diff-match-patch": "^1.0.5",
+    "pixelmatch": "^7.2.0"
+  },
+  "devDependencies": {
+    "@types/diff-match-patch": "^1.0.36",
+    "@types/pixelmatch": "^5.2.6",
+    "happy-dom": "^20.8.4",
+    "typescript": "^5",
+    "vitest": "^3.0.0"
+  }
+}

@@ -1,15 +1,12 @@
-<<<<<<<< HEAD:.spec/rfc/ready/0008-compress-pdf.md
 ---
 rfc: "0008"
 tier: ready
 verified: true
-browser_only: true
+browser_only: false
 tests:
   unit: full
   e2e_playwright: full
 ---
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0008-compress-pdf.md
 
 # RFC 0008 - Compress PDF
 
@@ -20,7 +17,7 @@ tests:
 
 ## 1. Objective
 
-Reduce encoded PDF file size in the browser, without uploading user files. All computation runs in `crates/gopdf-compress` via `@gopdfjs/pdf-wasm` Worker (RFC 0057 / 0058); orchestration in `@gopdfjs/tools`.
+Reduce PDF file size locally. Rust in `crates/gopdf-compress`; **`@gopdfjs/engine`** (one pkg target — browser Worker today, Node in same pkg). **npm:** `compressPdf()`. **CLI:** `gopdf compress` wraps `@gopdfjs/engine/node`. **e2e:** `demos/react/e2e/tools/compress.spec.ts`.
 
 Two mechanisms at different readiness levels:
 
@@ -196,3 +193,16 @@ Add `lopdf` (or chosen alternative) as an optional dependency behind a Cargo fea
 - Encryption / decryption — RFC 0021 (SubtleCrypto per RFC 0057 §2).
 - Server-side compression — data does not leave the browser.
 - Stream filters other than FlateDecode (Phase 1) and DCTDecode/image XObjects (Phase 2).
+
+## 6. Implementation status (2026-06-28)
+
+| Surface | Package | Runtime | State | Notes |
+|---------|---------|---------|-------|-------|
+| **npm** | `@gopdfjs/engine` | isomorphic (target) | **Done** (P1) | `compressPdf()` — browser Worker today; Node in same pkg; split `-node` only if blocked |
+| **CLI** | `gopdf compress` | node | **Done** | thin wrapper over `@gopdfjs/engine/node` |
+| **Rust / WASM** | — | — | P1 Done | per RFC + [0057](../0057-rust-wasm-worker-architecture.md) |
+| **Vitest** | — | — | **Partial** | `packages/engine` |
+| **Browser e2e** | — | browser | **Done** | `demos/react/e2e/tools/compress.spec.ts` |
+| **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
+
+**Verdict**: **PARTIAL** — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-wasm-pdf-library-charter.md)). CLI wraps npm; no forked logic.

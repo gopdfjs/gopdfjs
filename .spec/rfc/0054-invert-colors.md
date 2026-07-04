@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/proposed/0054-invert-colors.md
----
-rfc: "0054"
-tier: proposed
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0054-invert-colors.md
 
 # RFC 0054 - Invert PDF Colors (Dark Mode)
 

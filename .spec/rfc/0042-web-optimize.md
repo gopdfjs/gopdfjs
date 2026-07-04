@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/proposed/0042-web-optimize.md
----
-rfc: "0042"
-tier: proposed
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0042-web-optimize.md
 
 # RFC 0042 - Web Optimization (Linearization)
 
@@ -46,10 +34,10 @@ Rust's ownership model means the entire transformation can be done in a single l
 
 **Note**: `pdf-lib` does not support linearization. This operation must be implemented natively in Rust — it cannot delegate to pdf-lib.
 
-**Integration**: Import `linearizePdf` from **`@gopdfjs/pdf-wasm`**（RFC 0057）。
+**Integration**: Import `linearizePdf` from **`@gopdfjs/engine`**（RFC 0057）。
 
 ```ts
-import { linearizePdf } from "@gopdfjs/pdf-wasm";
+import { linearizePdf } from "@gopdfjs/engine";
 
 const result = await linearizePdf(inputBytes);
 ```
@@ -58,11 +46,13 @@ const result = await linearizePdf(inputBytes);
 
 ## 6. Implementation status (2026-06-28)
 
-| Layer | State | Location |
-|-------|-------|----------|
-| **L1 WASM** | **Partial (stub)** | `packages/pdf-wasm/src/linearize.rs` — `inject_linearized_dict()` only; object reorder + xref rebuild **TODO** in source comments |
-| **L1 gap** | **Not done** | Full linearization per PDF 1.7 Appendix F; hint streams for byte-range HTTP |
-| **L3 product** | **Unknown** | No tool page in monorepo; API exported on Worker |
-| **Tests** | **Not done** | No Rust/E2E tests |
+| Surface | Package | Runtime | State | Notes |
+|---------|---------|---------|-------|-------|
+| **npm** | `@gopdfjs/engine` | isomorphic (target) | **Partial** | `linearizePdf()` — browser Worker today; Node in same pkg; split `-node` only if blocked |
+| **CLI** | `gopdf-cli linearize` | node | **Planned** | thin wrapper over npm above |
+| **Rust / WASM** | — | — | Partial stub | per RFC + [0057](../0057-rust-wasm-worker-architecture.md) |
+| **Vitest** | — | — | **Partial** | `packages/engine` |
+| **Browser e2e** | — | browser | **Not done** | `demos/react/e2e/tools/web-optimize.spec.ts` |
+| **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: `Linearized` flag may appear in first 1 KB; **RFC §4 success criteria not met** (no true fast-web-view behavior).
+**Verdict**: **PARTIAL** — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-wasm-pdf-library-charter.md)). CLI wraps npm; no forked logic.

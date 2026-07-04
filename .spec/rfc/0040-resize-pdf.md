@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/proposed/0040-resize-pdf.md
----
-rfc: "0040"
-tier: proposed
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0040-resize-pdf.md
 
 # RFC 0040 - Resize PDF Pages
 

@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/proposed/0030-n-up-pdf.md
----
-rfc: "0030"
-tier: proposed
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0030-n-up-pdf.md
 
 # RFC 0030 - N-up PDF (Pages per Sheet)
 

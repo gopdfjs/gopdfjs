@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/proposed/0037-scan-to-pdf.md
----
-rfc: "0037"
-tier: proposed
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0037-scan-to-pdf.md
 
 # RFC 0037 - Scan to PDF
 

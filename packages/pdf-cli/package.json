@@ -1,0 +1,45 @@
+{
+  "name": "@gopdfjs/pdf-cli",
+  "version": "0.1.0",
+  "description": "CLI PDF diagnostics for local inspection (no upload)",
+  "type": "module",
+  "main": "./dist/index.mjs",
+  "types": "./src/index.ts",
+  "bin": {
+    "gopdf": "./dist/index.mjs",
+    "gopdf-cli": "./dist/index.mjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "start": "node ./dist/index.mjs",
+    "test": "vitest run",
+    "prepublishOnly": "pnpm run build"
+  },
+  "dependencies": {
+    "@gopdfjs/engine": "workspace:*",
+    "@gopdfjs/extract": "workspace:*",
+    "@modelcontextprotocol/sdk": "^1.0.1",
+    "pdf-lib": "^1.17.1"
+  },
+  "devDependencies": {
+    "@gopdfjs/fixtures": "workspace:*",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "vite": "^5.0.0",
+    "vitest": "^3.0.0"
+  },
+  "keywords": [
+    "pdf",
+    "cli",
+    "diagnostics",
+    "gopdfjs"
+  ],
+  "license": "MIT"
+}

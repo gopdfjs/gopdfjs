@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/proposed/0053-compare-pdf.md
----
-rfc: "0053"
-tier: proposed
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0053-compare-pdf.md
 
 # RFC 0053 - Compare PDF
 

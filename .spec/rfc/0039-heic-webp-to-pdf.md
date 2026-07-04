@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/proposed/0039-heic-webp-to-pdf.md
----
-rfc: "0039"
-tier: proposed
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0039-heic-webp-to-pdf.md
 
 # RFC 0039 - HEIC/WebP to PDF
 

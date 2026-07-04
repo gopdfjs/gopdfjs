@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/implemented/0020-ocr-pdf.md
----
-rfc: "0020"
-tier: implemented
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/completed/0020-ocr-pdf.md
 
 # RFC 0020 - OCR PDF
 
@@ -50,12 +38,13 @@ The current architecture — Worker pool with one Worker per CPU core, each runn
 
 ## 6. Implementation status (2026-06-28)
 
-| Layer | State | Notes |
-|-------|-------|-------|
-| **L3 product** | **Done** (assumed) | gopdf.fyi OCR tool; **not** in `@gopdfjs/ui` Header (16-tool nav); assumed on gopdf.fyi |
-| **L1 WASM** | **N/A** | tesseract.js + pdfjs render — JS path |
-| **Monorepo L3** | **Not in repo** | Tool runner not in tracked git |
-| **L2 `packages/tools`** | **Not started** | No orchestration package source |
-| **Tests** | **Not done** | No `.spec/e2e/tools/ocr.spec.ts` |
+| Surface | Package | Runtime | State | Notes |
+|---------|---------|---------|-------|-------|
+| **npm** | `@gopdfjs/extract` | isomorphic | **Partial** | OCR pipeline — one pkg, Node + browser |
+| **CLI** | `gopdf-cli ocr` | node | **Planned** | thin wrapper over npm above |
+| **Rust / WASM** | — | — | N/A (tesseract.js) | per RFC + [0057](../0057-rust-wasm-worker-architecture.md) |
+| **Vitest** | — | — | **Partial** | `packages/extract` |
+| **Browser e2e** | — | browser | **Not done** | `demos/react/e2e/tools/ocr-pdf.spec.ts` |
+| **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: **PARTIAL** — product assumed live; monorepo **unverified**.
+**Verdict**: **PARTIAL** — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-wasm-pdf-library-charter.md)). CLI wraps npm; no forked logic.

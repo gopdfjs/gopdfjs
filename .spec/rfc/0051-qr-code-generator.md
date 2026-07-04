@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/proposed/0051-qr-code-generator.md
----
-rfc: "0051"
-tier: proposed
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0051-qr-code-generator.md
 
 # RFC 0051 - QR Code Generator
 

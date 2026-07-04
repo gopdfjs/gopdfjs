@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/implemented/0018-pdf-to-jpg.md
----
-rfc: "0018"
-tier: implemented
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/completed/0018-pdf-to-jpg.md
 
 # RFC 0018 - PDF to JPG
 
@@ -41,14 +29,14 @@ Facilitate high-fidelity rendering of PDF pages into JPEG/PNG image formats.
 
 **Decision: Hybrid（矩阵见 RFC 0057）。**
 
-**渲染**必须保留 **pdfjs**（Canvas / `ImageData`）。**出图编码**应使用 **`@gopdfjs/pdf-wasm`** 的 **`encodeImages`**，避免大批量高 DPI 下依赖 `canvas.toBlob()`。
+**渲染**必须保留 **pdfjs**（Canvas / `ImageData`）。**出图编码**应使用 **`@gopdfjs/engine`** 的 **`encodeImages`**，避免大批量高 DPI 下依赖 `canvas.toBlob()`。
 
 **Split responsibility**:
 1. **pdfjs (JS)** — 每页渲染到 `ImageData`（RGBA）。
 2. **Rust/WASM Worker** — `encodeImages(pixelsFlat, widths, heights, format, quality)`，再用 **`splitEncodedImages`** 拆成多份 JPEG/PNG 字节。
 
 ```ts
-import { encodeImages, splitEncodedImages } from "@gopdfjs/pdf-wasm";
+import { encodeImages, splitEncodedImages } from "@gopdfjs/engine";
 
 const packed = await encodeImages(pixelsFlat, widths, heights, "jpeg", 92);
 const jpegChunks = splitEncodedImages(packed);
@@ -58,13 +46,14 @@ const jpegChunks = splitEncodedImages(packed);
 
 ## 6. Implementation status (2026-06-28)
 
-| Layer | State | Notes |
-|-------|-------|-------|
-| **L3 product** | **Done** (assumed) | `/tools/pdf-to-jpg` on gopdf.fyi; `@gopdfjs/ui` Header nav |
-| **L1 WASM** | **Partial** | `encode_images` ✅ — batch JPEG/PNG encode after render |
-| **L1 gap** | **Not in repo** | pdfjs page render → `ImageData` (not in repo) |
-| **Monorepo L3** | **Not in repo** | End-to-end orchestration not in tracked git |
-| **L2 `packages/tools`** | **Not started** | No orchestration package source |
-| **Tests** | **Not done** | No `.spec/e2e/tools/pdf-to-jpg.spec.ts` |
+| Surface | Package | Runtime | State | Notes |
+|---------|---------|---------|-------|-------|
+| **npm** | `@gopdfjs/render` | isomorphic (target) | **Partial** | pdf.js render — one pkg; split only if Node blocked |
+| **npm** | `@gopdfjs/engine` | isomorphic (target) | **Partial** | WASM encode — one pkg with render |
+| **CLI** | `gopdf-cli pdf-to-jpg` | node | **Planned** | thin wrapper over npm above |
+| **Rust / WASM** | — | — | Hybrid | per RFC + [0057](../0057-rust-wasm-worker-architecture.md) |
+| **Vitest** | — | — | **Partial** | `packages/render + packages/engine` |
+| **Browser e2e** | — | browser | **Not done** | `demos/react/e2e/tools/pdf-to-jpg.spec.ts` |
+| **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: **PARTIAL** — hybrid WASM leg in repo; full tool path unverified in monorepo.
+**Verdict**: **PARTIAL** — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-wasm-pdf-library-charter.md)). CLI wraps npm; no forked logic.

@@ -16,10 +16,11 @@ dist/
 build/
 .next/
 
-# Rust / wasm-pack (workspace root + packages/pdf-wasm output)
+# Rust / wasm-pack (workspace root + packages/engine output)
 target/
 Cargo.lock
-packages/pdf-wasm/pkg/
+packages/engine/pkg/
+crates/gopdf-wasm/packages/
 
 # Tests & coverage (Vitest)
 coverage/
@@ -45,6 +46,9 @@ Thumbs.db
 
 # IDE / editor
 .idea/
+.nuwa/
+!.nuwa/persona/
+FEEDBACK.md
 
 # Logs
 logs/

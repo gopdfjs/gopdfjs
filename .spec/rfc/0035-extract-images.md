@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/proposed/0035-extract-images.md
----
-rfc: "0035"
-tier: proposed
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0035-extract-images.md
 
 # RFC 0035 - Extract Images from PDF
 
@@ -38,10 +26,13 @@ Identify and extract all raster image assets embedded within a PDF document at t
 
 ## 5. Implementation status (2026-06-28)
 
-| Layer | State | Notes |
-|-------|-------|-------|
-| **L3 product** | **Unknown** | Not listed in `@gopdfjs/ui` Header (16-tool nav); may exist on gopdf.fyi homepage — verify manually |
-| **Monorepo** | **Not started** | No `extract-images` route/tests |
-| **WASM** | **Not planned** | pdfjs L3 per §2; no `pdf-wasm` op |
+| Surface | Package | Runtime | State | Notes |
+|---------|---------|---------|-------|-------|
+| **npm** | `@gopdfjs/extract` | isomorphic (target) | **Not started** | image extract — one pkg; pdfjs inside; split only if Node blocked |
+| **CLI** | `gopdf-cli extract-images` | node | **Planned** | thin wrapper over npm above |
+| **Rust / WASM** | — | — | N/A (pdfjs) | per RFC + [0057](../0057-rust-wasm-worker-architecture.md) |
+| **Vitest** | — | — | **Partial** | `packages/extract` |
+| **Browser e2e** | — | browser | **Not done** | `demos/react/e2e/tools/extract-images.spec.ts` |
+| **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: **NOT STARTED** in monorepo until product link confirmed. If live on gopdf.fyi, update Status → **Partial (L3)** and add E2E when L3 code is in repo.
+**Verdict**: **NOT STARTED** — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-wasm-pdf-library-charter.md)). CLI wraps npm; no forked logic.

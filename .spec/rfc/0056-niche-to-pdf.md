@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/proposed/0056-niche-to-pdf.md
----
-rfc: "0056"
-tier: proposed
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0056-niche-to-pdf.md
 
 # RFC 0056 - Niche Formats to PDF (DjVu, PAGES, DWG)
 

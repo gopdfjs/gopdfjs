@@ -1,0 +1,21 @@
+{
+  "name": "@gopdfjs/fixtures",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Shared PDF test fixtures for CLI Vitest and Playwright e2e",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./pdf/*": "./pdf/*"
+  },
+  "files": ["src", "pdf"],
+  "scripts": {
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^3.0.0"
+  },
+  "license": "MIT"
+}

@@ -43,7 +43,7 @@ Structure, layout, and annotation tools — merge, split, reorder, crop, sign, w
 
 ## Closure
 
-0003 was a **planning umbrella**. Per-tool RFCs exist; no unique acceptance criteria remain. New edit/organize features → RFC **0062+** or amend the child RFC.
+0003 was a **planning umbrella**. Per-tool RFCs exist; umbrella **closed**. New edit/organize features → RFC **0062+** or amend the child RFC.
 
 ## Implementation roll-up (2026-06-28)
 

@@ -4,7 +4,7 @@ description: >-
   Guides GoPDF browser-native PDF work: Rust/WASM, Web Workers, privacy-first.
   Each persona is a real named expert with domain personality; see docs/persona/*.md
   (incl. Linus Torvalds for merge/systems bar on large WASM/Worker changes).
-  Use for PDF tools, wasm-pack, Worker ops, RFC alignment, WASM, pdf-wasm, privacy.
+  Use for PDF tools, wasm-pack, Worker ops, RFC alignment, WASM, @gopdfjs/engine, privacy.
 ---
 
 # GoPDF：浏览器原生 PDF + Rust WASM（隐私优先）
@@ -25,7 +25,7 @@ description: >-
 
 - **架构**：`.spec/rfc/0057-rust-wasm-worker-architecture.md`
 - **WASM 边界与 crate 分层**：`.spec/rfc/0058-wasm-pdf-library-charter.md`
-- **Rust workspace**：`crates/README.md` — 算法在 `crates/gopdf-*`；**仅**根目录 `pnpm build:wasm` / `pnpm test:rust`；禁止在 `packages/pdf-wasm/` 放 Rust
+- **Rust workspace**：`crates/README.md` — 算法在 `crates/gopdf-*`；**仅**根目录 `pnpm build:wasm` / `pnpm test:rust`；禁止在 `packages/engine/` 放 Rust
 - **具名专家**：`docs/persona/albert-li.md`、`maya-okonkwo.md`、`daniel-kowalski.md`、`linus-torvalds.md`
 - **子代理委托**：`.claude/agents/`（与 `docs/persona/*.md` 对应）；索引见 `.claude/agents/README.md`
 

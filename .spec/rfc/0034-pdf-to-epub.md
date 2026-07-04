@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/proposed/0034-pdf-to-epub.md
----
-rfc: "0034"
-tier: proposed
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0034-pdf-to-epub.md
 
 # RFC 0034 - PDF to EPUB/Mobi
 

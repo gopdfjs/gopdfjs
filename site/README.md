@@ -1,37 +1,33 @@
-# @gopdfjs/site
+# `@gopdfjs/demo-react`
 
-GoPDF.js 官网与示例站：**从 [wsxjs/site](https://github.com/wsxjs/wsxjs/tree/main/site) 完整同步**后改为 **GoPDF** 品牌与仓库链接，依赖全部使用 npm 上的 `@wsxjs/*`（无 wsxjs monorepo 源码 alias）。
+最小 Vite + React 页面，用来对照测试：
 
-## 栈
+| 路径 | 用途 |
+|------|------|
+| **pdf.js** | 解析 PDF、读取 `numPages`（与主站 `react-pdf` / `pdfjs-dist` 同源能力） |
+| **`@gopdfjs/engine`** | Rust 编译的 WASM：压缩、灰度、线性化（经 Web Worker） |
 
-- WSX（`.wsx`）+ `@wsxjs/wsx-vite-plugin` + UnoCSS + `wsx-press` 文档
-- i18next + `@wsxjs/wsx-i18next`，多语言 JSON 在 `public/locales/`
-- EditorJS / Marked / SlideJS / CalendarJS 等示例与上游 site 一致
+## 前置：生成 WASM 产物
 
-## 根元素
+在仓库根目录执行（需已安装 Rust + `wasm32-unknown-unknown` + `wasm-pack`）：
 
-- 自定义元素标签名：`gopdf-app`（原 `wsx-app`）
+```bash
+pnpm build:wasm
+```
 
-## GitHub Pages
+未执行时，`pkg/` 不存在，Worker 会报错。
 
-- 默认子路径：`/gopdf/`（`GOPDF_PAGES_BASE` 可覆盖）
-- `build:pages` / `build:pages:domain` 与 monorepo 根脚本一致
+## 启动 demo
 
 ```bash
 pnpm install
-pnpm --filter=@gopdfjs/site dev
-pnpm --filter=@gopdfjs/site build
-pnpm --filter=@gopdfjs/site build:pages
+pnpm --filter=@gopdfjs/demo-react dev
 ```
 
-## 与上游同步
+浏览器打开终端提示的本地 URL，选一个 PDF：先点 **Count pages**（pdf.js），再试 **Compress / Grayscale / Linearize**（wasm），可用 **Download last wasm output** 保存结果。
 
-若需再次对齐 wsxjs 官网，可在本机执行（注意先提交或备份）：
+## 生产站 vs 本 demo
 
-```bash
-rsync -a --delete \
-  --exclude node_modules --exclude dist --exclude .turbo --exclude .wsx-press \
-  /path/to/wsxjs/site/ ./site/
-```
-
-然后重新应用本目录内的 **GoPDF 品牌化** 与 **`vite.config.ts`（npm 依赖、无 alias）** 等补丁。
+- 正式站点在 **`site/`**，工具页以 pdf.js / pdf-lib 为主，需要 WASM 的能力再接入 `@gopdfjs/engine`。
+- **`/tools/compress`**：最小 Compress 页，直调 `@gopdfjs/engine`（需先 `pnpm build:wasm`）。
+- 本目录不依赖 `site` 或 ilovepdf 产品包。

@@ -37,7 +37,7 @@ Browser-native conversion: PDF ↔ other formats, images, Office, web, text. Pri
 
 ## Closure
 
-0002 was a **planning umbrella**. Per-tool RFCs exist; no unique acceptance criteria remain. New conversion features → new numbered RFC **0062+** or amend the child RFC.
+0002 was a **planning umbrella**. Per-tool RFCs exist; umbrella **closed**. New conversion features → RFC **0062+** or amend the child RFC.
 
 ## Implementation roll-up (2026-06-28)
 

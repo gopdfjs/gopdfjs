@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/implemented/0017-jpg-to-pdf.md
----
-rfc: "0017"
-tier: implemented
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/completed/0017-jpg-to-pdf.md
 
 # RFC 0017 - JPG to PDF
 
@@ -22,7 +10,7 @@ Convert raster image files into search-optimized PDF documents.
 
 ## 2. Technical Specification
 - **Core Library (product assembly)**: **`pdf-lib`** — 将图像嵌入为 `XObject`、页尺寸与边距（当前产品常见路径）。
-- **Core Library (batch encode)**: **`@gopdfjs/pdf-wasm`** — `encodeImages` / `splitEncodedImages`，对 **RGBA 像素缓冲** 做 JPEG/PNG 编码（RFC 0057 / 0058）；**不负责**整册 PDF 拼装（crate 未导出 `imagesToPdf` 前不得写为已实现 API）。
+- **Core Library (batch encode)**: **`@gopdfjs/engine`** — `encodeImages` / `splitEncodedImages`，对 **RGBA 像素缓冲** 做 JPEG/PNG 编码（RFC 0057 / 0058）；**不负责**整册 PDF 拼装（crate 未导出 `imagesToPdf` 前不得写为已实现 API）。
 - **Processing Logic**:
     - （JS）解码用户图片为位图 → 可选调用 WASM 批量编码 → 再用 pdf-lib 写入 PDF 页。
     - 页尺寸：A4 / Auto / Custom；边距与方向由产品层处理。
@@ -43,10 +31,10 @@ Convert raster image files into search-optimized PDF documents.
 
 大批量图片时，主线程 `canvas.toBlob()` 易卡顿；**库已提供** `encode_images`，用于在 Worker 内对 **已展开的 RGBA 帧** 做 JPEG/PNG 编码。整册 PDF 的拼装仍由 **pdf-lib**（或未来 Rust 侧 mux，需单独 RFC）完成。
 
-**Integration（编码子步骤）**: 使用 **`@gopdfjs/pdf-wasm`**：
+**Integration（编码子步骤）**: 使用 **`@gopdfjs/engine`**：
 
 ```ts
-import { encodeImages, splitEncodedImages } from "@gopdfjs/pdf-wasm";
+import { encodeImages, splitEncodedImages } from "@gopdfjs/engine";
 
 // pixelsFlat: 多页 RGBA 拼接；widths/heights: 每帧宽高
 const packed = await encodeImages(pixelsFlat, widths, heights, "jpeg", 92);
@@ -58,13 +46,14 @@ const jpegChunks = splitEncodedImages(packed);
 
 ## 6. Implementation status (2026-06-28)
 
-| Layer | State | Notes |
-|-------|-------|-------|
-| **L3 product** | **Done** (assumed) | `/tools/jpg-to-pdf` on gopdf.fyi; `@gopdfjs/ui` Header nav |
-| **L1 WASM** | **Partial** | `encode_images` ✅ — pixel → JPEG/PNG bytes in `packages/pdf-wasm` |
-| **L1 gap** | **Not in repo** | PDF mux / page assembly = **pdf-lib** (not in repo) |
-| **Monorepo L3** | **Not in repo** | End-to-end orchestration not in tracked git |
-| **L2 `packages/tools`** | **Not started** | No orchestration package source |
-| **Tests** | **Not done** | No `.spec/e2e/tools/jpg-to-pdf.spec.ts` |
+| Surface | Package | Runtime | State | Notes |
+|---------|---------|---------|-------|-------|
+| **npm** | `@gopdfjs/runners` | isomorphic | **Partial** | pdf-lib assembly — one pkg |
+| **npm** | `@gopdfjs/engine` | isomorphic (target) | **Partial** | `encodeImages` — one pkg with runners |
+| **CLI** | `gopdf-cli jpg-to-pdf` | node | **Planned** | thin wrapper over npm above |
+| **Rust / WASM** | — | — | Hybrid encode leg | per RFC + [0057](../0057-rust-wasm-worker-architecture.md) |
+| **Vitest** | — | — | **Partial** | `packages/runners + packages/engine` |
+| **Browser e2e** | — | browser | **Not done** | `demos/react/e2e/tools/jpg-to-pdf.spec.ts` |
+| **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: **PARTIAL** — hybrid WASM leg in repo; full tool path unverified in monorepo.
+**Verdict**: **PARTIAL** — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-wasm-pdf-library-charter.md)). CLI wraps npm; no forked logic.

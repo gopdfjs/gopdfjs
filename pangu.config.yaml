@@ -6,7 +6,7 @@ demos:
     value: site
     description: GoPDF.js 宣传落地页（Vite 静态站，GitHub Pages base + 404.html，对齐 wsxjs/site）
     package: "@gopdfjs/site"
-  - name: Demo — pdf.js vs pdf-wasm
+  - name: Demo — pdf.js vs @gopdfjs/engine
     value: demo-react
-    description: 最小页面对照测试 pdf.js 与 @gopdfjs/pdf-wasm
+    description: 最小页面对照测试 pdf.js 与 @gopdfjs/engine
     package: "@gopdfjs/demo-react"

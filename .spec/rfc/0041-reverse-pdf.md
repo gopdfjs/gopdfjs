@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/proposed/0041-reverse-pdf.md
----
-rfc: "0041"
-tier: proposed
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0041-reverse-pdf.md
 
 # RFC 0041 - Reverse PDF Pages
 

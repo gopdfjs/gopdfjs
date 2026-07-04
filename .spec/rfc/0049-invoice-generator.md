@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/proposed/0049-invoice-generator.md
----
-rfc: "0049"
-tier: proposed
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0049-invoice-generator.md
 
 # RFC 0049 - Invoice Generator (ZUGFeRD)
 

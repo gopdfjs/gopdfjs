@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/proposed/0027-repair-pdf.md
----
-rfc: "0027"
-tier: proposed
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0027-repair-pdf.md
 
 # RFC 0027 - Repair PDF
 

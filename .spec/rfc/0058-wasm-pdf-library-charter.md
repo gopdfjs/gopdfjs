@@ -1,16 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/charter/0058-wasm-pdf-library-charter.md
----
-rfc: "0058"
-tier: charter
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0058-wasm-pdf-library-charter.md
-
 # RFC 0058 - WASM PDF 库目标与分层（Charter）
 
 - **Status**: Accepted
@@ -19,85 +6,108 @@ tests:
 
 ## 1. Objective
 
-把 **「以 Rust/WASM 为计算内核的 PDF 能力」** 写成与代码库一致的目标陈述，避免 RFC 仍描述已废弃的包名、框架或尚未实现的 Worker 操作名。本 RFC 与 **RFC 0057** 配套：0057 规定集成模式；本 RFC 规定 **产品分层** 与 **库边界**。
+**Every tool RFC exists to specify shippable `@gopdfjs/*` npm packages**. **Prefer exactly one runtime-neutral package** (`Uint8Array` in/out; same import in browser bundlers and Node). **Split into browser + Node packages only when a single package is infeasible** (Worker-only load, DOM/canvas, headless render) — same algorithms, no duplicated logic. Try **conditional exports / subpaths** in one pkg before adding `@gopdfjs/*-node`. **`gopdf-cli`** is a **thin Node wrapper** over whichever npm pkg(s) ship the capability.
+
+本 RFC 与 **RFC 0057** 配套：0057 = WASM Worker 集成；本 RFC = **npm 包边界**、Rust crate 映射、CLI 关系。
+
+**Non-goals for RFCs:** product websites, React shells, i18n, marketing `site/` — those are consumers of npm, not spec targets.
 
 ## 2. Library identity
 
 | 项 | 约定 |
 |----|------|
-| npm / workspace 名 | **`@gopdfjs/pdf-wasm`**（薄 JS）· **`@gopdfjs/tools`**（L2 编排） |
+| npm scope | **`@gopdfjs/*`** — 全部在 `packages/` |
+| **默认** | **单包 isomorphic** — `Uint8Array` in/out；无 DOM / 无 `fs` 进核心 API |
+| WASM npm | **`@gopdfjs/engine`** — 目标 **单包**（browser Worker + Node 同 pkg 或 subpath）；仅当无法实现再拆 `-node` |
+| 渲染 npm | **`@gopdfjs/render`** — 目标 **单包**；仅 pdf.js/Canvas 无法在 Node 共存时再拆 `-node` |
+| Node CLI | **`@gopdfjs/pdf-cli`**（bin **`gopdf-cli`**）— 薄包装 npm；不复制算法 |
 | Cargo workspace | 根目录 `Cargo.toml` |
-| L1 算法 crate | `crates/gopdf-compress`、`crates/gopdf-image`、`crates/gopdf-linearize` |
-| WASM 绑定 crate | `crates/pdf-wasm`（`wasm-bindgen`，`cdylib`） |
-| JS 宿主 | `packages/pdf-wasm/`（`index.ts`、`worker.ts`、`workerClient.ts`） |
-| 构建产物 | `packages/pdf-wasm/pkg/`（`wasm-pack build crates/pdf-wasm`，**gitignore**） |
+| Rust / WASM algorithm crates | `crates/gopdf-compress`、`crates/gopdf-image`、`crates/gopdf-linearize`、… |
+| WASM 绑定 crate | `crates/gopdf-wasm`（`wasm-bindgen`，`cdylib`） |
+| JS 宿主 | `packages/engine/`（`index.ts`、`worker.ts`、`workerClient.ts`） |
+| 构建产物 | `packages/engine/pkg/`（`wasm-pack build crates/gopdf-wasm`，**gitignore**） |
 
-## 3. Layering（三层）
+### 2.1 Monorepo layout
 
-| 层 | 职责 | 实现位置 |
-|----|------|----------|
-| **L3 应用** | 路由、i18n、工具页 UI、文件选择与下载 | `site/`（Vite + React + React Router） |
-| **L2 编排** | 工具 API、统计、进度封装 | `packages/tools/`（如 `runCompressPdf`） |
-| **L1 WASM** | Deflate、图像编码、灰度、线性化等 | `crates/gopdf-*` → `crates/pdf-wasm` → `pkg/pdf_wasm_bg.wasm` |
-| **Worker 胶水** | 单例 Worker、`ArrayBuffer` transfer | `packages/pdf-wasm/worker.ts`、`workerClient.ts` |
+| 路径 | 职责 | npm 发布 |
+|------|------|----------|
+| **`crates/`** | Rust 算法；浏览器路径经 `gopdf-wasm` → `packages/engine/pkg/` | 否 |
+| **`packages/`** | 全部 **`@gopdfjs/*`** 库 + **`pdf-cli`** | 是 |
+| **`demos/react/`** | 本地 **浏览器** smoke / Playwright e2e 宿主 | 否 |
+| **`site/`** | OSS 文档（WSX）；**不是** RFC 交付物 | 否 |
 
-**原则**：能放进 L1 且明显受 GC/吞吐影响的，优先 WASM；**解析页为位图**（渲染）仍以 **pdf.js（L3）** 为主；**表单、合并页、轻量结构改写** 仍以 **pdf-lib（L3）** 为主，除非 RFC 0057 矩阵明确迁移。结构分析（metadata、页数、图像统计）通过 §3.2 的 PDF Object Layer 在 **L1 WASM** 实现。
+### 2.2 Delivery model（RFC 必读）
 
-## 3.1 `pdf-wasm` 范围（与已规划工具对齐）
+| 消费方式 | 用什么 | 说明 |
+|----------|--------|------|
+| **Browser app** | **prefer one** `@gopdfjs/*` | 同 import；WASM 走 `@gopdfjs/engine` |
+| **Node app / script** | **same pkg** when isomorphic | 读 `Uint8Array` / 路径 |
+| **Terminal** | **`gopdf-cli`** | 薄包装上述 npm |
+| **Product app** | same npm from registry | ilovepdf / gopdf.fyi — UI only |
 
-GoPDF 定位为 **约 80% 常见场景的 PDF 工具集**，**不是**全功能渲染器或版式编辑器。**`@gopdfjs/pdf-wasm`** 只承担其中 **大缓冲区 / 高吞吐 / 明确由 RFC 0057 矩阵划入 Rust/WASM** 的部分；其余工具留在 **L3（pdf-lib / pdf.js / 浏览器 API 等）**，或通过 **Hybrid** 只调用本库的 **子步骤**。
+每个 numbered tool RFC（0006+）必须声明：**包名（尽量少）**、**是否必须拆分**、**公开 API**、**CLI 子命令**。
+
+维护说明：发布步骤见 [`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)。
+
+### 2.3 Runtime rules（2026-06-28）
+
+**Order of preference:**
+
+1. **One isomorphic npm package** — e.g. `@gopdfjs/runners` (merge, split, …).
+2. **One pkg + conditional exports** — e.g. `@gopdfjs/engine` with browser Worker path and Node WASM subpath in **same package**.
+3. **Two packages (last resort)** — `@gopdfjs/<name>` (browser) + `@gopdfjs/<name>-node` (Node / CLI) — **only** when (1) or (2) failed; RFC must state **why**.
+
+| 情况 | 包策略 | 示例 |
+|------|--------|------|
+| pdf-lib / 纯字节 | **单包** | `@gopdfjs/runners` |
+| Rust WASM | **单包优先** `@gopdfjs/engine` | `compressPdf()` — Worker in browser; extend Node in same pkg |
+| WASM 无法单包 | **才拆** `engine` + `engine-node` | RFC 须写阻塞原因 |
+| pdf.js 渲染 | **单包优先** `@gopdfjs/render` | 不行再 `render-node` |
+| Hybrid | **最少 pkg 数** | 0017: `runners` + `engine`（各尽量单包） |
+| CLI | Node 薄包装 | `gopdf-cli` → 上面的 npm，禁止第二套实现 |
+
+## 3. Package layering（实现分层，非产品层）
+
+| 层 | 职责 | 位置 |
+|----|------|------|
+| **Rust / WASM** | 大缓冲、Flate、图像、线性化… | `crates/gopdf-*` → `@gopdfjs/engine` |
+| **JS / TS 库** | pdf-lib、pdf.js、工具域逻辑 | `packages/runners`, `render`, `shrink`, … |
+| **CLI** | 无 UI；Node 读文件、写 stdout/文件 | `packages/pdf-cli` → **`gopdf-cli`** |
+
+**原则**：**能单包就单包**。Rust/WASM → `@gopdfjs/engine`（先扩 Node 进同 pkg）；纯结构 → `@gopdfjs/runners`；渲染 → `@gopdfjs/render`。仅当单 pkg 不可行才 `-node` 拆分。CLI 薄包装。矩阵见 RFC 0057 §6。
+
+## 3.1 `@gopdfjs/engine` 范围（与已规划工具对齐）
+
+GoPDF 定位为 **约 80% 常见场景的 PDF 工具集**，**不是**全功能渲染器或版式编辑器。**`@gopdfjs/engine`** 只承担其中 **大缓冲区 / 高吞吐 / 明确由 RFC 0057 矩阵划入 Rust/WASM** 的部分；其余工具留在 **L3（pdf-lib / pdf.js / 浏览器 API 等）**，或通过 **Hybrid** 只调用本库的 **子步骤**。
 
 ### 3.1.1 库内职责（L1 + Worker `op`）
 
-| 类型 | RFC / 工具 | 在 `pdf-wasm` 中的角色 | 状态 |
+| 类型 | RFC / 工具 | 在 `@gopdfjs/engine` 中的角色 | 状态 |
 |------|------------|------------------------|------|
-<<<<<<<< HEAD:.spec/rfc/charter/0058-wasm-pdf-library-charter.md
-| **流 / 字节热点** | [0008](../ready/0008-compress-pdf.md) Compress | `compress_pdf` / `compress` | 已实现 |
-| **图像编码** | [0017](../implemented/0017-jpg-to-pdf.md) JPG→PDF、[0018](../implemented/0018-pdf-to-jpg.md) PDF→JPG | **仅** `encode_images`（多帧 RGBA→JPEG/PNG）；**组版 / 渲染** 在 L3 | 已实现 |
-| **整册图像处理** | [0028](../proposed/0028-grayscale-pdf.md) Grayscale | `grayscale_pdf` / `grayscale` | 已实现 |
-| **线性化** | [0042](../proposed/0042-web-optimize.md) Web optimize | `linearize_pdf` / `linearize` | 已实现 |
-| **PDF→Word（窄域）** | [0019](../proposed/0019-pdf-to-word.md) | `pdf_to_docx` / `pdfToDocx`（Rust 优先）；见 RFC 0019 非目标 | Proposed |
-========
 | **流 / 字节热点** | [0008](0008-compress-pdf.md) Compress | `compress_pdf` / `compress` | **Done**（P1 已验收；P2 待 Object Layer） |
 | **图像编码** | [0017](completed/0017-jpg-to-pdf.md) JPG→PDF、[0018](completed/0018-pdf-to-jpg.md) PDF→JPG | **仅** `encode_images`（多帧 RGBA→JPEG/PNG）；**组版 / 渲染** 在 L3 | **Done**（编码腿） |
 | **整册图像处理** | [0028](0028-grayscale-pdf.md) Grayscale | `grayscale_pdf` / `grayscale` | **Partial**（stub：流内 JPEG/PNG 字节扫描；无 content-stream / 矢量） |
 | **线性化** | [0042](0042-web-optimize.md) Web optimize | `linearize_pdf` / `linearize` | **Partial**（stub：注入 `Linearized` 字典；无对象重排 / hint stream） |
 | **PDF→Word（窄域）** | [0019](0019-pdf-to-word.md) | `pdf_to_docx` / `pdfToDocx`（Rust 优先）；见 RFC 0019 非目标 | **Not started** |
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0058-wasm-pdf-library-charter.md
 
 ### 3.1.2 Hybrid（本库仅为一条腿）
 
-| RFC / 工具 | `pdf-wasm` 负责 | 不在本库负责 |
+| RFC / 工具 | `@gopdfjs/engine` 负责 | 不在本库负责 |
 |------------|-----------------|--------------|
-<<<<<<<< HEAD:.spec/rfc/charter/0058-wasm-pdf-library-charter.md
-| [0017](../implemented/0017-jpg-to-pdf.md) | 批量 **重编码**（`encode_images`） | 用 pdf-lib 等 **拼成 PDF** |
-| [0018](../implemented/0018-pdf-to-jpg.md) | 出图后的 **JPEG/PNG 编码**（`encode_images`） | **渲染** 页面为位图（pdf.js / Canvas，L3） |
-========
 | [0017](completed/0017-jpg-to-pdf.md) | 批量 **重编码**（`encode_images`） | 用 pdf-lib 等 **拼成 PDF** |
 | [0018](completed/0018-pdf-to-jpg.md) | 出图后的 **JPEG/PNG 编码**（`encode_images`） | **渲染** 页面为位图（pdf.js / Canvas，L3） |
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0058-wasm-pdf-library-charter.md
 
-### 3.1.3 明确不在 `pdf-wasm`（按当前 RFC 0057 矩阵）
+### 3.1.3 明确不在 `@gopdfjs/engine`（按当前 RFC 0057 矩阵）
 
-以下已规划工具 **默认** 由 **L3 JS** 或其它运行时完成；**不得**在未改 RFC 0057 §6 与本文的前提下，把实现硬塞进 `pdf-wasm`：
+以下已规划工具 **默认** 由 **L3 JS** 或其它运行时完成；**不得**在未改 RFC 0057 §6 与本文的前提下，把实现硬塞进 `@gopdfjs/engine`：
 
-<<<<<<<< HEAD:.spec/rfc/charter/0058-wasm-pdf-library-charter.md
-- **结构级**：Merge [0006](../implemented/0006-merge-pdf.md)、Split [0007](../implemented/0007-split-pdf.md)、Organize [0010](../implemented/0010-organize-pdf.md)、Rotate [0009](../implemented/0009-rotate-pdf.md)、Crop [0011](../implemented/0011-crop-pdf.md) 等（pdf-lib 类）。
-- **渲染**：PDF→JPG 的页面**渲染**（pdf.js / Canvas，L3）。
-- **OCR**：[0020](../implemented/0020-ocr-pdf.md)（tesseract.js 等）。
-- **密码 / 加密策略**：[0021](../implemented/0021-protect-pdf.md)、[0022](../implemented/0022-unlock-pdf.md)（以各 RFC 为准；**非**本 crate 默认职责）。
-- **其余** `.spec/rfc/` 中工具：凡 **RFC 0057 §6** 记为 **JS** 或未升级为 **Rust/WASM / Hybrid** 的，均 **不在** `pdf-wasm` 范围内，直至矩阵修订。
-
-> **注**：[0061](../proposed/0061-understand-pdf.md) Understand PDF 已升级为 WASM 候选（见 §3.2.3）；上方列表已将其移除。
-========
 - **结构级**：Merge [0006](completed/0006-merge-pdf.md)、Split [0007](completed/0007-split-pdf.md)、Organize [0010](completed/0010-organize-pdf.md)、Rotate [0009](completed/0009-rotate-pdf.md)、Crop [0011](completed/0011-crop-pdf.md) 等（pdf-lib 类）。
 - **渲染**：PDF→JPG 的页面**渲染**（pdf.js / Canvas，L3）。
 - **OCR**：[0020](completed/0020-ocr-pdf.md)（tesseract.js 等）。
 - **密码 / 加密策略**：[0021](completed/0021-protect-pdf.md)、[0022](completed/0022-unlock-pdf.md)（以各 RFC 为准；**非**本 crate 默认职责）。
-- **其余** `.spec/rfc/` 中工具：凡 **RFC 0057 §6** 记为 **JS** 或未升级为 **Rust/WASM / Hybrid** 的，均 **不在** `pdf-wasm` 范围内，直至矩阵修订。
+- **其余** `.spec/rfc/` 中工具：凡 **RFC 0057 §6** 记为 **JS** 或未升级为 **Rust/WASM / Hybrid** 的，均 **不在** `@gopdfjs/engine` 范围内，直至矩阵修订。
 
 > **注**：[0061](0061-understand-pdf.md) Understand PDF 已升级为 WASM 候选（见 §3.2.3）；上方列表已将其移除。
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0058-wasm-pdf-library-charter.md
 
 ## 3.2 PDF Object Layer（自建，非 lopdf）
 
@@ -169,12 +179,11 @@ Phase 2 压缩、灰度等操作仅修改部分 stream bytes，采用 PDF 增量
 ### 3.2.3 文件结构
 
 ```
-<<<<<<<< HEAD:.spec/rfc/charter/0058-wasm-pdf-library-charter.md
 crates/
   gopdf-compress/src/lib.rs   # Phase 1 流压缩（已落地）
   gopdf-image/src/lib.rs      # 图像编码 / 灰度（已落地）
   gopdf-linearize/src/lib.rs  # 线性化（已落地）
-  pdf-wasm/src/
+  gopdf-wasm/src/
     lib.rs                    # wasm-bindgen 导出（薄层）
     pdf/                      # 规划：Object Layer（§3.2，未落地）
       mod.rs
@@ -183,20 +192,6 @@ crates/
       writer.rs
       types.rs
   # 未来 Phase 2 / RFC 0061 等可增 gopdf-analyze、扩展 gopdf-compress
-========
-packages/pdf-wasm/src/
-  pdf/
-    mod.rs       — 公开 re-exports，Document / Object / PdfError 类型
-    xref.rs      — xref table + xref stream + ObjStm 索引（约 400–600 行）
-    parser.rs    — object 解析：dict, stream, array, name, string（约 300–400 行）
-    writer.rs    — 增量更新写回（约 200–300 行）
-    types.rs     — Object enum, ObjectId, Dictionary, Stream 定义（约 200 行）
-  ops/
-    compress.rs  — Phase 1（已有字节扫描）+ Phase 2（使用 pdf/ 层）
-    grayscale.rs — 整册灰度（**stub** 在 `image_ops.rs`；完整版依赖 pdf/ 层）
-    linearize.rs — 线性化（**stub**；完整版依赖 pdf/ 层）
-    analyze.rs   — RFC 0061 Understand PDF（metadata + 页数 + 图像 XObject 统计）
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0058-wasm-pdf-library-charter.md
 ```
 
 ### 3.2.4 对象层与工具的关系
@@ -215,7 +210,7 @@ packages/pdf-wasm/src/
 |------|--------------|
 | `pdf/` object layer（纯 Rust，无外部大依赖） | +40–80 KB |
 | lopdf（对照，含 ttf-parser） | +400–600 KB |
-| 当前 `@gopdfjs/pdf-wasm`（基准） | ~280 KB |
+| 当前 `@gopdfjs/engine`（基准） | ~280 KB |
 | 加入 pdf/ 层后预估 | ~320–360 KB（仍在 1 MB 预算内） |
 
 ttf-parser 依赖不引入；字体数据在 RFC 0019 阶段单独评估。
@@ -232,15 +227,15 @@ ttf-parser 依赖不引入；字体数据在 RFC 0019 阶段单独评估。
 
 - **不做**全规格 PDF 阅读器、**不做**像素级 WYSIWYG 编辑内核。
 - **不承诺**对所有畸形 PDF、全加密变体、印刷级色彩管理的兼容；以 **各工具 RFC** 与 **80% 常见文件** 为验收口径。
-- **不**为每个工具单独复制一套 Worker；**统一** `packages/pdf-wasm/worker.ts` 协议（RFC 0057 §5）。
+- **不**为每个工具单独复制一套 Worker；**统一** `packages/engine/worker.ts` 协议（RFC 0057 §5）。
 
-## 3.4 未来进入 `pdf-wasm` 的程序
+## 3.4 未来进入 `@gopdfjs/engine` 的程序
 
 若某工具需迁入 L1：**先** 在 **RFC 0057 §6** 改 **Decision** 与理由，**再** 更新本文 §4 / §6.1，**再** 实现 `lib.rs` / `worker.ts` / `index.ts`。
 
 ## 4. Implemented WASM surface（与代码一致）
 
-以下导出在 `crates/pdf-wasm/src/lib.rs` 与 `packages/pdf-wasm/worker.ts` 中已实现，主机侧见 `packages/pdf-wasm/index.ts`：
+以下导出在 `crates/gopdf-wasm/src/lib.rs` 与 `packages/engine/worker.ts` 中已实现，主机侧见 `packages/engine/index.ts`：
 
 | Rust / Worker `op` | TS 导出 | 说明 |
 |--------------------|---------|------|
@@ -255,8 +250,11 @@ ttf-parser 依赖不引入；字体数据在 RFC 0019 阶段单独评估。
 
 | 消费者 | 用途 |
 |--------|------|
-| `site/` | 正式产品；按各工具 RFC 与 0057 矩阵逐步接入 WASM |
-| `demos/react/` | 最小对照：pdf.js 页数探测 + `@gopdfjs/pdf-wasm` 压缩/灰度/线性化 |
+| **npm（单包优先）** | `@gopdfjs/runners`, `@gopdfjs/engine`, … — browser + Node 同一 pkg 为目标 |
+| **npm（拆分，例外）** | `@gopdfjs/*-node` — 仅当 RFC 记录单 pkg 不可行 |
+| **`gopdf-cli`** | Node 薄包装上述 npm |
+| **`demos/react/`** | 浏览器 smoke + e2e |
+| **`site/`** | 文档与 Quick Start |
 
 ## 6. Related RFCs
 
@@ -270,19 +268,14 @@ ttf-parser 依赖不引入；字体数据在 RFC 0019 阶段单独评估。
 
 | Worker `op` | RFC | 说明 |
 |---------------|-----|------|
-<<<<<<<< HEAD:.spec/rfc/charter/0058-wasm-pdf-library-charter.md
-| `pdf_to_docx` | [0019](../proposed/0019-pdf-to-word.md) | Proposed；**L1 Rust/WASM 优先**；依赖 §3.2 Object Layer（font feature-gate）；落地后须更新 §4 与 **0057** §5.2。 |
-| `analyze_pdf` | [0061](../proposed/0061-understand-pdf.md) | Proposed；**L1 WASM**（metadata、页数、图像 XObject 统计）；依赖 §3.2 Object Layer；落地后须更新 §4 与 **0057** §5.2，并更新 RFC 0061。 |
-========
 | `pdf_to_docx` | [0019](0019-pdf-to-word.md) | Proposed；**L1 Rust/WASM 优先**；依赖 §3.2 Object Layer（font feature-gate）；落地后须更新 §4 与 **0057** §5.2。 |
 | `analyze_pdf` | [0061](0061-understand-pdf.md) | Proposed；**L1 WASM**（metadata、页数、图像 XObject 统计）；依赖 §3.2 Object Layer；落地后须更新 §4 与 **0057** §5.2，并更新 RFC 0061。 |
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0058-wasm-pdf-library-charter.md
 
 ## 7. Success criteria（库层面）
 
-- [x] 根目录 `pnpm build:wasm`（`wasm-pack build crates/pdf-wasm`）可生成 `packages/pdf-wasm/pkg/`
+- [x] 根目录 `pnpm build:wasm`（`wasm-pack build crates/gopdf-wasm`）可生成 `packages/engine/pkg/`
 - [x] Worker 协议支持进度与最终 `Uint8Array` 可转移回主线程
-- [ ] 各工具页按矩阵完成 L2 调用（产品进度，非本 charter 独占）
+- [ ] 各工具 RFC 对应的 **npm API + CLI 子命令** 均已实现并测试
 
 ### 7.1 PDF Object Layer（§3.2）里程碑
 

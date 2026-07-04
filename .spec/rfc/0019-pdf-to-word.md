@@ -1,19 +1,17 @@
-<<<<<<<< HEAD:.spec/rfc/proposed/0019-pdf-to-word.md
 ---
 rfc: "0019"
 tier: proposed
 verified: false
-browser_only: true
+browser_only: false
 tests:
   unit: none
   e2e_playwright: none
 ---
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0019-pdf-to-word.md
+
 
 # RFC 0019 - PDF to Word
 
-- **Status**: Proposed (L1) — **Partial (L3 product MVP assumed)**
+- **Status**: Proposed (L1 WASM) — **Not started** in monorepo
 - **Author**: Antigravity（修订：GoPDF maintainers）
 - **Date**: 2026-03-22
 
@@ -29,29 +27,21 @@ tests:
 | **明确非目标（首版）** | 复杂表格还原、精确页眉页脚、艺术字/纯图 PDF、扫描件（无文字层）——后者可走 **RFC 0020 OCR** 后再导出，或产品内标注「不支持 / 需 OCR」。 |
 | **版式** | **不承诺** Word 中与 PDF 视觉一致；产品文案需向用户说明。 |
 
-## 3. Rust / WASM 优先（与 RFC 0057 / 0058 一致）
+## 3. Delivery (RFC 0058 §2.2 / §2.3)
 
-**默认实现路径**：在 **`packages/pdf-wasm`**（L1）用 **Rust** 完成 **PDF 解析 → 文本抽取 → `.docx` 字节生成**，经 **wasm-bindgen** 导出，由 **Worker** 调用。**不以**「先 Worker 里 pdf.js + npm `docx`」作为主线；那样仅保留为 **极少数兜底**（需经评审并写进变更记录）。
+| Surface | Package | Runtime | Notes |
+|---------|---------|---------|-------|
+| **npm** | `@gopdfjs/engine` | isomorphic (target) | `pdfToDocx()` — one pkg; browser Worker + Node WASM; split `-node` only if blocked |
+| **CLI** | `gopdf-cli pdf-to-word` | node | thin wrapper over `@gopdfjs/engine` |
+| **ilovepdf** | consumes npm | — | UI out of repo |
 
-| 层 | 职责 | 实现 |
-|----|------|------|
-| **L3 应用** | 路由、选文件、下载、进度条、免责声明 | `site/`（Vite + React） |
-| **L2 编排** | 单例 Worker、可转移 `ArrayBuffer`、进度、`{ id, op, payload }`（RFC 0057 §5） | `packages/pdf-wasm/worker.ts` 增加 `op: 'pdf_to_docx'`，转调 **L1** |
-| **L1 WASM** | **`pdf_to_docx(bytes: &[u8]) -> Vec<u8>`**（或接受进度回调的变体） | 新 crate 或 `crates/gopdf-*` + `crates/pdf-wasm` 导出；**禁止**在 `packages/pdf-wasm/` 放 Rust 源码 |
 
-**禁止**：在 **主线程** 跑整册转换。长任务仅在 **Worker** 内执行；主线程只做 UI。
 
-### 3.1 Worker 契约（落地以仓库为准）
+## 4. Rust / WASM implementation
 
-- **Host → Worker**：`{ id, op: 'pdf_to_docx', payload: { pdf: ArrayBuffer } }`，`pdf` **transfer**。
-- **Worker → Host**：
-  - 进度：`{ id, ok: true, progress: number }`（0–1）。
-  - 完成：`{ id, ok: true, result: Uint8Array }`（`.docx`），`transfer: [result.buffer]`。
-  - 失败：`{ id, ok: false, error: string }`。
+**Default path**: Rust L1 `pdf_to_docx` in `crates/gopdf-*` → `@gopdfjs/engine` Worker. **Not** `site/` product UI.
 
-实现后更新 **RFC 0058** §4 实现表、**0057** §5.2 `op` ↔ Rust 符号表，以及 **`index.ts`** 对外导出（如 `pdfToDocx`）。
-
-## 4. Technical specification（L1 Rust）
+## 5. Technical specification（L1 Rust）
 
 - **输入**：PDF 字节（完整文件）。
 - **输出**：符合 OOXML 的 **`.docx` ZIP**（`[Content_Types].xml`、`word/document.xml` 等），由 Rust 侧生成；**Deflate/ZIP** 使用 `flate2` / `zip` 等与现有 crate 策略一致的依赖（注意 **WASM 体积**，`opt-level = z` 已启用）。
@@ -59,20 +49,20 @@ tests:
 - **DOCX 生成**：**候选 crate**：`docx-rs` 等；若需最小依赖，可只生成 **最小合法 docx** 子集（段落 + 纯文本 + 粗斜体若可解析）。
 - **JS 兜底**：仅当某类 PDF 在 Rust 路径连续失败且产品接受时，再考虑 **pdf.js** 路径；须在 RFC 或 ADR 中记录，**不作为默认**。
 
-## 5. User experience
+## 6. User experience
 
 - 进度：「解析 PDF…」「生成 Word…」。
 - 显著位置：**版式与复杂表格可能丢失**；扫描件需 OCR（**RFC 0020**）。
 
-## 6. Success criteria
+## 7. Success criteria
 
 - [ ] **L1** `pdf_to_docx` 在 **Worker** 中可调通，主线程无明显长任务。
 - [ ] 约 **80%** 自测数字 PDF 样本得到可编辑段落，无崩溃。
 - [ ] **RFC 0058** §4 已登记 `pdf_to_docx` / `pdfToDocx`；**0057** 矩阵与本 RFC 一致。
 - [ ] 产出 `.docx` 可被 **Microsoft Word / Google Docs** 打开（抽样）。
-- [ ] `pdf_wasm_bg.wasm` 体积仍满足 **RFC 0057** gzip 预算（若超标须拆分能力或延迟加载，另文说明）。
+- [ ] `gopdf_wasm_bg.wasm` 体积仍满足 **RFC 0057** gzip 预算（若超标须拆分能力或延迟加载，另文说明）。
 
-## 7. Related RFCs
+## 8. Related RFCs
 
 - **RFC 0057** — Worker 架构与消息协议（**权威**）。
 - **RFC 0058** — WASM 库分层与已实现导出表。
@@ -82,13 +72,15 @@ tests:
 
 *修订说明：实现策略已改为 **Rust/WASM（L1）优先**；Worker 内 pdf.js + JS `docx` 非主线。*
 
-## 8. Implementation status (2026-06-28)
+## 9. Implementation status (2026-06-28)
 
-| Layer | State | Notes |
-|-------|-------|-------|
-| **L3 product** | **Partial** (assumed) | `@gopdfjs/ui` Header links `/tools/pdf-to-word`; gopdf.fyi page likely **text-extract MVP** (per RFC 0001) |
-| **L1 WASM** | **Not started** | No `pdf_to_docx` in `packages/pdf-wasm/src/lib.rs` |
-| **Monorepo** | **Not started** | No tool runner in git |
-| **Tests** | **Not done** | No E2E |
+| Surface | Package | Runtime | State | Notes |
+|---------|---------|---------|-------|-------|
+| **npm** | `@gopdfjs/engine` | isomorphic (target) | **Not started** | `pdfToDocx()` (planned) — browser Worker today; Node in same pkg; split `-node` only if blocked |
+| **CLI** | `gopdf-cli pdf-to-word` | node | **Planned** | thin wrapper over npm above |
+| **Rust / WASM** | — | — | Not started | per RFC + [0057](../0057-rust-wasm-worker-architecture.md) |
+| **Vitest** | — | — | **Partial** | `packages/engine (planned)` |
+| **Browser e2e** | — | browser | **Not done** | `demos/react/e2e/tools/pdf-to-word.spec.ts` |
+| **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: RFC targets **L1 Rust**; product may ship **L3 JS** ahead of spec. Track WASM work under TASK_TRACKING P2; do not mark RFC **Done** until L1 path or explicit RFC amendment to Hybrid JS.
+**Verdict**: **NOT STARTED** (L1) — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-wasm-pdf-library-charter.md)). CLI wraps npm; no forked logic.

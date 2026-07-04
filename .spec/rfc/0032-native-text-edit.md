@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/proposed/0032-native-text-edit.md
----
-rfc: "0032"
-tier: proposed
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0032-native-text-edit.md
 
 # RFC 0032 - Native Text Edit
 

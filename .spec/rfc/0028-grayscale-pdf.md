@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/proposed/0028-grayscale-pdf.md
----
-rfc: "0028"
-tier: proposed
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0028-grayscale-pdf.md
 
 # RFC 0028 - Grayscale PDF
 
@@ -42,10 +30,10 @@ Convert all color elements (images, text, vector graphics) within a PDF into gra
 
 Grayscale conversion requires iterating every pixel of every embedded image stream in the PDF — converting RGB or CMYK values to luminance. For a document with many high-resolution images, this involves processing tens of millions of pixel values. In JS, this requires `Uint8ClampedArray` manipulation in a tight loop, which is slow due to bounds-checking overhead and GC pressure. Rust processes the same loop with zero overhead.
 
-**Integration**: Import `grayscalePdf` from **`@gopdfjs/pdf-wasm`**（RFC 0057）。
+**Integration**: Import `grayscalePdf` from **`@gopdfjs/engine`**（RFC 0057）。
 
 ```ts
-import { grayscalePdf } from "@gopdfjs/pdf-wasm";
+import { grayscalePdf } from "@gopdfjs/engine";
 
 const result = await grayscalePdf(inputBytes);
 ```
@@ -54,11 +42,13 @@ const result = await grayscalePdf(inputBytes);
 
 ## 6. Implementation status (2026-06-28)
 
-| Layer | State | Location |
-|-------|-------|----------|
-| **L1 WASM** | **Partial** | `packages/pdf-wasm/src/image_ops.rs` — `grayscale_pdf()` scans raw bytes for embedded JPEG/PNG magic, converts pixels, splices back |
-| **L1 gap** | **Not done** | PDF Object Layer (RFC 0058 §3.2): XObject walk, content-stream `DeviceGray`, vector/text color spaces |
-| **L3 product** | **Unknown** | No dedicated tool page verified in monorepo; API exported on Worker |
-| **Tests** | **Not done** | No `cargo test` for grayscale; no `.spec/e2e/tools/grayscale.spec.ts` |
+| Surface | Package | Runtime | State | Notes |
+|---------|---------|---------|-------|-------|
+| **npm** | `@gopdfjs/engine` | isomorphic (target) | **Partial** | `grayscalePdf()` — browser Worker today; Node in same pkg; split `-node` only if blocked |
+| **CLI** | `gopdf-cli grayscale` | node | **Planned** | thin wrapper over npm above |
+| **Rust / WASM** | — | — | Partial stub | per RFC + [0057](../0057-rust-wasm-worker-architecture.md) |
+| **Vitest** | — | — | **Partial** | `packages/engine` |
+| **Browser e2e** | — | browser | **Not done** | `demos/react/e2e/tools/grayscale-pdf.spec.ts` |
+| **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: Worker API exists; **RFC §4 success criteria not met**. Do not mark **Done** until Object Layer + acceptance checklist pass.
+**Verdict**: **PARTIAL** — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-wasm-pdf-library-charter.md)). CLI wraps npm; no forked logic.

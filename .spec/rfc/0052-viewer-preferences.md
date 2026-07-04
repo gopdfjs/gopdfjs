@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/proposed/0052-viewer-preferences.md
----
-rfc: "0052"
-tier: proposed
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0052-viewer-preferences.md
 
 # RFC 0052 - Set Viewer Preferences
 

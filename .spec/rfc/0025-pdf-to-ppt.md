@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/proposed/0025-pdf-to-ppt.md
----
-rfc: "0025"
-tier: proposed
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0025-pdf-to-ppt.md
 
 # RFC 0025 - PDF to PPT
 

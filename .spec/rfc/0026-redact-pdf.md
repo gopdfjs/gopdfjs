@@ -1,15 +1,3 @@
-<<<<<<<< HEAD:.spec/rfc/proposed/0026-redact-pdf.md
----
-rfc: "0026"
-tier: proposed
-verified: false
-browser_only: true
-tests:
-  unit: none
-  e2e_playwright: none
----
-========
->>>>>>>> 457a45a (Update project documentation and configuration files):.spec/rfc/0026-redact-pdf.md
 
 # RFC 0026 - Redact PDF
 

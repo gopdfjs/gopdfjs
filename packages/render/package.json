@@ -1,0 +1,25 @@
+{
+  "name": "@gopdfjs/render",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./canvas": "./src/canvas.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@napi-rs/canvas": "0.1.97",
+    "pdfjs-dist": "^5.4.296"
+  },
+  "devDependencies": {
+    "happy-dom": "^20.8.4",
+    "typescript": "^5",
+    "vitest": "^3.0.0"
+  }
+}
