@@ -6,6 +6,8 @@ import { runLinearize } from "./commands/linearize.ts";
 import { runPdfToJpg } from "./commands/pdfToJpg.ts";
 import { runOcr } from "./commands/ocr.ts";
 import { runMcpServer } from "./commands/mcp.ts";
+import { runCompareTokens } from "./commands/compareTokens.ts";
+import { runInstall } from "./commands/install.ts";
 
 const HELP = `${BIN_NAME} — local PDF tools (no upload)
 
@@ -16,7 +18,9 @@ Usage:
   gopdf analyze <input.pdf>
   gopdf pdf-to-jpg <input.pdf> [-o out_prefix] [--quality 0.92] [--scale 2]
   gopdf ocr <input.pdf> [-o out.txt] [--lang eng]
+  gopdf compare-tokens <input.pdf> [--target-pages 2] [--start 1] [--end N] [--json]
   gopdf mcp
+  gopdf install [agent] [--project] [--dry-run] [--all]
 
 Examples:
   gopdf compress ./doc.pdf
@@ -26,7 +30,10 @@ Examples:
   gopdf analyze ./doc.pdf
   gopdf pdf-to-jpg ./doc.pdf -o ./images/page
   gopdf ocr ./doc.pdf -o ./output.txt --lang eng
-  gopdf mcp`;
+  gopdf compare-tokens ./doc.pdf --target-pages 2 --json
+  gopdf mcp
+  gopdf install claude
+  gopdf install cursor --project`;
 
 export async function runCli(argv: string[]): Promise<number> {
   const [cmd, ...rest] = argv;
@@ -49,8 +56,12 @@ export async function runCli(argv: string[]): Promise<number> {
       return runPdfToJpg(rest);
     case "ocr":
       return runOcr(rest);
+    case "compare-tokens":
+      return runCompareTokens(rest);
     case "mcp":
       return runMcpServer();
+    case "install":
+      return runInstall(rest);
     default:
       console.error(`Unknown command: ${cmd}\n`);
       console.log(HELP);

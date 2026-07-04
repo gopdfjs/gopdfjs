@@ -12,6 +12,10 @@ import { compressPdf, grayscalePdf, linearizePdf } from "@gopdfjs/engine";
 import { analyzePdf } from "../analyze.ts";
 import { pdfToImages } from "@gopdfjs/extract";
 import { ocrPdf } from "@gopdfjs/extract";
+import {
+  formatComparisonReport,
+  measurePdfTokenComparison,
+} from "./compareTokens.ts";
 
 /**
  * Runs MCP Server over Stdio.
@@ -126,6 +130,33 @@ export async function runMcpServer(): Promise<number> {
             lang: { type: "string", description: "OCR language library, e.g., 'eng' (default: eng)" },
           },
           required: ["inputPath", "outputPath"],
+        },
+      },
+      {
+        name: "compare_pdf_tokens",
+        description:
+          "Compares estimated AI input tokens for multimodal, full-text, and smart MCP PDF reading strategies.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            path: { type: "string", description: "Absolute path to the input PDF file" },
+            targetPages: {
+              type: "number",
+              minimum: 1,
+              description: "Pages fetched in the smart MCP path (default: 2)",
+            },
+            startPage: {
+              type: "number",
+              minimum: 1,
+              description: "First page for measured sliced-text tokens (default: 1)",
+            },
+            endPage: {
+              type: "number",
+              minimum: 1,
+              description: "Last page for measured sliced-text tokens (default: start + targetPages - 1)",
+            },
+          },
+          required: ["path"],
         },
       },
     ],
@@ -264,6 +295,52 @@ export async function runMcpServer(): Promise<number> {
               {
                 type: "text",
                 text: `Successfully executed OCR and wrote full text to: ${outputPath}`,
+              },
+            ],
+          };
+        }
+
+        case "compare_pdf_tokens": {
+          const {
+            path: inputPath,
+            targetPages = 2,
+            startPage = 1,
+            endPage,
+          } = args as {
+            path: string;
+            targetPages?: number;
+            startPage?: number;
+            endPage?: number;
+          };
+
+          if (!inputPath || !fs.existsSync(inputPath)) {
+            throw new McpError(ErrorCode.InvalidParams, `Input file not found: ${inputPath}`);
+          }
+
+          const resolvedEnd = endPage ?? startPage + targetPages - 1;
+          if (resolvedEnd < startPage) {
+            throw new McpError(
+              ErrorCode.InvalidParams,
+              "endPage must be greater than or equal to startPage",
+            );
+          }
+
+          const payload = await measurePdfTokenComparison(inputPath, {
+            targetPages,
+            startPage,
+            endPage: resolvedEnd,
+            includeOneImage: true,
+          });
+
+          return {
+            content: [
+              {
+                type: "text",
+                text: formatComparisonReport(
+                  payload.fileName,
+                  payload,
+                  payload.sliceRange,
+                ),
               },
             ],
           };

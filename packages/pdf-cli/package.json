@@ -25,6 +25,7 @@
   "dependencies": {
     "@gopdfjs/engine": "workspace:*",
     "@gopdfjs/extract": "workspace:*",
+    "@gopdfjs/setup": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.0.1",
     "pdf-lib": "^1.17.1"
   },

@@ -31,3 +31,30 @@ pnpm --filter=@gopdfjs/demo-react dev
 - 正式站点在 **`site/`**，工具页以 pdf.js / pdf-lib 为主，需要 WASM 的能力再接入 `@gopdfjs/engine`。
 - **`/tools/compress`**：最小 Compress 页，直调 `@gopdfjs/engine`（需先 `pnpm build:wasm`）。
 - 本目录不依赖 `site` 或 ilovepdf 产品包。
+
+## GitHub Pages 部署
+
+`.github/workflows/deploy-site.yml` 在推送到 `main`（`site/**`、`packages/**`、根 lockfile 变更）或手动 **workflow_dispatch** 时构建并发布 `site/dist`。
+
+**仓库设置（一次性）：** Settings → Pages → Build and deployment → Source 选 **GitHub Actions**。
+
+**`VITE_BASE` 示例：**
+
+| 站点类型 | 示例 URL | `VITE_BASE` |
+|----------|----------|-------------|
+| Project Pages | `https://systembugtj.github.io/gopdfjs/` | `/gopdfjs/` |
+| User/org site | `https://systembugtj.github.io/` | `/` |
+
+CI 默认按仓库名自动选择：`*.github.io` 仓库用 `/`，否则 `/<repo-name>/`（如 `/gopdfjs/`）。手动运行 workflow 时可通过 `vite_base` 输入覆盖。
+
+**本地模拟 Project Pages 构建：**
+
+```bash
+pnpm build:wasm
+VITE_BASE=/gopdfjs/ pnpm --filter=@gopdfjs/demo-react build
+pnpm --filter=@gopdfjs/demo-react preview --base /gopdfjs/
+```
+
+本地 dev（`pnpm --filter=@gopdfjs/demo-react dev`）仍默认 `VITE_BASE=/`，无需改环境变量。
+
+构建会将 `dist/index.html` 复制为 `dist/404.html`，供 GitHub Pages SPA 深链回退。

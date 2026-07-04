@@ -15,8 +15,8 @@ export default defineConfig({
       },
       external: [
         "@gopdfjs/engine",
-        "@gopdfjs/engine",
         "@gopdfjs/extract",
+        "@gopdfjs/setup",
         "@modelcontextprotocol/sdk",
         "pdf-lib",
         /^node:/,

@@ -233,6 +233,9 @@ importers:
       '@gopdfjs/extract':
         specifier: workspace:*
         version: link:../extract
+      '@gopdfjs/setup':
+        specifier: workspace:*
+        version: link:../setup
       '@modelcontextprotocol/sdk':
         specifier: ^1.0.1
         version: 1.29.0(zod@4.4.3)
@@ -353,6 +356,18 @@ importers:
         specifier: ^3.0.0
         version: 3.2.4(@types/node@25.5.0)(@vitest/browser@3.2.6)(@vitest/ui@3.2.4)(happy-dom@20.10.6)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.32.0)(yaml@2.8.3)
 
+  packages/setup:
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.37
+      typescript:
+        specifier: ^5.0.0
+        version: 5.9.3
+      vitest:
+        specifier: ^3.0.0
+        version: 3.2.4(@types/node@20.19.37)(@vitest/ui@3.2.4)(happy-dom@20.10.6)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.32.0)(yaml@2.8.3)
+
   packages/shrink:
     dependencies:
       '@gopdfjs/files':
@@ -383,6 +398,9 @@ importers:
       '@gopdfjs/engine':
         specifier: workspace:*
         version: link:../packages/engine
+      '@gopdfjs/extract':
+        specifier: workspace:*
+        version: link:../packages/extract
       '@gopdfjs/runners':
         specifier: workspace:*
         version: link:../packages/runners

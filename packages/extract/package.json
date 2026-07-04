@@ -15,7 +15,8 @@
     "./ocr": "./src/ocr.ts",
     "./textRuns": "./src/textRuns.ts",
     "./pdfToText": "./src/pdfToText/index.ts",
-    "./pdfToEpub": "./src/pdfToEpub/index.ts"
+    "./pdfToEpub": "./src/pdfToEpub/index.ts",
+    "./tokenEstimate": "./src/tokenEstimate.ts"
   },
   "scripts": { "test": "vitest run" },
   "dependencies": {

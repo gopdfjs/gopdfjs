@@ -7,3 +7,4 @@ export * from "./ocr";
 export * from "./textRuns";
 export * from "./pdfToText";
 export * from "./pdfToEpub";
+export * from "./tokenEstimate";
