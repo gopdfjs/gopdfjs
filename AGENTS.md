@@ -15,7 +15,7 @@
 
 | 非本仓 RFC 目标 | |
 |----------------|--|
-| 产品网站 UI、i18n、营销页 | `site/` 仅文档；`demos/react/` 仅本地浏览器测试 |
+| 产品网站 UI、i18n、营销页 | `site/` CLI docs landing（GitHub Pages）；`demos/react/` 本地浏览器测试 |
 
 架构：**RFC 0057**（WASM Worker）· **RFC 0058 §2.2**（npm + CLI 交付）
 
@@ -28,9 +28,8 @@
 
 | 命令 | 用途 |
 |------|------|
-| `pnpm --filter=@gopdfjs/demo-react dev` | 浏览器 smoke |
 | `pnpm build:cli` · `gopdf-cli ./file.pdf` | Node CLI（无浏览器） |
-| `pnpm --filter=@gopdfjs/site dev` | OSS 文档站（WSX） |
+| `pnpm --filter=@gopdfjs/site dev` | CLI docs landing（GitHub Pages，无 WASM） |
 
 ## RFC
 

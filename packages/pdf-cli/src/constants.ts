@@ -1,5 +1,7 @@
 export const BIN_NAME = "gopdf" as const;
 
+export const BUY_ME_A_COFFEE_URL = "https://buymeacoffee.com/ppvb0uo" as const;
+
 export const COMPRESSION_LEVELS = ["low", "recommended", "extreme"] as const;
 
 export type CompressionLevel = (typeof COMPRESSION_LEVELS)[number];

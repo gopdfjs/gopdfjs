@@ -23,7 +23,7 @@ gopdfjs/                          # OSS monorepo
 ├── packages/                     # 全部 @gopdfjs/* + pdf-cli
 ├── demos/react/                  # 本地浏览器 smoke
 │   └── e2e/                      # Playwright（RFC 浏览器验收）
-├── site/                         # OSS 文档站（WSX + i18next）；private
+├── site/                         # CLI docs landing（GitHub Pages）；private
 ├── docs/                         # PUBLISHING.md、persona/
 ├── .spec/                        # 仅规格：ROADMAP、TASK_TRACKING、rfc/
 │   └── rfc/                      # 工具 RFC；umbrella  closed → completed/
@@ -35,7 +35,7 @@ gopdfjs/                          # OSS monorepo
 | **`crates/`** | PDF 算法 + `gopdf-wasm` | 不是 npm 包 |
 | **`packages/`** | 可发布的 `@gopdfjs/*` | 不是产品 UI |
 | **`demos/react/`** | 浏览器联调 + **e2e 宿主** | 不是 gopdf.fyi |
-| **`site/`** | 文档 / Quick Start | 不是 16 工具产品站 |
+| **`site/`** | CLI docs landing（GitHub Pages） | 不是 16 工具产品站 |
 | **`packages/pdf-cli`** | 终端跑 PDF（无 UI） | 不是浏览器 demo |
 | **`.spec/`** | RFC、路线图、任务 | **没有** e2e 代码、没有 npm 源码 |
 | **ilovepdf 仓** | gopdf.fyi UI + 路由 + i18n | 依赖本仓 npm |
@@ -96,6 +96,6 @@ Umbrella 生命周期：`.spec/ROADMAP.md` § **Umbrella RFC lifecycle**。
 
 - ~~`packages/tools`~~、~~`@gopdfjs/components`~~、~~`@gopdfjs/i18n`~~、~~`locale-cli`~~ → 已移出 OSS
 - ~~`.spec/e2e`~~ → 已删；e2e 在 **`demos/react/e2e/`**
-- ~~`site/` = 产品工具站~~ → 仅 OSS 文档
+- ~~`site/` = 产品工具站~~ → CLI docs landing（GitHub Pages）
 - ~~RFC = 做网站~~ → RFC = **npm + CLI**
 - ~~L2 编排在本仓~~ → 产品在 **ilovepdf**；本仓只发 **库 + CLI**

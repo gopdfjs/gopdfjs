@@ -1,18 +1,8 @@
 import { useCallback, useMemo, useState } from "react";
-import { Link, Route, Routes } from "react-router-dom";
-import {
-  compressPdf,
-  grayscalePdf,
-  linearizePdf,
-  type CompressionLevel,
-} from "@gopdfjs/engine";
 import {
   compareReadingMethods,
   COST_USD_PER_MILLION_INPUT_TOKENS,
-} from "@gopdfjs/extract/tokenEstimate";
-import CompressToolPage from "./CompressToolPage";
-import { downloadPdfBytes } from "./downloadBlob";
-import { getPdfPageCount } from "./pdfjsPageCount";
+} from "./tokenEstimate";
 
 // ==========================================
 // CONSTANTS (Strictly defined to avoid raw strings)
@@ -37,8 +27,6 @@ const COLOR_GREEN = "#10b981"; // Success green
 const COLOR_RED = "#ef4444"; // Warning red
 const COLOR_YELLOW = "#eab308"; // Warning yellow
 
-// Token estimates — shared with `gopdf compare-tokens` via @gopdfjs/extract/tokenEstimate
-
 // Installation Commands
 const CMD_BREW = "brew tap gopdfjs/tap && brew install gopdf";
 const CMD_CURL = "curl -fsSL https://raw.githubusercontent.com/systembugtj/gopdfjs/main/scripts/install.js | node";
@@ -53,9 +41,6 @@ const CMD_MCP_CONFIG = `{
     }
   }
 }`;
-
-const ACCEPT_PDF = "application/pdf" as const;
-const COMPRESS_LEVELS: CompressionLevel[] = ["low", "recommended", "extreme"];
 
 // ==========================================
 // SUB-COMPONENTS
@@ -229,124 +214,7 @@ function HomePage() {
   const [pages, setPages] = useState<number>(50);
   const [targetPages, setTargetPages] = useState<number>(2);
 
-  // State for Wasm Demo Tab
-  const [fileName, setFileName] = useState<string | null>(null);
-  const [bytes, setBytes] = useState<Uint8Array | null>(null);
-  const [busy, setBusy] = useState<string | null>(null);
-  const [log, setLog] = useState<string[]>([]);
-  const [pdfjsPages, setPdfjsPages] = useState<number | null>(null);
-  const [wasmNote, setWasmNote] = useState<string | null>(null);
-  const [lastWasmOut, setLastWasmOut] = useState<Uint8Array | null>(null);
-
-  // Terminal active tab for installation
   const [installTab, setInstallTab] = useState<"brew" | "curl" | "npm">("brew");
-
-  const pushLog = useCallback((line: string) => {
-    setLog((prev) => [...prev.slice(-40), line]);
-  }, []);
-
-  const onPickFile = useCallback(
-    async (file: File | null) => {
-      setPdfjsPages(null);
-      setWasmNote(null);
-      setLastWasmOut(null);
-      setLog([]);
-      if (!file) {
-        setFileName(null);
-        setBytes(null);
-        return;
-      }
-      if (file.type && file.type !== ACCEPT_PDF) {
-        pushLog(`Skip non-PDF type: ${file.type}`);
-      }
-      const buf = new Uint8Array(await file.arrayBuffer());
-      setFileName(file.name);
-      setBytes(buf);
-      pushLog(`Loaded ${file.name} (${buf.byteLength} bytes)`);
-    },
-    [pushLog],
-  );
-
-  const runPdfjs = useCallback(async () => {
-    if (!bytes) {
-      pushLog("pdf.js: no file");
-      return;
-    }
-    setBusy("pdf.js");
-    setPdfjsPages(null);
-    try {
-      const n = await getPdfPageCount(bytes);
-      setPdfjsPages(n);
-      pushLog(`pdf.js: numPages = ${n}`);
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : String(e);
-      pushLog(`pdf.js error: ${msg}`);
-    } finally {
-      setBusy(null);
-    }
-  }, [bytes, pushLog]);
-
-  const runWasm = useCallback(
-    async (
-      op: "compress" | "grayscale" | "linearize",
-      level?: CompressionLevel,
-    ) => {
-      if (!bytes) {
-        pushLog("wasm: no file");
-        return;
-      }
-      setWasmNote(null);
-      setBusy(`wasm:${op}`);
-      const t0 = performance.now();
-      try {
-        let out: Uint8Array;
-        if (op === "compress") {
-          out = await compressPdf(bytes, level ?? "recommended", (f) => {
-            const pct = Math.round(f * 100);
-            if (pct === 0 || pct === 50 || pct === 100) {
-              pushLog(`compress progress ${pct}%`);
-            }
-          });
-        } else if (op === "grayscale") {
-          out = await grayscalePdf(bytes);
-        } else {
-          out = await linearizePdf(bytes);
-        }
-        const ms = Math.round(performance.now() - t0);
-        pushLog(
-          `wasm ${op}: ${bytes.byteLength} → ${out.byteLength} bytes (${ms} ms)`,
-        );
-        setWasmNote(
-          `Last ${op}: ${out.byteLength} bytes — use Download to save.`,
-        );
-        setLastWasmOut(out);
-      } catch (e) {
-        const msg = e instanceof Error ? e.message : String(e);
-        pushLog(`wasm ${op} error: ${msg}`);
-        if (
-          msg.includes("Failed to fetch") ||
-          msg.includes("pkg/") ||
-          msg.includes("gopdf_wasm")
-        ) {
-          pushLog(
-            "Hint: run `pnpm build:wasm` from repo root.",
-          );
-        }
-      } finally {
-        setBusy(null);
-      }
-    },
-    [bytes, pushLog],
-  );
-
-  const downloadLast = useCallback(() => {
-    if (!lastWasmOut) {
-      pushLog("Download: run a wasm op first");
-      return;
-    }
-    const base = fileName?.replace(/\.pdf$/i, "") ?? "out";
-    downloadPdfBytes(lastWasmOut, `${base}-wasm.pdf`);
-  }, [fileName, lastWasmOut, pushLog]);
 
   // ==========================================
   // CALCULATOR VARIABLES
@@ -445,20 +313,6 @@ function HomePage() {
           grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
           gap: 32px;
         }
-        /* Custom Scrollbar for debugger log */
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: #090d16;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #1e293b;
-          border-radius: 3px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: #334155;
-        }
       `}</style>
 
       {/* 1. BRAND IDENTITY & HEADER */}
@@ -485,53 +339,24 @@ function HomePage() {
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <Link to="/" style={{ textDecoration: "none" }}>
-              <h1
-                style={{
-                  fontSize: "1.75rem",
-                  fontWeight: 900,
-                  margin: 0,
-                  color: COLOR_TEXT_PRIMARY,
-                  letterSpacing: "-0.03em",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                {BRAND_NAME}
-                <span style={{ color: COLOR_ORANGE }}>{BRAND_SUFFIX}</span>
-              </h1>
-            </Link>
+            <h1
+              style={{
+                fontSize: "1.75rem",
+                fontWeight: 900,
+                margin: 0,
+                color: COLOR_TEXT_PRIMARY,
+                letterSpacing: "-0.03em",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              {BRAND_NAME}
+              <span style={{ color: COLOR_ORANGE }}>{BRAND_SUFFIX}</span>
+            </h1>
             <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
               <Badge text={BRAND_VERSION} variant="orange" />
               <Badge text={BRAND_EXECUTION_MODE} variant="blue" />
             </div>
-          </div>
-          <div>
-            <Link
-              to="/tools/compress"
-              style={{
-                background: `linear-gradient(135deg, ${COLOR_ORANGE} 0%, #ea580c 100%)`,
-                color: "#ffffff",
-                padding: "10px 20px",
-                borderRadius: "8px",
-                fontWeight: 700,
-                textDecoration: "none",
-                fontSize: "0.9rem",
-                boxShadow: "0 4px 14px 0 rgba(249, 115, 22, 0.3)",
-                display: "inline-block",
-                transition: "all 0.2s ease",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-1px)";
-                e.currentTarget.style.boxShadow = "0 6px 20px 0 rgba(249, 115, 22, 0.4)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "none";
-                e.currentTarget.style.boxShadow = "0 4px 14px 0 rgba(249, 115, 22, 0.3)";
-              }}
-            >
-              Open Web Compressor
-            </Link>
           </div>
         </div>
       </header>
@@ -1335,327 +1160,6 @@ function HomePage() {
         </div>
       </section>
 
-      {/* 5. REFINED BROWSER-WASM SMOKE TEST SECTION */}
-      <section
-        style={{
-          maxWidth: "1100px",
-          margin: "0 auto",
-          padding: "60px 24px",
-        }}
-      >
-        <div
-          style={{
-            backgroundColor: COLOR_CARD_BG,
-            border: `1px solid ${COLOR_BORDER}`,
-            borderRadius: "16px",
-            padding: "40px",
-          }}
-        >
-          <div style={{ textAlign: "center", marginBottom: "32px" }}>
-            <Badge text="WASM Sandbox" variant="green" />
-            <h3 style={{ fontSize: "2rem", fontWeight: 800, marginTop: "12px", marginBottom: "8px" }}>
-              Local WASM Debugger Console
-            </h3>
-            <p style={{ color: COLOR_TEXT_SECONDARY, fontSize: "1rem", maxWidth: "600px", margin: "0 auto" }}>
-              Verify browser-WASM engine compatibility in real-time. Drag & drop a PDF file to run local operations inside your browser sandbox.
-            </p>
-          </div>
-
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-              gap: "32px",
-            }}
-          >
-            {/* Controller Panel */}
-            <div
-              style={{
-                backgroundColor: "#090d16",
-                border: `1px solid ${COLOR_BORDER}`,
-                borderRadius: "12px",
-                padding: "24px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-              }}
-            >
-              <div>
-                <h4 style={{ fontSize: "1.1rem", fontWeight: 700, marginTop: 0, marginBottom: "16px", color: COLOR_TEXT_PRIMARY }}>
-                  Debugger Controls
-                </h4>
-
-                {/* File Picker */}
-                <div
-                  style={{
-                    border: `2px dashed ${bytes ? COLOR_GREEN : COLOR_BORDER}`,
-                    backgroundColor: bytes ? "rgba(16, 185, 129, 0.02)" : "rgba(255, 255, 255, 0.01)",
-                    borderRadius: "8px",
-                    padding: "24px",
-                    textAlign: "center",
-                    cursor: "pointer",
-                    position: "relative",
-                    transition: "all 0.2s ease",
-                    marginBottom: "24px",
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!bytes) e.currentTarget.style.borderColor = COLOR_ORANGE;
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!bytes) e.currentTarget.style.borderColor = COLOR_BORDER;
-                  }}
-                >
-                  <input
-                    type="file"
-                    id="pdf-file-picker"
-                    title="Select PDF File"
-                    accept={ACCEPT_PDF}
-                    onChange={(e) => void onPickFile(e.target.files?.[0] ?? null)}
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      height: "100%",
-                      opacity: 0,
-                      cursor: "pointer",
-                    }}
-                  />
-                  <div style={{ fontSize: "2rem", marginBottom: "8px" }}>📄</div>
-                  <label htmlFor="pdf-file-picker" style={{ fontWeight: 600, display: "block", color: COLOR_TEXT_PRIMARY, cursor: "pointer" }}>
-                    {fileName ? "Change PDF File" : "Choose PDF File"}
-                  </label>
-                  <span style={{ fontSize: "0.75rem", color: COLOR_TEXT_SECONDARY, display: "block", marginTop: "4px" }}>
-                    PDF files are processed 100% locally.
-                  </span>
-                  {fileName && (
-                    <div
-                      style={{
-                        marginTop: "12px",
-                        color: COLOR_GREEN,
-                        fontWeight: 600,
-                        fontSize: "0.85rem",
-                        backgroundColor: "rgba(16, 185, 129, 0.1)",
-                        padding: "4px 12px",
-                        borderRadius: "4px",
-                        display: "inline-block",
-                        border: `1px solid rgba(16, 185, 129, 0.2)`,
-                      }}
-                    >
-                      ✔ {fileName} ({bytes ? (bytes.byteLength / 1024).toFixed(1) : 0} KB)
-                    </div>
-                  )}
-                </div>
-
-                {/* PDF.js Page Count */}
-                <div style={{ marginBottom: "24px" }}>
-                  <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-                    <button
-                      type="button"
-                      disabled={!bytes || busy !== null}
-                      onClick={() => void runPdfjs()}
-                      style={{
-                        padding: "8px 16px",
-                        borderRadius: "6px",
-                        border: `1px solid ${COLOR_BORDER}`,
-                        background: bytes ? COLOR_CARD_BG : "rgba(255, 255, 255, 0.02)",
-                        color: bytes ? COLOR_TEXT_PRIMARY : "rgba(255, 255, 255, 0.3)",
-                        cursor: bytes ? "pointer" : "not-allowed",
-                        fontWeight: 600,
-                        fontSize: "0.85rem",
-                        transition: "all 0.2s ease",
-                      }}
-                    >
-                      {busy === "pdf.js" ? "Running…" : "Count pages (pdf.js)"}
-                    </button>
-                    {pdfjsPages !== null && (
-                      <span
-                        style={{
-                          fontSize: "0.9rem",
-                          fontWeight: 700,
-                          color: COLOR_GREEN,
-                          backgroundColor: "rgba(16, 185, 129, 0.1)",
-                          padding: "4px 12px",
-                          borderRadius: "4px",
-                          border: `1px solid rgba(16, 185, 129, 0.2)`,
-                        }}
-                      >
-                        Pages: {pdfjsPages}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {/* WASM Operations */}
-                <div>
-                  <strong style={{ display: "block", fontSize: "0.85rem", textTransform: "uppercase", color: COLOR_TEXT_SECONDARY, marginBottom: "12px", letterSpacing: "0.05em" }}>
-                    Run Local Web-WASM Operations:
-                  </strong>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                    <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-                      {COMPRESS_LEVELS.map((level) => (
-                        <button
-                          key={level}
-                          type="button"
-                          disabled={!bytes || busy !== null}
-                          onClick={() => void runWasm("compress", level)}
-                          style={{
-                            flexGrow: 1,
-                            padding: "8px 12px",
-                            borderRadius: "6px",
-                            background: bytes ? COLOR_ORANGE : "rgba(249, 115, 22, 0.2)",
-                            color: bytes ? "#ffffff" : "rgba(255, 255, 255, 0.3)",
-                            border: "none",
-                            cursor: bytes ? "pointer" : "not-allowed",
-                            fontWeight: 600,
-                            fontSize: "0.8rem",
-                            transition: "all 0.2s ease",
-                          }}
-                        >
-                          Compress ({level})
-                        </button>
-                      ))}
-                    </div>
-                    <div style={{ display: "flex", gap: "8px" }}>
-                      <button
-                        type="button"
-                        disabled={!bytes || busy !== null}
-                        onClick={() => void runWasm("grayscale")}
-                        style={{
-                          flex: 1,
-                          padding: "8px 12px",
-                          borderRadius: "6px",
-                          background: bytes ? "#334155" : "rgba(51, 65, 85, 0.2)",
-                          color: bytes ? COLOR_TEXT_PRIMARY : "rgba(255, 255, 255, 0.3)",
-                          border: "none",
-                          cursor: bytes ? "pointer" : "not-allowed",
-                          fontWeight: 600,
-                          fontSize: "0.8rem",
-                          transition: "all 0.2s ease",
-                        }}
-                      >
-                        Grayscale
-                      </button>
-                      <button
-                        type="button"
-                        disabled={!bytes || busy !== null}
-                        onClick={() => void runWasm("linearize")}
-                        style={{
-                          flex: 1,
-                          padding: "8px 12px",
-                          borderRadius: "6px",
-                          background: bytes ? "#334155" : "rgba(51, 65, 85, 0.2)",
-                          color: bytes ? COLOR_TEXT_PRIMARY : "rgba(255, 255, 255, 0.3)",
-                          border: "none",
-                          cursor: bytes ? "pointer" : "not-allowed",
-                          fontWeight: 600,
-                          fontSize: "0.8rem",
-                          transition: "all 0.2s ease",
-                        }}
-                      >
-                        Linearize
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Download Output */}
-              <div style={{ marginTop: "24px", borderTop: `1px solid ${COLOR_BORDER}`, paddingTop: "20px" }}>
-                <button
-                  type="button"
-                  disabled={!lastWasmOut}
-                  onClick={downloadLast}
-                  style={{
-                    width: "100%",
-                    padding: "10px 16px",
-                    borderRadius: "6px",
-                    border: `1px solid ${lastWasmOut ? COLOR_GREEN : COLOR_BORDER}`,
-                    background: lastWasmOut ? "rgba(16, 185, 129, 0.1)" : "transparent",
-                    color: lastWasmOut ? COLOR_GREEN : "rgba(255, 255, 255, 0.2)",
-                    cursor: lastWasmOut ? "pointer" : "not-allowed",
-                    fontWeight: 700,
-                    fontSize: "0.9rem",
-                    transition: "all 0.2s ease",
-                  }}
-                >
-                  📥 Download Output File
-                </button>
-                {wasmNote && (
-                  <p style={{ marginTop: "12px", color: COLOR_GREEN, fontWeight: 600, fontSize: "0.8rem", textAlign: "center", margin: "12px 0 0 0" }}>
-                    {wasmNote}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            {/* Monospace Output Log Terminal */}
-            <div
-              style={{
-                backgroundColor: "#090d16",
-                border: `1px solid ${COLOR_BORDER}`,
-                borderRadius: "12px",
-                padding: "24px",
-                display: "flex",
-                flexDirection: "column",
-                height: "400px",
-              }}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-                <div style={{ display: "flex", gap: "6px" }}>
-                  <span style={{ width: "12px", height: "12px", borderRadius: "50%", backgroundColor: COLOR_RED }} />
-                  <span style={{ width: "12px", height: "12px", borderRadius: "50%", backgroundColor: COLOR_YELLOW }} />
-                  <span style={{ width: "12px", height: "12px", borderRadius: "50%", backgroundColor: COLOR_GREEN }} />
-                </div>
-                <span style={{ fontSize: "0.75rem", fontFamily: "monospace", color: COLOR_TEXT_SECONDARY }}>
-                  gopdf_wasm_debugger.log
-                </span>
-              </div>
-
-              <div
-                className="custom-scrollbar"
-                style={{
-                  flexGrow: 1,
-                  overflowY: "auto",
-                  fontFamily: "Fira Code, JetBrains Mono, source-code-pro, Menlo, Monaco, Consolas, monospace",
-                  fontSize: "0.8rem",
-                  color: "#38bdf8",
-                  lineHeight: 1.5,
-                  padding: "12px",
-                  backgroundColor: "rgba(0, 0, 0, 0.3)",
-                  borderRadius: "6px",
-                  border: "1px solid rgba(255, 255, 255, 0.02)",
-                }}
-              >
-                {log.length ? (
-                  log.map((line, idx) => {
-                    let color = "#38bdf8";
-                    if (line.includes("error")) color = COLOR_RED;
-                    else if (line.includes("progress")) color = COLOR_ORANGE;
-                    else if (line.includes("Loaded") || line.includes("numPages")) color = COLOR_GREEN;
-
-                    return (
-                      <div key={idx} style={{ color, marginBottom: "4px" }}>
-                        <span style={{ color: "rgba(255, 255, 255, 0.15)", marginRight: "8px" }}>
-                          {(idx + 1).toString().padStart(2, "0")}
-                        </span>
-                        {line}
-                      </div>
-                    );
-                  })
-                ) : (
-                  <div style={{ color: "rgba(255, 255, 255, 0.2)", fontStyle: "italic" }}>
-                    // Waiting for action...
-                    <br />
-                    // Select a PDF file to begin local WASM execution.
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* FOOTER */}
       <footer
         style={{
@@ -1680,10 +1184,5 @@ function HomePage() {
 }
 
 export default function App() {
-  return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/tools/compress" element={<CompressToolPage />} />
-    </Routes>
-  );
+  return <HomePage />;
 }

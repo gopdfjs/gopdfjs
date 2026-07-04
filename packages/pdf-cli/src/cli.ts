@@ -1,4 +1,5 @@
 import { BIN_NAME } from "./constants.ts";
+import { printWelcomeMessage, shouldShowWelcomeMessage } from "./welcome.ts";
 import { runAnalyze } from "./commands/analyze.ts";
 import { runCompress } from "./commands/compress.ts";
 import { runGrayscale } from "./commands/grayscale.ts";
@@ -39,6 +40,9 @@ export async function runCli(argv: string[]): Promise<number> {
   const [cmd, ...rest] = argv;
 
   if (!cmd || cmd === "help" || cmd === "--help" || cmd === "-h") {
+    if (shouldShowWelcomeMessage(argv)) {
+      printWelcomeMessage();
+    }
     console.log(HELP);
     return 0;
   }

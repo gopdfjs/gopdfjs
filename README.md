@@ -67,7 +67,7 @@ Artifacts land under `packages/engine/pkg/`. Without a successful `build:wasm`, 
 | **`packages/files`** | Browser file helpers (`@gopdfjs/files`) |
 | **`packages/shrink`**, **`grayscale`**, **`extract`**, **`compare`**, **`inspect`**, **`repair`**, **`redact`**, **`annotate`**, **`author`** | Tool-domain libraries |
 | **`packages/pdf-cli`** | **`gopdf-cli`** — local PDF diagnostics CLI |
-| **`site`** | Docs/marketing site (`@gopdfjs/site`, WSX + i18next) |
+| **`site`** | Docs/marketing landing (`@gopdfjs/site`, Vite React — CLI/MCP, no WASM) |
 | **`demos/react`** | WASM + local browser smoke tests |
 
 Root scripts:

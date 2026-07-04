@@ -1,0 +1,10 @@
+{
+  "name": "GoPDF CLI — Docs & MCP Setup",
+  "short_name": "GoPDF CLI",
+  "description": "CLI docs landing for GoPDF.js: install gopdf-cli, MCP server setup, and token-saving calculator. No browser PDF processing.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#030712",
+  "theme_color": "#f97316",
+  "icons": []
+}
