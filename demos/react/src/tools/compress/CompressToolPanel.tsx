@@ -1,4 +1,4 @@
-import type { CompressionLevel } from "@gopdfjs/adapter";
+import type { CompressionLevel } from "@gopdfjs/engine";
 import { FileDropzone } from "../../components/FileDropzone";
 import { Icon } from "../../components/Icon";
 import { formatBytes } from "../../lib/formatBytes";

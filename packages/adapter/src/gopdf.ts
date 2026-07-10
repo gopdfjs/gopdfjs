@@ -19,7 +19,7 @@ import type {
   WatermarkImage,
   WatermarkPosition,
 } from "@gopdfjs/plugin/domain";
-import type { PdfDocument } from "@gopdfjs/runtime/document";
+import type { PdfDocument } from "@gopdfjs/model/document";
 import type { GopdfAdapter } from "./adapter";
 
 export type { GopdfAdapter } from "./adapter";
@@ -43,8 +43,10 @@ export type PdfToTextOptions = {
 };
 
 /**
- * Unified PDF facade — **only** consumer entry after `createEngine(adapter)`.
- * Implementations live in tool packages; `@gopdfjs/engine` wires them.
+ * Consumer-facing PDF API (`engine.compressPdf()`, …).
+ * **Type lives here; implementation lives in `@gopdfjs/engine` `createEngine()`**, which
+ * wires `@gopdfjs/plugin-*` functions onto this facade. Do not import from apps — use
+ * `@gopdfjs/engine`.
  */
 export interface Gopdf {
   readonly adapter: GopdfAdapter;

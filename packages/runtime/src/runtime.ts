@@ -1,8 +1,8 @@
-import type { CanvasSurface, PdfDocument } from "./document";
+import type { CanvasSurface, PdfDocument } from "@gopdfjs/model/document";
 
 /**
- * Plugin-facing capability API — engine constructs via `createGopdfRuntime(adapter)`.
- * Methods only; plugins never see adapter ports (`pdfjs` / `canvas` / `engine`).
+ * Capability API that **engine** injects into plugins (`createGopdfRuntime` in `@gopdfjs/engine`).
+ * Plugins call `runtime.loadDocument()` etc. — never `adapter.pdfjs` directly.
  */
 export interface GopdfRuntime {
   loadDocument(bytes: Uint8Array): Promise<PdfDocument>;

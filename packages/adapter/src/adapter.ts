@@ -3,8 +3,8 @@ import type { CanvasPort, PdfJsRuntime } from "./render";
 import type { OcrPort } from "./ocr";
 
 /**
- * Host env bundle — `createBrowserAdapter()` / `createNodeAdapter()` → `createEngine(adapter)`.
- * Adapter packages only; plugins must not import or depend on this type.
+ * Low-level host env bundle — `createBrowserAdapter()` / `createNodeAdapter()`.
+ * Passed to `createEngine(adapter)`. **Engine only** — plugins never import this type.
  */
 export interface GopdfAdapter {
   readonly engine: GopdfEngine;

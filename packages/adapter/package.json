@@ -17,8 +17,8 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@gopdfjs/plugin": "workspace:*",
-    "@gopdfjs/runtime": "workspace:*"
+    "@gopdfjs/model": "workspace:*",
+    "@gopdfjs/plugin": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5",

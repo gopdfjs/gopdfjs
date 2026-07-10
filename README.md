@@ -1,22 +1,42 @@
 # GoPDF.js — engine + plugin PDF library
 
-**`@gopdfjs/engine`** is the sole consumer-facing API for PDF tools in browser and Node. You create an **adapter** for your environment, pass it to **`createEngine(adapter)`**, and call methods on the returned **`Gopdf`** facade (`engine.compressPdf()`, `engine.mergePdfs()`, …).
+**`@gopdfjs/engine`** is the **only consumer-facing API**. Host creates an **adapter** (low-level env ports), passes it to **`createEngine(adapter)`**, calls **`engine.compressPdf()`** etc.
 
-PDF bytes stay local: the engine clones host buffers at the facade boundary so you can reuse one `Uint8Array` across many calls. Rust/WASM accelerates selected ops inside adapters — it is **not** a top-level consumer API.
+## Four roles
 
-Design: `.spec/rfc/0058-engine-plugin-charter.md` · WASM layout: `.spec/rfc/0057-rust-wasm-engine-architecture.md`.
+```
+Consumer  →  engine.*()           (@gopdfjs/engine — public API)
+                 ↓ wires
+              plugin-*             (@gopdfjs/plugin-shrink, plugin-extract, …)
+                 ↓ receives
+              GopdfRuntime         (@gopdfjs/runtime — engine → plugin API)
+                 ↓ built from (inside engine)
+              GopdfAdapter         (@gopdfjs/adapter — host low-level ports)
+```
 
-## What you get
+| Role | Package | Who uses it |
+|------|---------|-------------|
+| **Engine** | `@gopdfjs/engine` | Apps, demo, CLI — `createEngine(adapter)` → `Gopdf` |
+| **Runtime** | `@gopdfjs/runtime` | `plugin-*` only — capability API from engine |
+| **Adapter** | `@gopdfjs/adapter` + `adapter-browser` / `adapter-node` | Engine only — WASM, pdf.js, canvas, OCR |
+| **Plugin** | `@gopdfjs/plugin-*` | Engine only — feature logic; consumer API assembled here |
+
+Engine **builds runtime from adapter** and **exposes plugin methods as `Gopdf`**. Products never import `plugin-*` or `adapter` directly.
+
+Design: `.spec/rfc/0058-engine-plugin-charter.md` · WASM: `.spec/rfc/0057-rust-wasm-engine-architecture.md`.
+
+## Packages
 
 | Layer | Package | Role |
 |-------|---------|------|
 | **Consumer API** | `@gopdfjs/engine` | `createEngine(adapter)` → `Gopdf` |
-| **Adapters** | `@gopdfjs/adapter-browser` · `@gopdfjs/adapter-node` | Env ports: WASM, pdf.js, canvas, OCR (Node) |
-| **Adapter contracts** | `@gopdfjs/adapter` | `GopdfAdapter`, port types, bytes helpers, `Gopdf` types |
-| **Runtime contracts** | `@gopdfjs/runtime` | `GopdfRuntime`, `PdfDocument`, `CanvasSurface` (engine → plugins) |
-| **Plugin contracts** | `@gopdfjs/plugin` | Domain options/results (`GrayscalePdfOptions`, …) |
-| **Plugins** | `@gopdfjs/plugin-shrink`, `plugin-extract`, `plugin-struct`, … | Wired inside engine — **do not import from apps** |
-| **Rust** | `crates/gopdf-*` → `packages/engine/pkg/` | Algorithms + `gopdf-wasm` (adapter-only `./pkg/*` subpath) |
+| **Adapters** | `@gopdfjs/adapter-browser` · `@gopdfjs/adapter-node` | Host creates `GopdfAdapter` |
+| **Adapter contracts** | `@gopdfjs/adapter` | Port types — adapter authors + engine |
+| **Shared model** | `@gopdfjs/model` | `PdfDocument`, `CanvasSurface` |
+| **Runtime contracts** | `@gopdfjs/runtime` | `GopdfRuntime` — plugins only |
+| **Plugin contracts** | `@gopdfjs/plugin` | Domain options/results |
+| **Plugins** | `@gopdfjs/plugin-shrink`, `plugin-extract`, … | Wired inside engine |
+| **Rust** | `crates/gopdf-*` → `packages/engine/pkg/` | WASM — adapter loads via engine/pkg |
 
 ### Public API (consumer)
 
@@ -30,7 +50,7 @@ const out = await engine.compressPdf(inputBytes, "recommended", (p) => {
 });
 ```
 
-All §2.6 tools live on `Gopdf` — merge, split, rotate, extract, repair, grayscale, etc. See `packages/adapter/src/gopdf.ts` for the full surface.
+All §2.6 tools live on `Gopdf` — implemented by `plugin-*`, exposed by `createEngine`. Type: `@gopdfjs/engine` (`Gopdf`).
 
 **Separate entry points** (intentional):
 

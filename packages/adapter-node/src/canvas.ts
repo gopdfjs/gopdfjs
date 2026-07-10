@@ -1,5 +1,5 @@
 import { createCanvas as napiCreateCanvas } from "@napi-rs/canvas";
-import type { CanvasSurface } from "@gopdfjs/runtime/document";
+import type { CanvasSurface } from "@gopdfjs/model/document";
 import type { CanvasPort } from "@gopdfjs/adapter/render";
 
 class NodeCanvasSurface implements CanvasSurface {

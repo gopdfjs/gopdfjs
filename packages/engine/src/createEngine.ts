@@ -45,11 +45,15 @@ function mapCompressionLevel(level: CompressionLevel): CompressLevel {
 }
 
 /**
- * Create the unified PDF engine from an env adapter bundle.
- * Tool packages implement logic; this factory wires them onto one `Gopdf` facade.
+ * Create the consumer-facing PDF engine.
  *
- * RFC 0058 §2.4: host may reuse one `Uint8Array` across many `engine.*` calls —
- * every method clones at the facade before adapters or pdf.js can detach buffers.
+ * ## Roles (RFC 0058 §2.3.0)
+ * - **Adapter** (`GopdfAdapter`) — low-level host ports; only engine holds this reference.
+ * - **Runtime** (`GopdfRuntime`) — built here via `createGopdfRuntime(adapter)`; passed into plugins.
+ * - **Plugins** (`@gopdfjs/plugin-*`) — implement features; engine wires them onto `Gopdf`.
+ * - **Consumer API** (`Gopdf`) — `engine.compressPdf()` etc.; assembled from plugin exports below.
+ *
+ * Host may reuse one `Uint8Array` — every method clones at the facade (`ownPdfBytes`).
  */
 export function createEngine(adapter: GopdfAdapter): Gopdf {
   const wasm = adapter.engine;

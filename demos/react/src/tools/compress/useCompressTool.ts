@@ -1,4 +1,4 @@
-import type { CompressionLevel } from "@gopdfjs/adapter";
+import type { CompressionLevel } from "@gopdfjs/engine";
 import { useCallback, useState } from "react";
 import { downloadPdfBytes } from "../../lib/downloadBlob";
 import { getBrowserEngine } from "../../lib/engine";

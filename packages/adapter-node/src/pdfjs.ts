@@ -1,4 +1,4 @@
-import type { PdfDocument } from "@gopdfjs/runtime/document";
+import type { PdfDocument } from "@gopdfjs/model/document";
 import type { PdfJsRuntime } from "@gopdfjs/adapter/render";
 
 let pdfjsModule: typeof import("pdfjs-dist/legacy/build/pdf.mjs") | null = null;

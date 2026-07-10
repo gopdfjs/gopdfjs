@@ -10,7 +10,6 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@gopdfjs/adapter": "workspace:*",
     "@gopdfjs/adapter-browser": "workspace:*",
     "@gopdfjs/engine": "workspace:*",
     "react": "19.2.4",

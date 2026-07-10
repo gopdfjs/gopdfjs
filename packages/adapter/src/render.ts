@@ -1,4 +1,4 @@
-import type { CanvasSurface, PdfDocument } from "@gopdfjs/runtime/document";
+import type { CanvasSurface, PdfDocument } from "@gopdfjs/model/document";
 
 /** Allocates canvases for render pipelines — adapter-internal only. */
 export interface CanvasPort {
@@ -12,7 +12,6 @@ export interface PdfJsRuntime {
    * Implementations must clone before `getDocument({ data })`.
    */
   loadDocument(bytes: Uint8Array): Promise<PdfDocument>;
-  /** Operator constants; available after first document load in most impls. */
   getOps(): Promise<Record<string, number>>;
 }
 

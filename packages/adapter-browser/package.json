@@ -13,7 +13,7 @@
   "dependencies": {
     "@gopdfjs/adapter": "workspace:*",
     "@gopdfjs/engine": "workspace:*",
-    "@gopdfjs/runtime": "workspace:*",
+    "@gopdfjs/model": "workspace:*",
     "pdfjs-dist": "^5.4.296"
   },
   "devDependencies": {

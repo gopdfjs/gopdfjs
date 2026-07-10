@@ -1,5 +1,5 @@
 import type { GopdfAdapter, PdfToTextOptions } from "@gopdfjs/adapter/gopdf";
-import type { PdfTextContentItem } from "@gopdfjs/runtime/document";
+import type { PdfTextContentItem } from "@gopdfjs/model/document";
 import { renderPageToJpeg } from "./renderPage";
 
 const LINE_Y_TOLERANCE_PT = 4;

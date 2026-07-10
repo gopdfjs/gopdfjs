@@ -1,4 +1,4 @@
-import type { CanvasSurface } from "@gopdfjs/runtime/document";
+import type { CanvasSurface } from "@gopdfjs/model/document";
 import type { CanvasPort } from "@gopdfjs/adapter/render";
 
 class BrowserCanvasSurface implements CanvasSurface {

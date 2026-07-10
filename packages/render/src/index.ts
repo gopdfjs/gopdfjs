@@ -5,6 +5,6 @@ export type {
   PdfPage,
   PdfTextContentItem,
   PdfViewport,
-} from "@gopdfjs/runtime/document";
+} from "@gopdfjs/model/document";
 
 export type { CanvasPort } from "@gopdfjs/adapter/render";

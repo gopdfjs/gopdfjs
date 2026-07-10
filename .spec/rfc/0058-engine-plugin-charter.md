@@ -10,16 +10,23 @@
 
 **Publish rule (non-negotiable):** every PDF capability exposed to consumers **must** be callable on a `Gopdf` instance from `createEngine(adapter)`. No parallel public API on plugin packages, no env imports in product code, no bypassing the facade.
 
-**Plugin rule:** each feature is a **plugin**. A plugin may stay JS-only or may use WASM as an optional acceleration backend. `@gopdfjs/engine` owns consumer-facing APIs. **Adapters adapt the host env; engine wraps the adapter into a `GopdfRuntime` and injects it into plugins — plugins only ever see the runtime.**
+**Plugin rule:** each feature is a **plugin** (`@gopdfjs/plugin-*`). Engine **assembles** the consumer `Gopdf` API from plugin implementations. Engine **builds** `GopdfRuntime` from `GopdfAdapter` and **passes runtime into plugins** — plugins never see the adapter.
+
+| 层 | 包 | 谁消费 | 职责（一句话） |
+|----|-----|--------|----------------|
+| **Consumer API** | `@gopdfjs/engine` | 产品 / demo / CLI | `createEngine(adapter)` → `Gopdf`；`engine.*()` 是唯一对外 API |
+| **Runtime** | `@gopdfjs/runtime` | `plugin-*` | Engine 暴露给插件的能力面；由 engine 从 adapter 构造 |
+| **Adapter** | `@gopdfjs/adapter` + `adapter-browser` / `adapter-node` | **仅 engine** | 宿主底层实现（WASM · pdf.js · canvas · OCR） |
+| **Plugin impl** | `@gopdfjs/plugin-shrink` 等 | **仅 engine**（内部 wire） | 功能逻辑；签名收 `GopdfRuntime`，不收 `GopdfAdapter` |
+| **Plugin 契约** | `@gopdfjs/plugin` | `plugin-*` | domain options/results |
+| **Shared model** | `@gopdfjs/model` | adapter ports · runtime · plugins | `PdfDocument` · `CanvasSurface` 等共享形状 |
 
 | 层 | 包 | 消费者可 import？ |
 |----|-----|------------------|
-| **Adapter 契约** | `@gopdfjs/adapter` | adapter 作者 + 类型 mock |
-| **Runtime 契约** | `@gopdfjs/runtime` | `GopdfRuntime` + document 类型 |
-| **Plugin 契约** | `@gopdfjs/plugin` | domain options/results |
-| **门面** | `@gopdfjs/engine` | **`createEngine` + 类型** |
-| **环境** | `@gopdfjs/adapter-browser` · `@gopdfjs/adapter-node` | 宿主初始化一次 |
-| **插件** | `@gopdfjs/plugin-struct`, `shrink`, `extract`, … | **否**（由 engine 内部 wire） |
+| **门面** | `@gopdfjs/engine` | **是** — `createEngine` + `Gopdf` 类型 |
+| **环境** | `@gopdfjs/adapter-browser` · `@gopdfjs/adapter-node` | 宿主初始化 adapter 一次 |
+| **Adapter / runtime / plugin 契约** | `@gopdfjs/adapter` · `@gopdfjs/runtime` · `@gopdfjs/plugin` · `@gopdfjs/model` | 类型作者 / plugin 作者；**产品 UI 不要** |
+| **插件实现** | `@gopdfjs/plugin-*` | **否** |
 
 本 RFC 与 **RFC 0057** 配套：0057 = Rust/WASM acceleration backend 构建与 adapter load/init；本 RFC = **plugin/engine 边界**、adapter 模型、验收与发布。
 
@@ -44,12 +51,13 @@
 | 路径 | 职责 | npm 发布 |
 |------|------|----------|
 | **`crates/`** | Rust 算法 | 否 |
+| **`packages/model`** | 共享 document/canvas 类型 | 是 |
 | **`packages/adapter`** | adapter 契约（零 env 依赖） | 是 |
 | **`packages/runtime`** | runtime 契约（`GopdfRuntime` + document） | 是 |
 | **`packages/plugin`** | plugin domain 契约 | 是 |
 | **`packages/engine`** | `createEngine` 门面 | 是 |
 | **`packages/adapter-browser`** · **`adapter-node`** | 环境端口实现 | 是 |
-| **`packages/{struct,shrink,…}`** | feature plugin 逻辑（仅 import `@gopdfjs/plugin`） | 是（实现单元；**不作为 consumer facade**） |
+| **`packages/plugin-{struct,shrink,…}`** | feature plugin 逻辑（import `@gopdfjs/runtime` + `@gopdfjs/plugin`） | 是（实现单元；**不作为 consumer facade**） |
 | **`packages/render`** | 低层 render helper（`pdfToJpeg` 等经 engine wire） | 是（实现单元） |
 | **`packages/files`** | 宿主文件读取 helper（`readFileAsArrayBuffer`） | 是 |
 | **`packages/setup`** | MCP installer — 把 `gopdf-cli mcp`（独立仓）注册到 AI agent hosts | 是 |
@@ -73,70 +81,95 @@
 
 ## 2.3 Engine + plugin + adapter architecture（权威）
 
+### 2.3.0 四个角色（必读）
+
+| 角色 | 包 | 创建者 | 消费者 | 做什么 |
+|------|-----|--------|--------|--------|
+| **Engine** | `@gopdfjs/engine` | `createEngine(adapter)` | **宿主 / 产品** | 对外暴露 `Gopdf` API（`engine.compressPdf()` …） |
+| **Runtime** | `@gopdfjs/runtime` | **engine**（`createGopdfRuntime(adapter)`） | **`plugin-*`** | engine 给插件用的能力面；插件只收 `GopdfRuntime` |
+| **Adapter** | `@gopdfjs/adapter` + `adapter-*` | **宿主**（`createBrowserAdapter()`） | **仅 engine** | 底层宿主实现：WASM · pdf.js · canvas · OCR |
+| **Plugin** | `@gopdfjs/plugin-*` | 各 feature 包 | **仅 engine**（内部调用） | 实现功能；engine 把插件方法挂到 `Gopdf` 上发布 |
+
+**数据流（单向）：**
+
+```
+宿主 bytes
+  → engine.*()          ← consumer API（由 engine 基于 plugin 组装）
+       → plugin-*(bytes, runtime, …)
+            → runtime.*()     ← engine 从 adapter 构造，注入插件
+                 → adapter.*() ← 仅 engine 持有；插件不可见
+```
+
+**Engine 组装 consumer API：** `createEngine.ts` import 各 `@gopdfjs/plugin-*` 函数，包一层 `ownPdfBytes()`，挂到 `Gopdf` 实例。§2.6 方法表 = 对外 API；实现 = plugin。
+
 ### 2.3.1 分层图
 
 ```mermaid
 flowchart TD
-    Host["Host<br/>browser app / Node script / gopdf-cli<br/>File or fs -> Uint8Array"] --> Engine["@gopdfjs/engine<br/>createEngine(adapter) -> Gopdf<br/>public API: engine.*()"]
-    Engine --> Ownership["Byte ownership policy<br/>engine clones before adapter calls<br/>ownPdfBytes() / ownPdfBytesList()"]
-    Engine --> Plugins["Feature plugins<br/>compress / struct / extract / repair / ..."]
-    Plugins --> Runtime["GopdfRuntime<br/>plugin-facing capability view<br/>(engine wraps adapter)"]
-    Runtime --> Adapter["GopdfAdapter<br/>host env bundle"]
+    Consumer["Consumer<br/>browser / Node / CLI"] -->|"engine.compressPdf()"| Engine["@gopdfjs/engine<br/>createEngine(adapter) → Gopdf<br/>consumer API assembled from plugins"]
 
-    Adapter --> AEngine["adapter.engine<br/>GopdfEngine<br/>WASM ops"]
-    Adapter --> APdfjs["adapter.pdfjs<br/>PdfJsRuntime"]
-    Adapter --> ACanvas["adapter.canvas<br/>CanvasPort"]
-    Adapter --> AOcr["adapter.ocr<br/>OcrPort (Node only)"]
+    Engine -->|"ownPdfBytes + wire"| Plugins["@gopdfjs/plugin-*<br/>compress / struct / extract / …"]
+    Engine -->|"createGopdfRuntime(adapter)"| Runtime["GopdfRuntime<br/>engine → plugin capability API"]
+    Engine -->|"adapter.engine / pdfjs / …"| Adapter["GopdfAdapter<br/>low-level host bundle"]
 
-    AEngine --> BrowserWasm["browser: fetch/init WASM"]
-    AEngine --> NodeWasm["node: initSync + fs read wasm"]
-    APdfjs --> Pdfjs["PdfJsRuntime · pdf.js loadDocument"]
-    ACanvas --> BrowserCanvas["browser: DOM canvas"]
-    ACanvas --> NodeCanvas["node: @napi-rs/canvas"]
-    AOcr --> NodeOcr["OcrPort · Node OCR"]
+    Plugins -->|"bytes, runtime, options"| Runtime
+    Runtime -->|"delegates"| Adapter
+
+    Adapter --> AEngine["adapter.engine · WASM"]
+    Adapter --> APdfjs["adapter.pdfjs · pdf.js"]
+    Adapter --> ACanvas["adapter.canvas"]
+    Adapter --> AOcr["adapter.ocr (Node)"]
 ```
 
 ### 2.3.2 包职责（硬边界）
 
 | 包 | import 规则 | 职责 |
 |----|-------------|------|
-| `@gopdfjs/adapter` | adapter 作者 | `GopdfAdapter`, `GopdfEngine`, `PdfJsRuntime`, `CanvasPort`, `OcrPort`, `Gopdf` 类型, bytes |
-| `@gopdfjs/runtime` | 工具包 import | `GopdfRuntime`, `PdfDocument`, `CanvasSurface`, … |
-| `@gopdfjs/plugin` | 工具包 import | domain options/results |
-| `@gopdfjs/engine` | 宿主 + CLI | `createEngine(adapter)`；consumer-facing API assembly only；**不**直接 `import pdfjs-dist` / `fs` |
-| `@gopdfjs/adapter-browser` | 浏览器宿主 | `createBrowserAdapter()` → `{ engine, pdfjs, canvas }` |
-| `@gopdfjs/adapter-node` | Node / CLI | `createNodeAdapter()` → `{ engine, pdfjs, canvas, ocr }` |
-| `@gopdfjs/plugin-struct` 等 | **禁止**产品 import | feature plugin；只收 domain args / `Uint8Array` / `GopdfRuntime`；由 engine wire；**不收 `GopdfAdapter`** |
+| `@gopdfjs/engine` | **产品 / demo / CLI** | 唯一 consumer 入口；`createEngine(adapter)`；从 `plugin-*` 组装 `Gopdf`；`createGopdfRuntime(adapter)` 注入插件 |
+| `@gopdfjs/adapter` | **adapter 作者 + engine** | `GopdfAdapter` 契约；底层 port 类型；**不给 plugin** |
+| `@gopdfjs/adapter-browser` · `adapter-node` | 宿主 | 实现 `GopdfAdapter`（WASM · pdf.js · canvas · OCR） |
+| `@gopdfjs/runtime` | **`plugin-*` only** | `GopdfRuntime` — engine 暴露给插件的 API |
+| `@gopdfjs/plugin` | **`plugin-*`** | domain options/results |
+| `@gopdfjs/model` | adapter · runtime · plugins | 共享 `PdfDocument` / `CanvasSurface` |
+| `@gopdfjs/plugin-*` | **禁止产品 import** | 功能实现；`(bytes, runtime, …)`；由 engine wire 到 `Gopdf` |
 
 **禁止：**
 
 - 产品 / demo / CLI 直接 `import { mergePdfs } from "@gopdfjs/plugin-struct"`
-- 工具包 `import` from `@gopdfjs/engine` 或 `@gopdfjs/adapter-*`
-- plugin 签名收 `GopdfAdapter` — plugin 只能收 `GopdfRuntime`
-- demo 暴露底层库名（如 pdf.js）；UI 只写最终 feature API / `createBrowserGopdf`
+- `plugin-*` import `@gopdfjs/engine` 或 `@gopdfjs/adapter-*`
+- plugin 签名收 `GopdfAdapter` — 只能收 `GopdfRuntime`
+- adapter 依赖 runtime（adapter 不知 runtime；runtime 契约在 `@gopdfjs/runtime`，构造在 engine）
+- demo 暴露底层库名；UI 只写 `engine.*()` / `createBrowserGopdf()`
 
-### 2.3.3 Adapter vs Runtime（`GopdfAdapter` · `GopdfRuntime`）
-
-**Terminology（权威）：两个概念都存在，方向相反：**
+### 2.3.3 Adapter vs Runtime
 
 | 术语 | 谁创建 | 谁消费 | 语义 |
 |------|--------|--------|------|
-| **`GopdfAdapter`** | **宿主**（`createBrowserAdapter()` / `createNodeAdapter()`） | `createEngine(adapter)` 一次性接收 | **适配 host env** — browser/Node 差异全部封在这里 |
-| **`GopdfRuntime`** | **engine**（由 adapter 包装构造） | **plugin** 注入参数 | plugin 可见的能力视图 |
+| **`GopdfAdapter`** | **宿主** `createBrowserAdapter()` / `createNodeAdapter()` | **`createEngine(adapter)` only** | 底层宿主能力 bundle — engine 独占 |
+| **`GopdfRuntime`** | **engine** `createGopdfRuntime(adapter)` | **`plugin-*`** | engine 暴露给插件的能力 API；从 adapter 投影 |
 
-**知识方向（硬规则）：** plugin 知 runtime → runtime 知 adapter → **plugin 不知 adapter**（也不知 env）。反向引用一律禁止。
+**依赖方向（硬规则）：**
+
+```
+consumer → engine → plugin-* → runtime (types)
+                    engine → adapter (impl)
+                    engine builds runtime from adapter
+```
+
+- **plugin 不知 adapter**（也不知 env）
+- **adapter 不知 runtime**（零 `@gopdfjs/runtime` 依赖）
+- **共享 document 形状** → `@gopdfjs/model`（adapter port 与 runtime 共用，互不引用）
 
 ```ts
-/** Host-created env bundle — passed once to createEngine(adapter). */
+/** Host → engine. Low-level env ports. Plugins never see this. */
 interface GopdfAdapter {
-  readonly engine: GopdfEngine;   // required port; lazy WASM init — plugins may ignore it
-  readonly pdfjs: PdfJsRuntime;   // loadDocument · getOps
-  readonly canvas: CanvasPort;    // create surface · toImageBytes
-  readonly ocr?: OcrPort;         // Node only — recognize()
+  readonly engine: GopdfEngine;
+  readonly pdfjs: PdfJsRuntime;
+  readonly canvas: CanvasPort;
+  readonly ocr?: OcrPort;
 }
 
-/** Engine-constructed view injected into plugins — same ports, no env identity.
- *  Engine may layer ownership/instrumentation here without touching adapters. */
+/** Engine → plugin. Built by createGopdfRuntime(adapter) inside @gopdfjs/engine. */
 interface GopdfRuntime {
   loadDocument(bytes: Uint8Array): Promise<PdfDocument>;
   getPdfOps(): Promise<Record<string, number>>;
@@ -144,7 +177,7 @@ interface GopdfRuntime {
 }
 ```
 
-当前 runtime 与 adapter **同形**（engine 直接投影）；语义边界仍然生效 — plugin 类型签名只准写 `GopdfRuntime`。
+`createGopdfRuntime` **只存在于** `packages/engine/src/createGopdfRuntime.ts` — runtime 包只定义接口，不 import adapter（prod）。
 
 | Port | Browser | Node |
 |------|---------|------|
@@ -194,9 +227,14 @@ const merged = await engine.mergePdfs([bytes, bytes]);
 #### 类型
 
 ```ts
-import type { Gopdf, GopdfAdapter } from "@gopdfjs/adapter";
+import type { Gopdf } from "@gopdfjs/engine";
 import { createEngine } from "@gopdfjs/engine";
+import { createBrowserAdapter } from "@gopdfjs/adapter-browser";
+
+const engine = createEngine(await createBrowserAdapter());
 ```
+
+产品 import **`@gopdfjs/engine`** 取 consumer 类型。`GopdfAdapter` 仅 adapter 作者 / engine 内部需要。
 
 ### 2.5 Byte ownership（RFC 必读）
 
@@ -254,15 +292,15 @@ import { createEngine } from "@gopdfjs/engine";
 | 项 | RFC | 代码 | 状态 |
 |----|-----|------|------|
 | Consumer entry | `createEngine(adapter)` → `Gopdf` | `packages/engine/src/createEngine.ts` | ✓ |
-| Adapter bundle | `GopdfAdapter` | `ports/src/runtime.ts` | ✓ |
-| Adapter factories | `createBrowserAdapter()` · `createNodeAdapter()` | `adapter-*/src/index.ts`（`*Runtime` = deprecated alias） | ✓ |
-| Plugin contract | plugin 只收 `GopdfRuntime`（§2.3.3） | `createGopdfRuntime(adapter)` → plugins | ✓ |
-| Feature surface | §2.6 方法表 | `Gopdf` + `createEngine` wire | ✓ |
-| Demo / e2e | 只 `engine.*()` | `demos/react` — 无 `@gopdfjs/plugin-struct` 等直连 | ✓ |
-| Internal on type | `loadDocument` · `encodeImages` 非 consumer 文档面 | 仍在 `Gopdf` 类型供 engine/plugin wire；demo 不暴露 | ✓ |
-| Dedicated APIs | `compare` · `render` helper | `@gopdfjs/engine/compare` · `./render` | 有意分离 |
-| Bytes ownership | Engine clones at facade; runtime/adapters consume | `ownPdfBytes` + `createGopdfRuntime` | ✓ |
-| Root README | `createBrowserGopdf()` / `engine.*()` model | Updated 2026-07-08 | ✓ |
+| Consumer API from plugins | §2.6 方法表 = `Gopdf`；实现 = `plugin-*` | `createEngine` wires `plugin-*` | ✓ |
+| Adapter bundle | `GopdfAdapter` — engine only | `packages/adapter/src/adapter.ts` | ✓ |
+| Runtime build | engine `createGopdfRuntime(adapter)` → plugins | `packages/engine/src/createGopdfRuntime.ts` | ✓ |
+| Runtime contract | `GopdfRuntime` — plugins only | `packages/runtime/src/runtime.ts` | ✓ |
+| Shared model | `@gopdfjs/model` | `packages/model` | ✓ |
+| Adapter factories | `createBrowserAdapter()` · `createNodeAdapter()` | `adapter-*/src/index.ts` | ✓ |
+| Plugin contract | plugin 只收 `GopdfRuntime` | `plugin-*` signatures | ✓ |
+| Demo / e2e | 只 `engine.*()` | `demos/react` | ✓ |
+| Bytes ownership | Engine clones at facade | `ownPdfBytes` + `createGopdfRuntime` | ✓ |
 
 ## 3. Verification & publish gate
 
@@ -278,8 +316,9 @@ import { createEngine } from "@gopdfjs/engine";
 
 | 包 | Node unit | Browser e2e |
 |----|-----------|---------------|
+| `@gopdfjs/model` | document types | — |
 | `@gopdfjs/adapter` | bytes · async contract | — |
-| `@gopdfjs/runtime` | `GopdfRuntime` · document | — |
+| `@gopdfjs/runtime` | `GopdfRuntime` projection test (devDep adapter) | — |
 | `@gopdfjs/plugin` | domain options/results | — |
 | `@gopdfjs/engine` | createEngine · **facade bytes pressure（ownership 主责）** · integration chain | Browser e2e + Node integration |
 | `@gopdfjs/adapter-node` | env ports only：pdfjs + canvas + ocr + wasm 四 op；**full coverage 未完成** | — |
@@ -349,10 +388,10 @@ Skill：**`gopdf-e2e`**。
 
 每个插件：
 
-- 实现 feature behavior
-- 可选择使用 JS-only path
-- 可选择通过 `GopdfAdapter.engine` 使用 WASM acceleration
-- 不直接决定 consumer-facing API
+- 实现 feature behavior（`plugin-*(bytes, runtime, …)`）
+- engine 把插件挂到 `Gopdf` 上作为 consumer API（§2.6）
+- 可选择 JS-only 或经 engine 持有的 adapter WASM
+- **不**自行决定对外 API 形状
 
 ### 4.3 PDF Object Layer（未来）
 

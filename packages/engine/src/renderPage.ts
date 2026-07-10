@@ -1,4 +1,4 @@
-import type { PdfPage, PdfViewport } from "@gopdfjs/runtime/document";
+import type { PdfPage, PdfViewport } from "@gopdfjs/model/document";
 import type { CanvasPort } from "@gopdfjs/adapter/render";
 
 type RenderParams = {

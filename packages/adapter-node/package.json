@@ -13,7 +13,7 @@
   "dependencies": {
     "@gopdfjs/adapter": "workspace:*",
     "@gopdfjs/engine": "workspace:*",
-    "@gopdfjs/runtime": "workspace:*",
+    "@gopdfjs/model": "workspace:*",
     "@napi-rs/canvas": "0.1.97",
     "pdfjs-dist": "^5.4.296",
     "tesseract.js": "^7.0.0"

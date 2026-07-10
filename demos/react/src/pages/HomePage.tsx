@@ -1,4 +1,4 @@
-import type { CompressionLevel } from "@gopdfjs/adapter";
+import type { CompressionLevel } from "@gopdfjs/engine";
 import { useCallback, useState } from "react";
 import { EmptyState, LogPanel } from "../components/LogPanel";
 import { FileDropzone } from "../components/FileDropzone";

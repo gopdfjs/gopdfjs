@@ -1,22 +1,17 @@
 {
-  "name": "@gopdfjs/runtime",
+  "name": "@gopdfjs/model",
   "version": "0.1.0",
   "private": true,
-  "description": "GopdfRuntime — capability API engine injects into plugins",
+  "description": "Shared PDF document/canvas types — adapter ports and plugin runtime (zero env deps)",
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./runtime": "./src/runtime.ts",
     "./document": "./src/document.ts"
   },
   "scripts": {
     "test": "vitest run"
   },
-  "dependencies": {
-    "@gopdfjs/model": "workspace:*"
-  },
   "devDependencies": {
-    "@gopdfjs/adapter": "workspace:*",
     "typescript": "^5",
     "vitest": "^3.0.0"
   },

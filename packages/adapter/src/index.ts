@@ -1,20 +1,13 @@
 /**
- * @gopdfjs/adapter — adapter contracts only (no fs, no DOM, no WASM impl).
+ * @gopdfjs/adapter — low-level host port contracts (adapter authors + engine only).
  *
- * ## Async by default
- * - Factories return `Promise<…>` (`CreateGopdfAdapter`, `CreateGopdfEngine`, …).
- * - Port methods that touch I/O, WASM, canvas encode, pdf.js, or OCR return `Promise`.
- * - `onProgress` callbacks stay sync (event channel).
+ * `GopdfAdapter` = WASM · pdf.js · canvas · OCR bundle from `createBrowserAdapter()` /
+ * `createNodeAdapter()`. **Only `@gopdfjs/engine` consumes it.**
  *
- * ## Consumer entry (RFC 0058 §2.4)
- * ```ts
- * import { createEngine } from "@gopdfjs/engine";
- * import { createBrowserAdapter } from "@gopdfjs/adapter-browser";
- * const engine = createEngine(await createBrowserAdapter());
- * await engine.pdfToJpeg(pdfBytes);
- * ```
+ * `Gopdf` interface is typed here but **implemented and exposed by engine** — products
+ * import consumer types from `@gopdfjs/engine`, not this package.
  *
- * Plugins import `@gopdfjs/runtime` + `@gopdfjs/plugin` — never this package.
+ * Plugins use `@gopdfjs/runtime` + `@gopdfjs/plugin`. Shared shapes: `@gopdfjs/model`.
  */
 
 export type {
