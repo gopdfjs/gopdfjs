@@ -1,9 +1,9 @@
 import os from "node:os";
-import type { AgentId, AgentDefinition, ListedAgent } from "../types.ts";
-import { claudeDesktopAgent } from "./claude-desktop.ts";
-import { cursorAgent } from "./cursor.ts";
-import { claudeCodeAgent } from "./claude-code.ts";
-import { windsurfAgent } from "./windsurf.ts";
+import type { AgentId, AgentDefinition, ListedAgent } from "../types";
+import { claudeDesktopAgent } from "./claude-desktop";
+import { cursorAgent } from "./cursor";
+import { claudeCodeAgent } from "./claude-code";
+import { windsurfAgent } from "./windsurf";
 
 export const AGENT_DEFINITIONS: readonly AgentDefinition[] = [
   claudeDesktopAgent,
@@ -42,7 +42,7 @@ export function defaultHomedir(): string {
   return os.homedir();
 }
 
-export { claudeDesktopAgent } from "./claude-desktop.ts";
-export { cursorAgent } from "./cursor.ts";
-export { claudeCodeAgent } from "./claude-code.ts";
-export { windsurfAgent } from "./windsurf.ts";
+export { claudeDesktopAgent } from "./claude-desktop";
+export { cursorAgent } from "./cursor";
+export { claudeCodeAgent } from "./claude-code";
+export { windsurfAgent } from "./windsurf";

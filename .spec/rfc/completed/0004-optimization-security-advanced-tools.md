@@ -8,7 +8,7 @@
 
 ## Context
 
-High-end capabilities: compression, security, OCR, document intelligence, and WASM-accelerated optimization. Privacy = client-side processing. WASM hybrid per [0057](../0057-rust-wasm-worker-architecture.md) / [0058](../0058-wasm-pdf-library-charter.md).
+High-end capabilities: compression, security, OCR, document intelligence, and WASM-accelerated optimization. Privacy = client-side processing. WASM hybrid per [0057](../0057-rust-wasm-engine-architecture.md) / [0058](../0058-engine-plugin-charter.md).
 
 ## Technical goals (original)
 
@@ -34,7 +34,7 @@ High-end capabilities: compression, security, OCR, document intelligence, and WA
 | Chat with PDF | [0047](../pending/0047-chat-with-pdf.md) | pending | **DEFERRED** |
 | AI translate | [0048](../pending/0048-ai-translate-pdf.md) | pending | **DEFERRED** |
 
-**Canonical spec** for each tool = its own RFC. This doc does not override [0008](../0008-compress-pdf.md) or [0058](../0058-wasm-pdf-library-charter.md).
+**Canonical spec** for each tool = its own RFC. This doc does not override [0008](../0008-compress-pdf.md) or [0058](../0058-engine-plugin-charter.md).
 
 ## Closure
 

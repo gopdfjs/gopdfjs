@@ -9,7 +9,20 @@
       "Bash(rm -rf lopdf_analysis)",
       "Bash(mkdir lopdf_analysis)",
       "WebFetch(domain:raw.githubusercontent.com)",
-      "Bash(gh api:*)"
+      "Bash(gh api:*)",
+      "Bash(rtk find *)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(rtk proxy *)",
+      "Bash(rtk read *)",
+      "Bash(rtk git *)",
+      "Bash(rtk grep *)",
+      "Bash(git mv *)",
+      "Bash(xargs sed -i '' 's/0057-rust-wasm-worker-architecture/0057-rust-wasm-engine-architecture/g')",
+      "Bash(echo \"done: $?\")"
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "nuwa",
+    "gopdf"
+  ]
 }

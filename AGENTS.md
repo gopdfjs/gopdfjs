@@ -28,7 +28,7 @@
 
 | 命令 | 用途 |
 |------|------|
-| `pnpm build:cli` · `gopdf-cli ./file.pdf` | Node CLI（无浏览器） |
+| CLI | **separate repo** [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) — zero coupling |
 | `pnpm --filter=@gopdfjs/site dev` | CLI docs landing（GitHub Pages，无 WASM） |
 
 ## RFC

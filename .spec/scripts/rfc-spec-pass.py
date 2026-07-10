@@ -37,41 +37,41 @@ TOOL_SPECS: dict[str, ToolSpec] = {
         RuntimeKind.ISOMORPHIC,
         "`mergePdfs()`",
         "gopdf-cli merge",
-        "packages/runners",
+        "packages/struct",
         "N/A (pdf-lib)",
-        isomorphic_pkg="@gopdfjs/runners",
+        isomorphic_pkg="@gopdfjs/plugin-struct",
     ),
     "0007-split-pdf": ToolSpec(
         RuntimeKind.ISOMORPHIC,
         "split helpers",
         "gopdf-cli split",
-        "packages/runners",
+        "packages/struct",
         "N/A",
-        isomorphic_pkg="@gopdfjs/runners",
+        isomorphic_pkg="@gopdfjs/plugin-struct",
     ),
     "0009-rotate-pdf": ToolSpec(
         RuntimeKind.ISOMORPHIC,
         "rotate pages",
         "gopdf-cli rotate",
-        "packages/runners",
+        "packages/struct",
         "N/A",
-        isomorphic_pkg="@gopdfjs/runners",
+        isomorphic_pkg="@gopdfjs/plugin-struct",
     ),
     "0010-organize-pdf": ToolSpec(
         RuntimeKind.ISOMORPHIC,
         "reorder pages",
         "gopdf-cli organize",
-        "packages/runners",
+        "packages/struct",
         "N/A",
-        isomorphic_pkg="@gopdfjs/runners",
+        isomorphic_pkg="@gopdfjs/plugin-struct",
     ),
     "0011-crop-pdf": ToolSpec(
         RuntimeKind.ISOMORPHIC,
         "crop pages",
         "gopdf-cli crop",
-        "packages/runners",
+        "packages/struct",
         "N/A",
-        isomorphic_pkg="@gopdfjs/runners",
+        isomorphic_pkg="@gopdfjs/plugin-struct",
     ),
     "0012-edit-pdf": ToolSpec(
         RuntimeKind.ISOMORPHIC,
@@ -79,45 +79,45 @@ TOOL_SPECS: dict[str, ToolSpec] = {
         "gopdf-cli edit",
         "packages/annotate",
         "N/A",
-        isomorphic_pkg="@gopdfjs/annotate",
+        isomorphic_pkg="@gopdfjs/plugin-annotate",
     ),
     "0013-sign-pdf": ToolSpec(
         RuntimeKind.ISOMORPHIC,
         "image signature field",
         "gopdf-cli sign",
-        "packages/runners",
+        "packages/struct",
         "N/A",
-        isomorphic_pkg="@gopdfjs/runners",
+        isomorphic_pkg="@gopdfjs/plugin-struct",
     ),
     "0014-watermark-pdf": ToolSpec(
         RuntimeKind.ISOMORPHIC,
         "`watermarkPdf()`",
         "gopdf-cli watermark",
-        "packages/runners",
+        "packages/struct",
         "N/A",
-        isomorphic_pkg="@gopdfjs/runners",
+        isomorphic_pkg="@gopdfjs/plugin-struct",
     ),
     "0015-page-numbers": ToolSpec(
         RuntimeKind.ISOMORPHIC,
         "page numbers",
         "gopdf-cli page-numbers",
-        "packages/runners",
+        "packages/struct",
         "N/A",
-        isomorphic_pkg="@gopdfjs/runners",
+        isomorphic_pkg="@gopdfjs/plugin-struct",
     ),
     "0016-header-footer": ToolSpec(
         RuntimeKind.ISOMORPHIC,
         "header/footer",
         "gopdf-cli header-footer",
-        "packages/runners",
+        "packages/struct",
         "N/A",
-        isomorphic_pkg="@gopdfjs/runners",
+        isomorphic_pkg="@gopdfjs/plugin-struct",
     ),
     "0017-jpg-to-pdf": ToolSpec(
         RuntimeKind.HYBRID_RUNNERS_ENGINE,
         "`encodeImages` + pdf-lib assembly",
         "gopdf-cli jpg-to-pdf",
-        "packages/runners + packages/engine",
+        "packages/struct + packages/engine",
         "Hybrid encode leg",
     ),
     "0018-pdf-to-jpg": ToolSpec(
@@ -133,23 +133,23 @@ TOOL_SPECS: dict[str, ToolSpec] = {
         "gopdf-cli ocr",
         "packages/extract",
         "N/A (tesseract.js)",
-        isomorphic_pkg="@gopdfjs/extract",
+        isomorphic_pkg="@gopdfjs/plugin-extract",
     ),
     "0021-protect-pdf": ToolSpec(
         RuntimeKind.ISOMORPHIC,
         "`protectPdf()`",
         "gopdf-cli protect",
-        "packages/runners",
+        "packages/struct",
         "Web Crypto (Node + browser)",
-        isomorphic_pkg="@gopdfjs/runners",
+        isomorphic_pkg="@gopdfjs/plugin-struct",
     ),
     "0022-unlock-pdf": ToolSpec(
         RuntimeKind.ISOMORPHIC,
         "`unlockPdf()`",
         "gopdf-cli unlock",
-        "packages/runners",
+        "packages/struct",
         "N/A",
-        isomorphic_pkg="@gopdfjs/runners",
+        isomorphic_pkg="@gopdfjs/plugin-struct",
     ),
     "0028-grayscale-pdf": ToolSpec(
         RuntimeKind.ENGINE_SINGLE,
@@ -173,7 +173,7 @@ TOOL_SPECS: dict[str, ToolSpec] = {
         "gopdf-cli extract-images",
         "packages/extract",
         "N/A (pdfjs)",
-        isomorphic_pkg="@gopdfjs/extract",
+        isomorphic_pkg="@gopdfjs/plugin-extract",
     ),
     "0061-understand-pdf": ToolSpec(
         RuntimeKind.INSPECT_ENGINE,
@@ -181,7 +181,7 @@ TOOL_SPECS: dict[str, ToolSpec] = {
         "gopdf-cli inspect",
         "packages/inspect + packages/engine",
         "Planned `analyze_pdf`",
-        isomorphic_pkg="@gopdfjs/inspect",
+        isomorphic_pkg="@gopdfjs/plugin-inspect",
     ),
     "0008-compress-pdf": ToolSpec(
         RuntimeKind.ENGINE_SINGLE,
@@ -210,7 +210,7 @@ IMPL_STATUS_RE = re.compile(
 
 VERDICT = (
     "**Verdict**: {verdict} — **one npm pkg by default**; split browser + `-node` "
-    "**only if** single pkg infeasible ([0058 §2.3](../0058-wasm-pdf-library-charter.md)). "
+    "**only if** single pkg infeasible ([0058 §2.3](../0058-engine-plugin-charter.md)). "
     "CLI wraps npm; no forked logic."
 )
 
@@ -267,7 +267,7 @@ def implementation_block(stem: str, section: str = "6", e2e_done: bool = False) 
         )
     elif spec.kind == RuntimeKind.HYBRID_RUNNERS_ENGINE:
         rows.append(
-            "| **npm** | `@gopdfjs/runners` | isomorphic | **Partial** | pdf-lib assembly — one pkg |"
+            "| **npm** | `@gopdfjs/plugin-struct` | isomorphic | **Partial** | pdf-lib assembly — one pkg |"
         )
         rows.append(
             "| **npm** | `@gopdfjs/engine` | isomorphic (target) | **Partial** | `encodeImages` — one pkg with runners |"
@@ -296,7 +296,7 @@ def implementation_block(stem: str, section: str = "6", e2e_done: bool = False) 
         f"| **CLI** | `{spec.cli}` | node | {cli_state} | thin wrapper over npm above |"
     )
     rows.append(
-        f"| **Rust / WASM** | — | — | {spec.wasm} | per RFC + [0057](../0057-rust-wasm-worker-architecture.md) |"
+        f"| **Rust / WASM** | — | — | {spec.wasm} | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |"
     )
     rows.append(
         f"| **Vitest** | — | — | **Partial** | `{spec.vitest}` |"

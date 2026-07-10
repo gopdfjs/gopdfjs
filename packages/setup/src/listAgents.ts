@@ -1,8 +1,8 @@
-import type { InstallScope, ListedAgent } from "./types.ts";
+import type { InstallScope, ListedAgent } from "./types";
 import {
   AGENT_DEFINITIONS,
   defaultHomedir,
-} from "./agents/index.ts";
+} from "./agents/index";
 
 export type ListAgentsOptions = {
   cwd?: string;

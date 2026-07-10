@@ -1,0 +1,26 @@
+{
+  "name": "@gopdfjs/plugin-grayscale",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@gopdfjs/plugin": "workspace:*",
+    "@gopdfjs/runtime": "workspace:*",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^5.4.296"
+  },
+  "devDependencies": {
+    "happy-dom": "^20.8.4",
+    "typescript": "^5",
+    "vitest": "^3.0.0"
+  }
+}

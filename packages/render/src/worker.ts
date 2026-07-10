@@ -2,12 +2,19 @@ import type * as PdfJs from "pdfjs-dist";
 
 let pdfjsInstance: typeof PdfJs | null = null;
 
+function isNodeRuntime(): boolean {
+  // In Vitest/jsdom, `window` exists but we still run in Node and need legacy build.
+  return typeof process !== "undefined" && Boolean(process.versions?.node);
+}
+
 /** Synchronously/Asynchronously load pdfjs-dist directly in Node environment. */
 export async function getPdfjs(): Promise<typeof PdfJs> {
   if (pdfjsInstance) return pdfjsInstance;
-  const mod = await import("pdfjs-dist");
-  pdfjsInstance = mod;
-  return mod;
+  const mod = isNodeRuntime()
+    ? await import("pdfjs-dist/legacy/build/pdf.mjs")
+    : await import("pdfjs-dist");
+  pdfjsInstance = mod as typeof PdfJs;
+  return pdfjsInstance;
 }
 
 /** Lazy facade — existing call sites use `await pdfjs.getDocument(...).promise`. */

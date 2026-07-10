@@ -1,7 +1,7 @@
 
 # RFC 0061 - Understand PDF
 
-- **Status**: Implemented (product — L3); Planned (L1 `analyze_pdf` per [RFC 0058](0058-wasm-pdf-library-charter.md) §3.2.3)
+- **Status**: Implemented (product — L3); Planned (L1 `analyze_pdf` per [RFC 0058](0058-engine-plugin-charter.md) §3.2.3)
 - **Author**: Antigravity
 - **Date**: 2026-03-22
 
@@ -44,12 +44,12 @@ This matches the original spec below. Implementation lives in the **product app*
 
 | Surface | Package | Runtime | State | Notes |
 |---------|---------|---------|-------|-------|
-| **npm** | `@gopdfjs/inspect` | isomorphic | **Partial** | JS metadata until L1 lands |
+| **npm** | `@gopdfjs/plugin-inspect` | isomorphic | **Partial** | JS metadata until L1 lands |
 | **npm** | `@gopdfjs/engine` | isomorphic (target) | **Not started** | planned `analyzePdf()` in same engine pkg |
 | **CLI** | `gopdf-cli inspect` | node | **Planned** | thin wrapper over npm above |
-| **Rust / WASM** | — | — | Planned `analyze_pdf` | per RFC + [0057](../0057-rust-wasm-worker-architecture.md) |
+| **Rust / WASM** | — | — | Planned `analyze_pdf` | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |
 | **Vitest** | — | — | **Partial** | `packages/inspect + packages/engine` |
 | **Browser e2e** | — | browser | **Not done** | `demos/react/e2e/tools/understand-pdf.spec.ts` |
 | **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: **PARTIAL** — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-wasm-pdf-library-charter.md)). CLI wraps npm; no forked logic.
+**Verdict**: **PARTIAL** — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-engine-plugin-charter.md)). CLI wraps npm; no forked logic.

@@ -78,9 +78,9 @@ tests:
 |---------|---------|---------|-------|-------|
 | **npm** | `@gopdfjs/engine` | isomorphic (target) | **Not started** | `pdfToDocx()` (planned) — browser Worker today; Node in same pkg; split `-node` only if blocked |
 | **CLI** | `gopdf-cli pdf-to-word` | node | **Planned** | thin wrapper over npm above |
-| **Rust / WASM** | — | — | Not started | per RFC + [0057](../0057-rust-wasm-worker-architecture.md) |
+| **Rust / WASM** | — | — | Not started | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |
 | **Vitest** | — | — | **Partial** | `packages/engine (planned)` |
 | **Browser e2e** | — | browser | **Not done** | `demos/react/e2e/tools/pdf-to-word.spec.ts` |
 | **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: **NOT STARTED** (L1) — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-wasm-pdf-library-charter.md)). CLI wraps npm; no forked logic.
+**Verdict**: **NOT STARTED** (L1) — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-engine-plugin-charter.md)). CLI wraps npm; no forked logic.

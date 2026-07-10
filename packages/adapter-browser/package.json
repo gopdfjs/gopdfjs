@@ -1,0 +1,24 @@
+{
+  "name": "@gopdfjs/adapter-browser",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Browser implementations of @gopdfjs/adapter (Worker/DOM canvas/pdf.js)",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@gopdfjs/adapter": "workspace:*",
+    "@gopdfjs/engine": "workspace:*",
+    "@gopdfjs/runtime": "workspace:*",
+    "pdfjs-dist": "^5.4.296"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "vitest": "^3.0.0"
+  },
+  "license": "MIT"
+}

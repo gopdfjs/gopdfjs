@@ -28,11 +28,11 @@ Identify and extract all raster image assets embedded within a PDF document at t
 
 | Surface | Package | Runtime | State | Notes |
 |---------|---------|---------|-------|-------|
-| **npm** | `@gopdfjs/extract` | isomorphic (target) | **Not started** | image extract — one pkg; pdfjs inside; split only if Node blocked |
+| **npm** | `@gopdfjs/plugin-extract` | isomorphic (target) | **Not started** | image extract — one pkg; pdfjs inside; split only if Node blocked |
 | **CLI** | `gopdf-cli extract-images` | node | **Planned** | thin wrapper over npm above |
-| **Rust / WASM** | — | — | N/A (pdfjs) | per RFC + [0057](../0057-rust-wasm-worker-architecture.md) |
+| **Rust / WASM** | — | — | N/A (pdfjs) | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |
 | **Vitest** | — | — | **Partial** | `packages/extract` |
 | **Browser e2e** | — | browser | **Not done** | `demos/react/e2e/tools/extract-images.spec.ts` |
 | **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: **NOT STARTED** — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-wasm-pdf-library-charter.md)). CLI wraps npm; no forked logic.
+**Verdict**: **NOT STARTED** — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-engine-plugin-charter.md)). CLI wraps npm; no forked logic.

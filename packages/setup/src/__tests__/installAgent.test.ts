@@ -2,9 +2,9 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import { MCP_ARGS, SERVER_NAME } from "../constants.ts";
-import { installMcpForAgent } from "../installAgent.ts";
-import { claudeCodeAgent, cursorAgent } from "../agents/index.ts";
+import { MCP_ARGS, SERVER_NAME } from "../constants";
+import { installMcpForAgent } from "../installAgent";
+import { claudeCodeAgent, cursorAgent } from "../agents/index";
 
 const tempDirs: string[] = [];
 

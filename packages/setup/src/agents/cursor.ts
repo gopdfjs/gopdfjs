@@ -1,6 +1,6 @@
 import path from "node:path";
-import { buildGopdfServerEntry } from "../mergeMcpConfig.ts";
-import type { AgentDefinition } from "../types.ts";
+import { buildGopdfServerEntry } from "../mergeMcpConfig";
+import type { AgentDefinition } from "../types";
 
 const CURSOR_USER_REL = ".cursor/mcp.json" as const;
 const CURSOR_PROJECT_REL = ".cursor/mcp.json" as const;

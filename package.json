@@ -10,7 +10,6 @@
     "lint": "turbo lint",
     "build:wasm": "PATH=\"$HOME/.cargo/bin:$PATH\" wasm-pack build crates/gopdf-wasm --target web --out-dir ../../packages/engine/pkg --release",
     "build:wasm:dev": "PATH=\"$HOME/.cargo/bin:$PATH\" wasm-pack build crates/gopdf-wasm --target web --out-dir ../../packages/engine/pkg --dev",
-    "build:cli": "pnpm --filter=@gopdfjs/pdf-cli build",
     "test:rust": "cargo test --workspace",
     "pretest:e2e": "test -f packages/engine/pkg/gopdf_wasm_bg.wasm || pnpm build:wasm",
     "validate": "pnpm test:rust && pnpm test && pnpm lint && pnpm build",
@@ -21,6 +20,7 @@
     "prepare": "husky"
   },
   "devDependencies": {
+    "@gopdfjs/fixtures": "workspace:*",
     "@playwright/test": "^1.55.1",
     "@systembug/pangu": "^0.0.13",
     "husky": "^9.1.7",

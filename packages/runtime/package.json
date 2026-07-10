@@ -1,0 +1,20 @@
+{
+  "name": "@gopdfjs/runtime",
+  "version": "0.1.0",
+  "private": true,
+  "description": "GopdfRuntime — capability API engine injects into plugins (no env, no adapter)",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./runtime": "./src/runtime.ts",
+    "./document": "./src/document.ts"
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "vitest": "^3.0.0"
+  },
+  "license": "MIT"
+}

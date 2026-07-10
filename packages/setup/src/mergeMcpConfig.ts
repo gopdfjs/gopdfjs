@@ -1,4 +1,4 @@
-import { MCP_ARGS, SERVER_NAME } from "./constants.ts";
+import { MCP_ARGS, SERVER_NAME } from "./constants";
 
 export type McpServerEntry = Record<string, unknown>;
 

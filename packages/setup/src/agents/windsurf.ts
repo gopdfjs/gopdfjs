@@ -1,6 +1,6 @@
 import path from "node:path";
-import { buildGopdfServerEntry } from "../mergeMcpConfig.ts";
-import type { AgentDefinition } from "../types.ts";
+import { buildGopdfServerEntry } from "../mergeMcpConfig";
+import type { AgentDefinition } from "../types";
 
 const WINDSURF_USER_REL = ".codeium/windsurf/mcp_config.json" as const;
 

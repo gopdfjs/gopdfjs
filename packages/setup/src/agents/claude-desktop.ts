@@ -1,6 +1,6 @@
 import path from "node:path";
-import { buildGopdfServerEntry } from "../mergeMcpConfig.ts";
-import type { AgentDefinition } from "../types.ts";
+import { buildGopdfServerEntry } from "../mergeMcpConfig";
+import type { AgentDefinition } from "../types";
 
 const CLAUDE_DESKTOP_DIR_DARWIN = "Library/Application Support/Claude" as const;
 const CLAUDE_DESKTOP_DIR_WIN = "Claude" as const;

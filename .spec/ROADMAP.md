@@ -35,10 +35,10 @@ RFC bodies: `.spec/rfc/NNNN-kebab-slug.md` (active) · `.spec/rfc/completed/` (s
 
 - **Consumer (ilovepdf)** — gopdf.fyi tool UX (out of repo; consumes `@gopdfjs/*` npm)
 - **WASM L1** — `packages/engine/src/*.rs` + Worker `op`
-- **Monorepo** — verifiable in this repo (`packages/*`, `demos/react`, `gopdf-cli`, tests)
+- **Monorepo** — verifiable in this repo (`packages/*`, `demos/react`, tests)
 - **Tests** — `cargo test` · Vitest · `demos/react/e2e/tools/*.spec.ts` · skill `gopdf-e2e`
 
-**Monorepo gap (global)**: **minimize pkg count** — isomorphic single pkg first; `@gopdfjs/engine` / `render` stay one pkg until split proven necessary; CLI thin wrappers.
+- **Monorepo gap (global)**: **engine + adapter publish model locked** (RFC 0058 §2.3) — all tools via `createEngine`; browser e2e + Node unit gate before npm publish.
 
 ---
 
@@ -60,21 +60,21 @@ RFC bodies: `.spec/rfc/NNNN-kebab-slug.md` (active) · `.spec/rfc/completed/` (s
 
 | ID | Tool | Verdict | Consumer (ilovepdf) | WASM L1 | Monorepo | Tests | Notes |
 |----|------|---------|---------------------|---------|----------|-------|-------|
-| 0006 | Merge | **PARTIAL** | live | JS (pdf-lib) | `@gopdfjs/runners` | ❌ no E2E | RFC in `completed/`; CLI planned |
-| 0007 | Split | **PARTIAL** | live | JS | `@gopdfjs/runners` | ❌ | same |
-| 0009 | Rotate | **PARTIAL** | live | JS | `@gopdfjs/runners` | ❌ | same |
-| 0010 | Organize | **PARTIAL** | live | JS | `@gopdfjs/runners` | ❌ | same |
-| 0011 | Crop | **PARTIAL** | live | JS | `@gopdfjs/runners` | ❌ | same |
-| 0012 | Edit | **PARTIAL** | live | JS + canvas | `@gopdfjs/annotate` | ❌ | same |
-| 0013 | Sign | **PARTIAL** | live | JS | `@gopdfjs/runners` | ❌ | same |
-| 0014 | Watermark | **PARTIAL** | live | JS | `@gopdfjs/runners` | ❌ | same |
-| 0015 | Page numbers | **PARTIAL** | live | JS | `@gopdfjs/runners` | ❌ | same |
-| 0016 | Header/footer | **PARTIAL** | live | JS | `@gopdfjs/runners` | ❌ | same |
-| 0017 | JPG→PDF | **PARTIAL** | live | **encode_images** ✅ | `@gopdfjs/runners` + engine | ❌ | Hybrid: WASM encoding leg in repo |
+| 0006 | Merge | **PARTIAL** | live | JS (pdf-lib) | `@gopdfjs/plugin-struct` | ❌ no E2E | RFC in `completed/`; CLI planned |
+| 0007 | Split | **PARTIAL** | live | JS | `@gopdfjs/plugin-struct` | ❌ | same |
+| 0009 | Rotate | **PARTIAL** | live | JS | `@gopdfjs/plugin-struct` | ❌ | same |
+| 0010 | Organize | **PARTIAL** | live | JS | `@gopdfjs/plugin-struct` | ❌ | same |
+| 0011 | Crop | **PARTIAL** | live | JS | `@gopdfjs/plugin-struct` | ❌ | same |
+| 0012 | Edit | **PARTIAL** | live | JS + canvas | `@gopdfjs/plugin-annotate` | ❌ | same |
+| 0013 | Sign | **PARTIAL** | live | JS | `@gopdfjs/plugin-struct` | ❌ | same |
+| 0014 | Watermark | **PARTIAL** | live | JS | `@gopdfjs/plugin-struct` | ❌ | same |
+| 0015 | Page numbers | **PARTIAL** | live | JS | `@gopdfjs/plugin-struct` | ❌ | same |
+| 0016 | Header/footer | **PARTIAL** | live | JS | `@gopdfjs/plugin-struct` | ❌ | same |
+| 0017 | JPG→PDF | **PARTIAL** | live | **encode_images** ✅ | `@gopdfjs/plugin-struct` + engine | ❌ | Hybrid: WASM encoding leg in repo |
 | 0018 | PDF→JPG | **PARTIAL** | live | **encode_images** ✅ | `@gopdfjs/render` + engine | ❌ | Hybrid: render = pdfjs |
-| 0020 | OCR | **PARTIAL** | live | tesseract.js | `@gopdfjs/extract` | ❌ | Not in Header nav; on product |
-| 0021 | Protect | **PARTIAL** | live | JS crypto | `@gopdfjs/runners` | ❌ | same |
-| 0022 | Unlock | **PARTIAL** | live | JS | `@gopdfjs/runners` | ❌ | same |
+| 0020 | OCR | **PARTIAL** | live | tesseract.js | `@gopdfjs/plugin-extract` | ❌ | Not in Header nav; on product |
+| 0021 | Protect | **PARTIAL** | live | JS crypto | `@gopdfjs/plugin-struct` | ❌ | same |
+| 0022 | Unlock | **PARTIAL** | live | JS | `@gopdfjs/plugin-struct` | ❌ | same |
 
 ### Active — WASM / verified
 
@@ -123,7 +123,7 @@ RFC bodies: `.spec/rfc/NNNN-kebab-slug.md` (active) · `.spec/rfc/completed/` (s
 | 0054 | Invert colors | **NOT STARTED** | — | — | |
 | 0055 | ZIP→PDF | **NOT STARTED** | — | — | |
 | 0056 | Niche formats | **NOT STARTED** | — | — | |
-| 0061 | Understand PDF | **PARTIAL** | **live** L3 | ❌ `analyze_pdf` | L1 `@gopdfjs/inspect` planned; see RFC §5 |
+| 0061 | Understand PDF | **PARTIAL** | **live** L3 | ❌ `analyze_pdf` | L1 `@gopdfjs/plugin-inspect` planned; see RFC §5 |
 
 ### Deferred (`pending/`)
 
@@ -159,7 +159,7 @@ Reserved: **0059**, **0060**.
 4. **0058 PDF Object Layer** — planned; blocks 0008 P2, full 0028/0042, 0061 L1
 5. ~~**0005** — `site/messages/` + parity tests~~ — **done 2026-06-28**
 6. ~~**completed/0006–0022** missing §6 monorepo honesty~~ — **fixed 2026-06-28**
-7. **Runtime model** — **fixed 2026-06-28** — **one npm pkg default**; split `-node` only if infeasible; CLI thin wrapper ([0058 §2.3](rfc/0058-wasm-pdf-library-charter.md))
+7. **Runtime model** — **fixed 2026-06-28** — **one npm pkg default**; split `-node` only if infeasible; CLI thin wrapper ([0058 §2.3](rfc/0058-engine-plugin-charter.md))
 
 ---
 
@@ -193,8 +193,8 @@ Reserved: **0059**, **0060**.
 | 0023–0045 | (proposed tools) | Proposed | active |
 | 0046–0048 | (AI) | Deferred | pending |
 | 0049–0056 | (proposed tools) | Proposed | active |
-| 0057 | [WASM Worker](rfc/0057-rust-wasm-worker-architecture.md) | Approved | active |
-| 0058 | [WASM charter](rfc/0058-wasm-pdf-library-charter.md) | Approved | active |
+| 0057 | [WASM Worker](rfc/0057-rust-wasm-engine-architecture.md) | Approved | active |
+| 0058 | [WASM charter](rfc/0058-engine-plugin-charter.md) | Approved | active |
 | 0061 | [Understand PDF](rfc/0061-understand-pdf.md) | Implemented (L3) / Planned (L1) | active |
 
 *(Full paths for 0023–0056: see `.spec/rfc/` listing.)*

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { MCP_ARGS, SERVER_NAME } from "../constants.ts";
-import { buildGopdfServerEntry, mergeMcpConfig } from "../mergeMcpConfig.ts";
+import { MCP_ARGS, SERVER_NAME } from "../constants";
+import { buildGopdfServerEntry, mergeMcpConfig } from "../mergeMcpConfig";
 
 describe("mergeMcpConfig", () => {
   it("creates mcpServers when config is empty", () => {

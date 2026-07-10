@@ -1,0 +1,28 @@
+{
+  "name": "@gopdfjs/adapter-node",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Node implementations of @gopdfjs/adapter (napi-canvas/fs/pdf.js/OCR)",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@gopdfjs/adapter": "workspace:*",
+    "@gopdfjs/engine": "workspace:*",
+    "@gopdfjs/runtime": "workspace:*",
+    "@napi-rs/canvas": "0.1.97",
+    "pdfjs-dist": "^5.4.296",
+    "tesseract.js": "^7.0.0"
+  },
+  "devDependencies": {
+    "@gopdfjs/fixtures": "workspace:*",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^3.0.0"
+  },
+  "license": "MIT"
+}

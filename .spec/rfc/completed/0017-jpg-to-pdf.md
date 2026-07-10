@@ -31,13 +31,15 @@ Convert raster image files into search-optimized PDF documents.
 
 大批量图片时，主线程 `canvas.toBlob()` 易卡顿；**库已提供** `encode_images`，用于在 Worker 内对 **已展开的 RGBA 帧** 做 JPEG/PNG 编码。整册 PDF 的拼装仍由 **pdf-lib**（或未来 Rust 侧 mux，需单独 RFC）完成。
 
-**Integration（编码子步骤）**: 使用 **`@gopdfjs/engine`**：
+**Integration（编码子步骤）** — consumer 走 `Gopdf` facade（RFC 0058 §2.4）：
 
 ```ts
-import { encodeImages, splitEncodedImages } from "@gopdfjs/engine";
+import { createBrowserGopdf } from "@gopdfjs/adapter-browser";
+import { splitEncodedImages } from "@gopdfjs/engine";
 
+const engine = await createBrowserGopdf();
 // pixelsFlat: 多页 RGBA 拼接；widths/heights: 每帧宽高
-const packed = await encodeImages(pixelsFlat, widths, heights, "jpeg", 92);
+const packed = await engine.encodeImages(pixelsFlat, widths, heights, "jpeg", 92);
 const jpegChunks = splitEncodedImages(packed);
 // 再将 jpegChunks[i] 交给 pdf-lib 嵌入 PDF（产品层编排）
 ```
@@ -48,12 +50,12 @@ const jpegChunks = splitEncodedImages(packed);
 
 | Surface | Package | Runtime | State | Notes |
 |---------|---------|---------|-------|-------|
-| **npm** | `@gopdfjs/runners` | isomorphic | **Partial** | pdf-lib assembly — one pkg |
+| **npm** | `@gopdfjs/plugin-struct` | isomorphic | **Partial** | pdf-lib assembly — one pkg |
 | **npm** | `@gopdfjs/engine` | isomorphic (target) | **Partial** | `encodeImages` — one pkg with runners |
 | **CLI** | `gopdf-cli jpg-to-pdf` | node | **Planned** | thin wrapper over npm above |
-| **Rust / WASM** | — | — | Hybrid encode leg | per RFC + [0057](../0057-rust-wasm-worker-architecture.md) |
-| **Vitest** | — | — | **Partial** | `packages/runners + packages/engine` |
+| **Rust / WASM** | — | — | Hybrid encode leg | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |
+| **Vitest** | — | — | **Partial** | `packages/struct + packages/engine` |
 | **Browser e2e** | — | browser | **Not done** | `demos/react/e2e/tools/jpg-to-pdf.spec.ts` |
 | **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: **PARTIAL** — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-wasm-pdf-library-charter.md)). CLI wraps npm; no forked logic.
+**Verdict**: **PARTIAL** — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-engine-plugin-charter.md)). CLI wraps npm; no forked logic.

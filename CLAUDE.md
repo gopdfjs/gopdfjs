@@ -8,8 +8,8 @@
 |--------|------|----------|
 | Rust 算法 | `crates/gopdf-*` | 否 |
 | WASM 绑定 | `crates/gopdf-wasm` → `packages/engine/pkg/` | 否 |
-| 全部 JS/TS 库 | `packages/*`（`engine`、`runners`、`render`、工具域库…） | 是 |
-| Node CLI | `packages/pdf-cli` → **`gopdf-cli`** | 是 |
+| 全部 JS/TS 库 | `packages/*`（`engine`、`struct`、`render`、工具域库…） | 是 |
+| Node CLI | **separate `gopdf-cli` repo** — not in this monorepo |
 
 **不在本仓维护（ilovepdf / gopdf.fyi 产品仓）：** React 工具壳、i18n、`use-intl`、L2 `runXxx` 编排。产品 **`pnpm add @gopdfjs/*`** 消费本仓 npm，不复制库代码。
 
@@ -20,7 +20,7 @@
 ```
 gopdfjs/                          # OSS monorepo
 ├── crates/                       # Rust；pnpm build:wasm → engine/pkg
-├── packages/                     # 全部 @gopdfjs/* + pdf-cli
+├── packages/                     # 全部 @gopdfjs/*（无 pdf-cli）
 ├── demos/react/                  # 本地浏览器 smoke
 │   └── e2e/                      # Playwright（RFC 浏览器验收）
 ├── site/                         # CLI docs landing（GitHub Pages）；private
@@ -36,7 +36,7 @@ gopdfjs/                          # OSS monorepo
 | **`packages/`** | 可发布的 `@gopdfjs/*` | 不是产品 UI |
 | **`demos/react/`** | 浏览器联调 + **e2e 宿主** | 不是 gopdf.fyi |
 | **`site/`** | CLI docs landing（GitHub Pages） | 不是 16 工具产品站 |
-| **`packages/pdf-cli`** | 终端跑 PDF（无 UI） | 不是浏览器 demo |
+| **CLI** | separate **`gopdf-cli`** repo | `gopdf` bin — owns Rust + CLI |
 | **`.spec/`** | RFC、路线图、任务 | **没有** e2e 代码、没有 npm 源码 |
 | **ilovepdf 仓** | gopdf.fyi UI + 路由 + i18n | 依赖本仓 npm |
 
@@ -75,7 +75,7 @@ Umbrella 生命周期：`.spec/ROADMAP.md` § **Umbrella RFC lifecycle**。
 | Rust | `crates/gopdf-*` | `pnpm test:rust` |
 | npm 包 | `packages/*/src` | `pnpm test`（Vitest） |
 | 浏览器 e2e | **`demos/react/e2e/tools/`** | `pnpm test:e2e` |
-| CLI | `packages/pdf-cli` | 包内测试 / 手跑 `gopdf-cli` |
+| CLI | `gopdf-cli` repo (standalone) | not here |
 
 浏览器 e2e **不在** `.spec/`。流程见 skill **`gopdf-e2e`**。
 

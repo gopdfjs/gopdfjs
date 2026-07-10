@@ -9,6 +9,13 @@
       "env": {
         "ANTHROPIC_API_KEY": "${ANTHROPIC_API_KEY}"
       }
+    },
+    "gopdf": {
+      "command": "/Volumes/ORICO/ws/prj/gopdfjs/gopdf-cli/packages/cli/dist/index.mjs",
+      "args": [
+        "mcp"
+      ],
+      "type": "stdio"
     }
   }
 }

@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "gopdf": {
+      "command": "/Volumes/ORICO/ws/prj/gopdfjs/gopdf-cli/packages/cli/dist/index.mjs",
+      "args": [
+        "mcp"
+      ],
+      "type": "stdio"
+    }
+  }
+}

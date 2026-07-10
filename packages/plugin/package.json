@@ -1,0 +1,19 @@
+{
+  "name": "@gopdfjs/plugin",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Plugin domain types — options/results for feature packages (no env, no adapter)",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./domain": "./src/domain.ts"
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "vitest": "^3.0.0"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,28 @@
+{
+  "name": "@gopdfjs/adapter",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Adapter contracts for @gopdfjs/adapter-browser and @gopdfjs/adapter-node",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./gopdf": "./src/gopdf.ts",
+    "./engine": "./src/engine.ts",
+    "./render": "./src/render.ts",
+    "./ocr": "./src/ocr.ts",
+    "./adapter": "./src/adapter.ts",
+    "./bytes": "./src/bytes.ts"
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@gopdfjs/plugin": "workspace:*",
+    "@gopdfjs/runtime": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "vitest": "^3.0.0"
+  },
+  "license": "MIT"
+}

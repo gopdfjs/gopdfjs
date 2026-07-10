@@ -40,11 +40,11 @@ The current architecture — Worker pool with one Worker per CPU core, each runn
 
 | Surface | Package | Runtime | State | Notes |
 |---------|---------|---------|-------|-------|
-| **npm** | `@gopdfjs/extract` | isomorphic | **Partial** | OCR pipeline — one pkg, Node + browser |
+| **npm** | `@gopdfjs/plugin-extract` | isomorphic | **Partial** | OCR pipeline — one pkg, Node + browser |
 | **CLI** | `gopdf-cli ocr` | node | **Planned** | thin wrapper over npm above |
-| **Rust / WASM** | — | — | N/A (tesseract.js) | per RFC + [0057](../0057-rust-wasm-worker-architecture.md) |
+| **Rust / WASM** | — | — | N/A (tesseract.js) | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |
 | **Vitest** | — | — | **Partial** | `packages/extract` |
 | **Browser e2e** | — | browser | **Not done** | `demos/react/e2e/tools/ocr-pdf.spec.ts` |
 | **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: **PARTIAL** — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-wasm-pdf-library-charter.md)). CLI wraps npm; no forked logic.
+**Verdict**: **PARTIAL** — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-engine-plugin-charter.md)). CLI wraps npm; no forked logic.

@@ -44,7 +44,7 @@ Config: `demos/react/e2e/playwright.config.ts`
 
 ## CLI tools
 
-Node-only tools → test in `packages/pdf-cli` (Vitest or invoke `gopdf-cli`), not Playwright.
+Node-only tools → test in sibling **`gopdf-cli`** (`packages/cli` Vitest or `gopdf`), not Playwright.
 
 ## Related
 

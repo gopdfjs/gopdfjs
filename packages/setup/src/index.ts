@@ -5,9 +5,9 @@ export type {
   InstallResult,
   InstallScope,
   ListedAgent,
-} from "./types.ts";
+} from "./types";
 
-export { SERVER_NAME, MCP_ARGS, JSON_INDENT } from "./constants.ts";
+export { SERVER_NAME, MCP_ARGS, JSON_INDENT } from "./constants";
 
 export {
   buildGopdfServerEntry,
@@ -15,9 +15,9 @@ export {
   mergeMcpConfig,
   type McpConfig,
   type McpServerEntry,
-} from "./mergeMcpConfig.ts";
+} from "./mergeMcpConfig";
 
-export { resolveGopdfCommand } from "./resolveGopdfCommand.ts";
+export { resolveGopdfCommand } from "./resolveGopdfCommand";
 
 export {
   AGENT_DEFINITIONS,
@@ -28,12 +28,12 @@ export {
   cursorAgent,
   claudeCodeAgent,
   windsurfAgent,
-} from "./agents/index.ts";
+} from "./agents/index";
 
-export { listAgents, listUserScopeAgents, type ListAgentsOptions } from "./listAgents.ts";
+export { listAgents, listUserScopeAgents, type ListAgentsOptions } from "./listAgents";
 
 export {
   installMcpForAgent,
   installMcpForAllUserAgents,
   type InstallMcpOptions,
-} from "./installAgent.ts";
+} from "./installAgent";

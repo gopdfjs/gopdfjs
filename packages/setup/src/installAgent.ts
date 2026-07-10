@@ -1,17 +1,17 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { AgentId, InstallResult, InstallScope } from "./types.ts";
+import type { AgentId, InstallResult, InstallScope } from "./types";
 import {
   defaultHomedir,
   getAgentDefinition,
   resolveAgentId,
-} from "./agents/index.ts";
+} from "./agents/index";
 import {
   formatMcpConfig,
   mergeMcpConfig,
   type McpConfig,
-} from "./mergeMcpConfig.ts";
-import { resolveGopdfCommand } from "./resolveGopdfCommand.ts";
+} from "./mergeMcpConfig";
+import { resolveGopdfCommand } from "./resolveGopdfCommand";
 
 export type InstallMcpOptions = {
   agent: AgentId | string;

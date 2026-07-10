@@ -8,7 +8,7 @@
 
 ## Context
 
-Browser-native conversion: PDF ↔ other formats, images, Office, web, text. Privacy = client-side processing. WASM hybrid per [0057](../0057-rust-wasm-worker-architecture.md) / [0058](../0058-wasm-pdf-library-charter.md).
+Browser-native conversion: PDF ↔ other formats, images, Office, web, text. Privacy = client-side processing. WASM hybrid per [0057](../0057-rust-wasm-engine-architecture.md) / [0058](../0058-engine-plugin-charter.md).
 
 ## Technical goals (original)
 

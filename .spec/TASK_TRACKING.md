@@ -10,9 +10,10 @@ PARTIAL    0006–0022 tools (product live, monorepo thin) · 0008 P1 ✅ P2 ❌
 PARTIAL    0028 0042 WASM stubs · 0057 0058 arch · 0019? 0035? 0061 product ahead of RFC
 NOT START  0023–0027 0029–0034 0036–0041 0043–0045 0049–0056
 DEFERRED   0046–0048 AI
-ONLY E2E   0008 compress
+ONLY E2E   0008 compress + engine-smoke + all-tools matrix (31 routes)
 ONLY WASM  compress encode_images grayscale* linearize*  (*stubs)
-MISSING    pdf object layer · ilovepdf still on `@gopdf/*` imports
+ARCH       0057/0058 engine+adapter publish model (2026-07-08)
+MISSING    Node adapter full port tests · full e2e green · pdf object layer
 ```
 
 ---
@@ -35,15 +36,18 @@ MISSING    pdf object layer · ilovepdf still on `@gopdf/*` imports
 - [x] 0003 closed → `completed/0003-editing-organization-tools.md` (0006–0016, 0026, 0030–0032, 0040–0041, 0044–0045 covered)
 - [x] 0008 P1: `compress_pdf` + `cargo test` + `demos/react/e2e/tools/compress.spec.ts`
 - [x] WASM exports: `compressPdf`, `encodeImages`, `grayscalePdf`, `linearizePdf`
-- [x] **L3 libs** — `@gopdfjs/files`, `render`, `runners` + tool packages from ilovepdf
-- [x] **`@gopdfjs/pdf-cli`** — `gopdf-cli` bin + `pnpm build:cli`
+- [x] **L3 libs** — `@gopdfjs/files`, `render`, `struct` + tool packages
+- [x] **`@gopdfjs/pdf-cli`** — migrated to standalone `gopdf-cli` repo (publish + build there)
 - [x] ROADMAP full implementation snapshot (2026-06-28)
 - [x] 0004 closed → `completed/0004-optimization-security-advanced-tools.md` (child RFCs generated)
 - [x] **completed/0006–0022** — §6 Implementation status on all shipped tool RFCs
 
 ## In progress
 
-- [ ] **(CURRENT)** Wire ilovepdf `apps/web` to `@gopdfjs/*` workspace/npm (replace `@gopdf/*`)
+- [ ] **(CURRENT)** Publish gate — all features via `createEngine` only (0058 §2.6)
+- [ ] **(CURRENT)** Node adapter full coverage (0058 §3.4)
+- [ ] **(CURRENT)** Browser e2e full green — `pnpm test:e2e` all 33 specs
+- [ ] Wire ilovepdf `apps/web` to `@gopdfjs/*` (replace `@gopdf/*`)
 
 ## Done — spec drift (2026-06-28)
 
@@ -57,16 +61,22 @@ MISSING    pdf object layer · ilovepdf still on `@gopdf/*` imports
 ## To do — P0 (clarity / honesty)
 
 - [x] Add **§6 Implementation status** to all `completed/` tool RFCs (0006–0022)
-- [ ] Document or import **L3 tool runners** (pdf-lib/pdfjs) into monorepo
+- [x] **L3 tool struct** (pdf-lib) wired via `@gopdfjs/engine` → `@gopdfjs/plugin-struct`
 - [ ] Manually verify **0035** on gopdf.fyi → bump RFC status if live
 
 ## To do — P1 (verification gate)
 
-Template: Vitest on package + `demos/react/e2e/tools/<slug>.spec.ts` (copy 0008; see skill `gopdf-e2e`).
+**Charter:** RFC 0058 §3 — 每个 `Gopdf` 方法 = Vitest（工具包）+ Node integration + browser e2e。
 
-- [ ] 0006 merge · 0007 split · 0009 rotate · 0010 organize · 0011 crop
-- [ ] 0012 edit · 0013 sign · 0014 watermark · 0015 page numbers · 0016 header/footer
-- [ ] 0017 jpg→pdf · 0018 pdf→jpg · 0020 ocr · 0021 protect · 0022 unlock
+Template: `demos/react/e2e/tools/all-tools.spec.ts` + skill `gopdf-e2e`.
+
+- [x] Engine facade bytes pressure (all methods)
+- [x] `demos/react` tool registry + 31 generic routes
+- [x] `all-tools.spec.ts` e2e matrix
+- [ ] `pnpm test:e2e` full green (33 tests)
+- [ ] Node `Gopdf` integration per method (`createNodeGopdf` + fixtures)
+- [ ] Node adapter: canvas · ocr · engine WASM smoke tests
+- [ ] 0006 merge · 0007 split · … (tool RFC §6 ↔ §2.6 row)
 
 ## To do — P2 (WASM)
 
