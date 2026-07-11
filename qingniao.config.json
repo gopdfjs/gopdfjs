@@ -12,7 +12,10 @@
       { "name": "lint", "command": "pnpm lint" },
       { "name": "layer checks", "command": "pnpm check:layer-deps && pnpm check:public-exports" },
       { "name": "test", "command": "pnpm test" },
-      { "name": "publish build", "command": "pnpm check:vite-sanity" }
+      {
+        "name": "build public packages",
+        "command": "pnpm build:wasm && pnpm --filter=@gopdfjs/engine --filter=@gopdfjs/adapter-browser --filter=@gopdfjs/adapter-node build"
+      }
     ]
   }
 }

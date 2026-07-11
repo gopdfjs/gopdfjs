@@ -44,7 +44,7 @@ Engine **bundles** internal `@gopdfjs/*` at publish build — consumers do not a
 | Gate | Command / artifact |
 |------|---------------------|
 | Public export guards | `pnpm check:public-exports` · `check:layer-deps` |
-| Vite publish sanity | `pnpm check:vite-sanity` |
+| Vite publish sanity | **`pnpm check:vite-sanity`** — manual / pre-release only (not in `pnpm release -y`) |
 | Unit tests | `pnpm test` · `pnpm test:rust` |
 | Browser acceptance | `pnpm test:e2e` |
 | Build | `dist/` via **Vite library mode** on the **3 public** packages |
@@ -90,7 +90,7 @@ Optional **`qingniao.config.json`**: `{ "publish": { "skipExisting": true } }`.
 
 ### Release flow (maintainer)
 
-1. Gate green: `pnpm check:vite-sanity` · `pnpm test` · `pnpm test:e2e`
+1. Optional manual gates: `pnpm check:vite-sanity` · `pnpm test:e2e`
 2. `pnpm changeset` — describe bump; creates `.changeset/*.md`
 3. `git add .changeset && git commit -m "chore: changeset"`
 4. `git push`
@@ -112,7 +112,7 @@ npm view @gopdfjs/adapter-node version
 
 - `pnpm check:layer-deps` — `plugin-*` prod deps must not pull `@gopdfjs/adapter*` / `engine`
 - `pnpm check:public-exports` — engine exports only `"."`; adapter barrels must not re-export engine/plugins/WASM
-- `pnpm check:vite-sanity` — builds 3 public packages; no private `@gopdfjs/*` in published JS/d.ts
+- `pnpm check:vite-sanity` — **manual only** (not in qingniao release); builds 3 public packages; no private `@gopdfjs/*` in published JS/d.ts
 
 ## Bundler guidance (browser consumers)
 
