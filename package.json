@@ -25,7 +25,8 @@
   "devDependencies": {
     "@gopdfjs/fixtures": "workspace:*",
     "@playwright/test": "^1.55.1",
-    "@systembug/pangu": "^0.0.13",
+    "@systembug/pangu": "^0.1.0",
+    "@systembug/qingniao": "^0.0.13",
     "husky": "^9.1.7",
     "rollup": "^4.52.4",
     "rollup-plugin-dts": "^6.2.3",
