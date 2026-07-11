@@ -1,6 +1,6 @@
 {
   "name": "@gopdfjs/adapter-browser",
-  "version": "0.2.0",
+  "version": "0.1.0",
   "description": "Browser GopdfAdapter — loads shared @gopdfjs/wasm (init fetches .wasm), pdf.js, canvas. Run pnpm --filter=@gopdfjs/wasm build:wasm first.",
   "type": "module",
   "exports": {

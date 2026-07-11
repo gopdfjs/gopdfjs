@@ -1,6 +1,6 @@
 {
   "name": "@gopdfjs/adapter-node",
-  "version": "0.2.0",
+  "version": "0.1.0",
   "description": "Node GopdfAdapter — loads shared @gopdfjs/wasm (feeds .wasm bytes to init), pdf.js, napi-canvas, OCR. Run pnpm --filter=@gopdfjs/wasm build:wasm first.",
   "type": "module",
   "exports": {
