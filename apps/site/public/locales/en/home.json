@@ -1,6 +1,6 @@
 {
   "title": "GoPDF.js",
-  "subtitle": "Local PDF processing for browser and Node — @gopdfjs/* npm packages plus gopdf-cli for the terminal.",
+  "subtitle": "This monorepo ships @gopdfjs/* npm packages for local PDF processing in the browser and Node.",
   "stats": {
     "license": "MIT License",
     "wasm": "Rust / WASM",
@@ -13,16 +13,16 @@
       "description": "PDF bytes are processed in the browser Worker or on your machine — no upload pipeline required."
     },
     "npm": {
-      "title": "npm + CLI delivery",
-      "description": "Each tool ships as a public @gopdfjs/* API and a matching gopdf-cli subcommand."
+      "title": "@gopdfjs/* npm packages",
+      "description": "Published from this monorepo — engine, adapters, and plugins for browser and Node apps."
     },
     "browserNode": {
       "title": "Browser and Node",
       "description": "Use createBrowserGopdf() in apps or createNodeGopdf() in scripts with the same engine API."
     },
     "cli": {
-      "title": "Terminal without a UI",
-      "description": "Install gopdf-cli when you want compress, repair, or MCP integration without embedding the library."
+      "title": "Terminal (separate repo)",
+      "description": "gopdf-cli is not in this monorepo — install it from github.com/gopdfjs/gopdf-cli when you need a CLI or MCP server."
     }
   },
   "quickStart": {

@@ -1,6 +1,6 @@
 {
   "title": "Packages",
-  "subtitle": "GoPDF.js is a layered monorepo. Apps import @gopdfjs/engine (or a one-liner adapter); plugins and WASM stay internal.",
+  "subtitle": "GoPDF.js is a layered monorepo. This repository ships @gopdfjs/* npm packages only — not gopdf-cli.",
   "items": {
     "engine": {
       "name": "@gopdfjs/engine",

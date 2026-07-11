@@ -1,1 +1,0 @@
-export { readFileAsArrayBuffer } from "./readFile";

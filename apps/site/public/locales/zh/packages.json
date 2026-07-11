@@ -1,6 +1,6 @@
 {
   "title": "npm 包",
-  "subtitle": "GoPDF.js 为分层 monorepo。应用导入 @gopdfjs/engine（或 adapter 一行式）；插件与 WASM 对内封装。",
+  "subtitle": "GoPDF.js 为分层 monorepo。本仓仅发布 @gopdfjs/* npm 包 — 不含 gopdf-cli。",
   "items": {
     "engine": {
       "name": "@gopdfjs/engine",

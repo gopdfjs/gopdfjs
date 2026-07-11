@@ -1,10 +1,10 @@
 {
   "brandName": "GoPDF.js",
-  "description": "Local PDF toolkit for browser and Node — @gopdfjs/* npm packages and gopdf-cli.",
+  "description": "Local PDF toolkit for browser and Node — @gopdfjs/* npm packages from this monorepo.",
   "resources": {
     "title": "Resources",
     "docs": "Documentation",
-    "cli": "CLI guide",
+    "cli": "CLI (external repo)",
     "github": "Monorepo",
     "cliRepo": "gopdf-cli"
   },

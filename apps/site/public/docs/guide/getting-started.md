@@ -7,7 +7,7 @@ description: 'Install GoPDF.js packages and run your first compress in browser o
 
 # Getting Started
 
-GoPDF.js ships **`@gopdfjs/*` npm packages** for local PDF work in the browser and Node. The **only consumer-facing API** is `@gopdfjs/engine` (or the one-liner adapters).
+**This monorepo** ships **`@gopdfjs/*` npm packages** for local PDF work in the browser and Node. The consumer-facing API is `@gopdfjs/engine` (or adapter one-liners). **`gopdf-cli` is not in this repository.**
 
 ## Three ways to use GoPDF.js
 
@@ -15,7 +15,7 @@ GoPDF.js ships **`@gopdfjs/*` npm packages** for local PDF work in the browser a
 |------|------|
 | **Browser app** | `import` from `@gopdfjs/adapter-browser` |
 | **Node script** | `import` from `@gopdfjs/adapter-node` |
-| **Terminal** | Install [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) — no library embed |
+| **Terminal** | **[gopdf-cli](https://github.com/gopdfjs/gopdf-cli)** — separate repo, not in this monorepo |
 
 ## Monorepo contributors
 

@@ -1,6 +1,6 @@
 # GoPDF.js — engine + plugin PDF library
 
-**`@gopdfjs/engine`** is the **only consumer-facing API**. Host creates an **adapter** (low-level env ports), passes it to **`createEngine(adapter)`**, calls **`engine.compressPdf()`** etc.
+**`@gopdfjs/engine`** is the **feature API** (`engine.compressPdf()` …). Apps boot via **`@gopdfjs/adapter-browser`** or **`@gopdfjs/adapter-node`** (`createBrowserGopdf()` / `createNodeGopdf()`).
 
 ## Four roles
 
@@ -18,7 +18,8 @@ Consumer  →  engine.*()           (@gopdfjs/engine — public API)
 |------|---------|-------------|
 | **Engine** | `@gopdfjs/engine` | Apps, demo, CLI — `createEngine(adapter)` → `Gopdf` |
 | **Runtime** | `@gopdfjs/runtime` | `plugin-*` only — capability API from engine |
-| **Adapter** | `@gopdfjs/adapter` + `adapter-browser` / `adapter-node` | Engine only — WASM, pdf.js, canvas, OCR |
+| **Adapters (public boot)** | `adapter-browser` / `adapter-node` | Apps — `createBrowserGopdf()` / `createNodeGopdf()` |
+| **Adapter contracts** | `@gopdfjs/adapter` | Internal — engine + adapters only (not v1 app import) |
 | **Plugin** | `@gopdfjs/plugin-*` | Engine only — feature logic; consumer API assembled here |
 
 Engine **builds runtime from adapter** and **exposes plugin methods as `Gopdf`**. Products never import `plugin-*` or `adapter` directly.
@@ -29,9 +30,9 @@ Design: `.spec/rfc/0058-engine-plugin-charter.md` · WASM: `.spec/rfc/0057-rust-
 
 | Layer | Package | Role |
 |-------|---------|------|
-| **Consumer API** | `@gopdfjs/engine` | `createEngine(adapter)` → `Gopdf` |
-| **Adapters** | `@gopdfjs/adapter-browser` · `@gopdfjs/adapter-node` | Host creates `GopdfAdapter` |
-| **Adapter contracts** | `@gopdfjs/adapter` | Port types — adapter authors + engine |
+| **Consumer API** | `@gopdfjs/engine` | `Gopdf` methods + types |
+| **Public boot** | `@gopdfjs/adapter-browser` · `@gopdfjs/adapter-node` | `createBrowserGopdf()` / `createNodeGopdf()` |
+| **Internal** | `@gopdfjs/adapter` | Port types — not v1 app import |
 | **Shared model** | `@gopdfjs/model` | `PdfDocument`, `CanvasSurface` |
 | **Runtime contracts** | `@gopdfjs/runtime` | `GopdfRuntime` — plugins only |
 | **Plugin contracts** | `@gopdfjs/plugin` | Domain options/results |

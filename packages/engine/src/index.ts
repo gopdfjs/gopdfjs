@@ -3,7 +3,8 @@
  *
  * Import **`Gopdf` methods** and **`createEngine`** here only.
  *
- * Adapter authors: `@gopdfjs/adapter` · `@gopdfjs/adapter-browser` / `@gopdfjs/adapter-node`
+ * Boot: `@gopdfjs/adapter-browser` / `@gopdfjs/adapter-node` → `createBrowserGopdf()` / `createNodeGopdf()`.
+ * `@gopdfjs/adapter` is internal (custom adapter API not v1 public).
  */
 
 export type { CompressionLevel } from "@gopdfjs/adapter/engine";

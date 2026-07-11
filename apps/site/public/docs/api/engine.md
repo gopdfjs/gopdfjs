@@ -23,23 +23,16 @@ Consumer  →  engine.*()
               @gopdfjs/wasm
 ```
 
-## createEngine
-
-```ts
-import { createEngine } from "@gopdfjs/engine";
-import type { GopdfAdapter } from "@gopdfjs/adapter";
-
-export function boot(adapter: GopdfAdapter) {
-  return createEngine(adapter);
-}
-```
-
-Most apps use the adapter helpers instead:
+## Boot (v1 public path)
 
 ```ts
 import { createBrowserGopdf } from "@gopdfjs/adapter-browser";
+// Node: import { createNodeGopdf } from "@gopdfjs/adapter-node";
+
 const engine = await createBrowserGopdf();
 ```
+
+`createEngine(adapter)` exists for monorepo internals. Custom `GopdfAdapter` is **not** a v1 public surface — do not import `@gopdfjs/adapter` from apps.
 
 ## Representative methods
 
@@ -58,9 +51,8 @@ Exact signatures live in `@gopdfjs/engine` types and each tool RFC.
 
 | Need | Import from |
 |------|-------------|
-| `engine.compressPdf()` … | `@gopdfjs/engine` |
-| Browser one-liner | `@gopdfjs/adapter-browser` |
-| Node one-liner | `@gopdfjs/adapter-node` |
-| `GopdfAdapter` type | `@gopdfjs/adapter` |
+| `engine.compressPdf()` … types | `@gopdfjs/engine` |
+| Browser boot | `@gopdfjs/adapter-browser` |
+| Node boot | `@gopdfjs/adapter-node` |
 
-Do **not** import `@gopdfjs/plugin-*`, `@gopdfjs/runtime`, or `@gopdfjs/wasm` from application code.
+Do **not** import `@gopdfjs/adapter`, `@gopdfjs/files`, `@gopdfjs/plugin-*`, `@gopdfjs/runtime`, or `@gopdfjs/wasm` from application code.

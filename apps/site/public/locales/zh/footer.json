@@ -1,10 +1,10 @@
 {
   "brandName": "GoPDF.js",
-  "description": "浏览器与 Node 本地 PDF 工具库 — @gopdfjs/* npm 包与 gopdf-cli。",
+  "description": "浏览器与 Node 本地 PDF 工具库 — 本仓发布的 @gopdfjs/* npm 包。",
   "resources": {
     "title": "资源",
     "docs": "文档",
-    "cli": "CLI 指南",
+    "cli": "CLI（独立仓库）",
     "github": "Monorepo",
     "cliRepo": "gopdf-cli"
   },
