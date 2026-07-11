@@ -1,5 +1,14 @@
 {
   "publish": {
     "skipExisting": true
+  },
+  "build": {
+    "steps": [
+      { "name": "format (Rust)", "command": "pnpm format" },
+      { "name": "lint", "command": "pnpm lint" },
+      { "name": "layer checks", "command": "pnpm check:layer-deps && pnpm check:public-exports" },
+      { "name": "test", "command": "pnpm test" },
+      { "name": "publish build", "command": "pnpm check:vite-sanity" }
+    ]
   }
 }
