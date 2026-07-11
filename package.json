@@ -23,7 +23,9 @@
     "test:coverage": "turbo run test:coverage",
     "test:e2e": "playwright test -c apps/demo/e2e/playwright.config.ts",
     "fixtures:download": "bash scripts/download-e2e-fixtures.sh",
-    "prepare": "husky"
+    "prepare": "husky",
+    "format:check": "prettier --check \"**/*.{ts,tsx,md,json}\"",
+    "typecheck": "turbo run typecheck"
   },
   "devDependencies": {
     "@gopdfjs/fixtures": "workspace:*",
