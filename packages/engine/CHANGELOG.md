@@ -4,6 +4,18 @@
 
 ### Minor Changes
 
+- 06eeaa3: First public npm release (0.2.0 lockstep).
+
+  - `@gopdfjs/engine` — `createEngine(adapter)`; env-agnostic
+  - `@gopdfjs/adapter-browser` — `createBrowserGopdf()`; WASM vendored
+  - `@gopdfjs/adapter-node` — `createNodeGopdf()`; WASM + OCR
+
+  All features via `engine.*()` only.
+
+## 0.2.0
+
+### Minor Changes
+
 - c330860: First public npm release (0.2.0 lockstep).
 
   - `@gopdfjs/engine` — `createEngine(adapter)`; bundles internal `@gopdfjs/*`; env-agnostic (no browser/Node imports).
