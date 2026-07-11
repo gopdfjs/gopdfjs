@@ -29,4 +29,11 @@ describe('withSiteBase', () => {
     expect(withSiteBase('/gopdfjs/', '//cdn.example.com/x.json')).toBe('//cdn.example.com/x.json');
     expect(withSiteBase('/', '/locales/en/home.json')).toBe('/locales/en/home.json');
   });
+
+  it('does not double-prefix URLs that already include the site base', () => {
+    expect(withSiteBase('/gopdfjs/', '/gopdfjs/locales/en/home.json')).toBe(
+      '/gopdfjs/locales/en/home.json',
+    );
+    expect(withSiteBase('/gopdfjs/', '/gopdfjs/')).toBe('/gopdfjs/');
+  });
 });

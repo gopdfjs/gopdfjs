@@ -13,6 +13,10 @@ export function withSiteBase(base: string, url: string): string {
     return url;
   }
   const normalizedBase = base.endsWith('/') ? base.slice(0, -1) : base;
+  // Already under site base (e.g. i18n loadPath) — avoid /gopdfjs/gopdfjs/...
+  if (url === normalizedBase || url.startsWith(`${normalizedBase}/`)) {
+    return url;
+  }
   return `${normalizedBase}${url}`;
 }
 
