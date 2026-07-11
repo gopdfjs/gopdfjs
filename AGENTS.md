@@ -11,11 +11,11 @@
 | 每个 tool RFC → **npm 包**（公开 API）+ **CLI 子命令**（Node，无 UI） | 见 RFC 0058 §2.2 |
 | 浏览器路径 | `@gopdfjs/engine` Worker + JS 库；文件不离开本机 |
 | Node 路径 | `import` 库和/或 **`gopdf-cli`** |
-| Rust 在 `crates/` | `pnpm build:wasm` → `packages/engine/pkg/` |
+| Rust 在 `crates/` | each adapter `pnpm build:wasm` → own `pkg/` |
 
 | 非本仓 RFC 目标 | |
 |----------------|--|
-| 产品网站 UI、i18n、营销页 | `site/` CLI docs landing（GitHub Pages）；`demos/react/` 本地浏览器测试 |
+| 产品网站 UI、i18n、营销页 | `apps/site/` CLI docs landing（GitHub Pages）；`apps/demo/` 本地浏览器测试 |
 
 架构：**RFC 0057**（WASM Worker）· **RFC 0058 §2.2**（npm + CLI 交付）
 
@@ -29,7 +29,10 @@
 | 命令 | 用途 |
 |------|------|
 | CLI | **separate repo** [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) — zero coupling |
-| `pnpm --filter=@gopdfjs/site dev` | CLI docs landing（GitHub Pages，无 WASM） |
+| `pnpm --filter=@gopdfjs/site dev` | CLI docs landing — **:5175** |
+| `pnpm --filter=@gopdfjs/demo-react dev` | 浏览器 acceptance — **:5174** |
+
+Dev ports: `apps/ports.ts` · ws registry `../../port.md`
 
 ## RFC
 
@@ -37,4 +40,4 @@
 - `.spec/rfc/NNNN-*.md`；归档 `completed/` · `pending/` · `rejected/`
 - **Umbrella RFC**：子 RFC 全部生成后 **close** → 移入 `completed/`（见 ROADMAP § Umbrella RFC lifecycle）
 - 发布：`docs/PUBLISHING.md`
-- E2E：`demos/react/e2e/` · skill **`gopdf-e2e`** · `pnpm test:e2e`
+- E2E：`apps/demo/e2e/` · skill **`gopdf-e2e`** · `pnpm test:e2e`

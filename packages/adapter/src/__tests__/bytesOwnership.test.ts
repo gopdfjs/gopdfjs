@@ -17,6 +17,7 @@ describe("PDF byte ownership (RFC 0058 §2.4)", () => {
     const view = new Uint8Array([1, 2, 3]);
     detachArrayBuffer(view);
     expect(() => assertPdfBytesReadable(view)).toThrow(/detached/i);
+    expect(() => assertPdfBytesReadable(view, "host pdf")).toThrow(/host pdf/);
   });
 
   it("host buffer stays readable after clone-and-detach pattern", () => {

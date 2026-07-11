@@ -18,7 +18,8 @@
       "Bash(rtk grep *)",
       "Bash(git mv *)",
       "Bash(xargs sed -i '' 's/0057-rust-wasm-worker-architecture/0057-rust-wasm-engine-architecture/g')",
-      "Bash(echo \"done: $?\")"
+      "Bash(echo \"done: $?\")",
+      "Bash(echo \"exit:$?\")"
     ]
   },
   "enabledMcpjsonServers": [

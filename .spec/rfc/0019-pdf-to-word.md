@@ -39,7 +39,7 @@ tests:
 
 ## 4. Rust / WASM implementation
 
-**Default path**: Rust L1 `pdf_to_docx` in `crates/gopdf-*` → `@gopdfjs/engine` Worker. **Not** `site/` product UI.
+**Default path**: Rust L1 `pdf_to_docx` in `crates/gopdf-*` → `@gopdfjs/engine` Worker. **Not** `apps/site/` product UI.
 
 ## 5. Technical specification（L1 Rust）
 
@@ -80,7 +80,7 @@ tests:
 | **CLI** | `gopdf-cli pdf-to-word` | node | **Planned** | thin wrapper over npm above |
 | **Rust / WASM** | — | — | Not started | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |
 | **Vitest** | — | — | **Partial** | `packages/engine (planned)` |
-| **Browser e2e** | — | browser | **Not done** | `demos/react/e2e/tools/pdf-to-word.spec.ts` |
+| **Browser e2e** | — | browser | **Not done** | `apps/demo/e2e/tools/pdf-to-word.spec.ts` |
 | **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
 **Verdict**: **NOT STARTED** (L1) — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-engine-plugin-charter.md)). CLI wraps npm; no forked logic.

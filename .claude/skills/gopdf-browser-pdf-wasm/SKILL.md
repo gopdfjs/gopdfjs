@@ -25,7 +25,7 @@ description: >-
 
 - **架构**：`.spec/rfc/0057-rust-wasm-engine-architecture.md`
 - **WASM 边界与 crate 分层**：`.spec/rfc/0058-engine-plugin-charter.md`
-- **Rust workspace**：`crates/README.md` — 算法在 `crates/gopdf-*`；**仅**根目录 `pnpm build:wasm` / `pnpm test:rust`；禁止在 `packages/engine/` 放 Rust
+- **Rust workspace**：`crates/README.md` — 算法在 `crates/gopdf-*`；**wasm-pack 在各 adapter**（`pnpm build:wasm` 跑 browser `web` + node `nodejs`）；根目录 `pnpm test:rust`；禁止在 `packages/engine/` 放 Rust 或 wasm 产物
 - **具名专家**：`docs/persona/albert-li.md`、`maya-okonkwo.md`、`daniel-kowalski.md`、`linus-torvalds.md`
 - **子代理委托**：`.claude/agents/`（与 `docs/persona/*.md` 对应）；索引见 `.claude/agents/README.md`
 

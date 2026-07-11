@@ -6,7 +6,7 @@ import { createEngine } from "../createEngine";
 const mockPage = {
   getViewport: () => ({ width: 100, height: 100 }),
   render: () => ({ promise: Promise.resolve() }),
-  getTextContent: async () => ({ items: [] }),
+  getTextContent: async () => ({ items: [{ str: "ok", transform: [1, 0, 0, 1, 0, 0] }] }),
 };
 
 /** Simulates pdf.js detaching the buffer passed to getDocument. */
@@ -42,34 +42,33 @@ function createMockAdapter(pdfjs = createDetachingPdfJs()): GopdfAdapter {
 }
 
 describe("createEngine byte ownership", () => {
-  it("loadDocument does not detach the host buffer", async () => {
+  it("pdfToText does not detach the host buffer", async () => {
     const host = new Uint8Array([37, 80, 68, 70, 45, 49, 46, 52]);
     const engine = createEngine(createMockAdapter());
-    await engine.loadDocument(host);
+    await engine.pdfToText(host, { format: "txt" });
     assertPdfBytesReadable(host);
   });
 
-  it("sequential loadDocument + compress on same host buffer", async () => {
+  it("sequential pdfToText + compress on same host buffer", async () => {
     const host = new Uint8Array([37, 80, 68, 70, 45, 49, 46, 52]);
     const engine = createEngine(createMockAdapter());
 
-    await engine.loadDocument(host);
+    await engine.pdfToText(host, { format: "txt" });
     assertPdfBytesReadable(host);
 
     await expect(engine.compressPdf(host, "recommended")).rejects.toThrow();
-    // compress may fail on junk bytes — host must still be readable
     assertPdfBytesReadable(host);
   });
 
-  it("sequential loadDocument twice on same host buffer", async () => {
+  it("sequential feature calls reuse host buffer (pdfjs via runtime)", async () => {
     const host = new Uint8Array([37, 80, 68, 70, 45, 49, 46, 52]);
     const pdfjs = createDetachingPdfJs();
     const engine = createEngine(createMockAdapter(pdfjs));
 
-    await engine.loadDocument(host);
-    await engine.loadDocument(host);
+    await engine.pdfToText(host, { format: "txt" });
+    await expect(engine.compressPdf(host, "recommended")).rejects.toThrow();
 
-    expect(pdfjs.loadDocument).toHaveBeenCalledTimes(2);
+    expect(pdfjs.loadDocument).toHaveBeenCalled();
     assertPdfBytesReadable(host);
   });
 });

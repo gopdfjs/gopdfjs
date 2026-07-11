@@ -2,22 +2,22 @@ import { describe, expect, it } from "vitest";
 import { splitEncodedImages } from "../splitEncodedImages";
 
 function pack(chunks: Uint8Array[]): Uint8Array {
-  const parts: number[] = [];
+  const total = chunks.reduce((n, c) => n + 4 + c.length, 0);
+  const out = new Uint8Array(total);
+  let i = 0;
   for (const chunk of chunks) {
-    const len = chunk.length;
-    parts.push(
-      (len >>> 24) & 0xff,
-      (len >>> 16) & 0xff,
-      (len >>> 8) & 0xff,
-      len & 0xff,
-      ...chunk,
-    );
+    out[i++] = (chunk.length >> 24) & 0xff;
+    out[i++] = (chunk.length >> 16) & 0xff;
+    out[i++] = (chunk.length >> 8) & 0xff;
+    out[i++] = chunk.length & 0xff;
+    out.set(chunk, i);
+    i += chunk.length;
   }
-  return Uint8Array.from(parts);
+  return out;
 }
 
-describe("splitEncodedImages", () => {
-  it("splits one length-prefixed chunk", () => {
+describe("splitEncodedImages (engine-internal)", () => {
+  it("splits one chunk", () => {
     const chunk = new Uint8Array([1, 2, 3]);
     const out = splitEncodedImages(pack([chunk]));
     expect(out).toHaveLength(1);
@@ -31,12 +31,12 @@ describe("splitEncodedImages", () => {
     expect(out).toEqual([a, b]);
   });
 
-  it("returns empty array for empty input", () => {
+  it("returns empty for empty input", () => {
     expect(splitEncodedImages(new Uint8Array())).toEqual([]);
   });
 
-  it("rejects declared length past buffer end", () => {
-    const bad = new Uint8Array([0, 0, 0, 9, 1, 2, 3]);
+  it("throws on truncated payload", () => {
+    const bad = new Uint8Array([0, 0, 0, 5, 1]);
     expect(() => splitEncodedImages(bad)).toThrow(/invalid length-prefixed/);
   });
 });

@@ -6,10 +6,7 @@
     "lib": ["ES2022", "WebWorker"],
     "strict": true,
     "skipLibCheck": true,
-    "noEmit": true,
-    "paths": {
-      "./pkg/gopdf_wasm.js": ["./pkg/gopdf_wasm.d.ts", "./pkg.d.ts"]
-    }
+    "noEmit": true
   },
-  "include": ["*.ts", "src/**/*.ts"]
+  "include": ["src/**/*.ts"]
 }

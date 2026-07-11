@@ -24,7 +24,7 @@ importers:
         specifier: latest
         version: 2.10.3
 
-  demos/react:
+  apps/demo:
     dependencies:
       '@gopdfjs/adapter-browser':
         specifier: workspace:*
@@ -73,6 +73,31 @@ importers:
         specifier: ^3.0.0
         version: 3.2.4(@types/node@25.5.0)(@vitest/browser@3.2.6)(@vitest/ui@3.2.4)(happy-dom@20.10.6)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.32.0)(yaml@2.8.3)
 
+  apps/site:
+    dependencies:
+      react:
+        specifier: 19.2.4
+        version: 19.2.4
+      react-dom:
+        specifier: 19.2.4
+        version: 19.2.4(react@19.2.4)
+    devDependencies:
+      '@types/react':
+        specifier: ^19
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: ^19
+        version: 19.2.3(@types/react@19.2.14)
+      '@vitejs/plugin-react':
+        specifier: ^5.1.0
+        version: 5.2.0(vite@7.3.1(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.32.0)(yaml@2.8.3))
+      typescript:
+        specifier: ^5
+        version: 5.9.3
+      vite:
+        specifier: ^7.2.0
+        version: 7.3.1(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.32.0)(yaml@2.8.3)
+
   packages/adapter:
     dependencies:
       '@gopdfjs/model':
@@ -82,6 +107,9 @@ importers:
         specifier: workspace:*
         version: link:../plugin
     devDependencies:
+      '@vitest/coverage-v8':
+        specifier: ^3.0.0
+        version: 3.2.4(vitest@3.2.4)
       typescript:
         specifier: ^5
         version: 5.9.3
@@ -100,6 +128,9 @@ importers:
       '@gopdfjs/model':
         specifier: workspace:*
         version: link:../model
+      '@gopdfjs/wasm':
+        specifier: workspace:*
+        version: link:../wasm
       pdfjs-dist:
         specifier: ^5.4.296
         version: 5.5.207
@@ -122,6 +153,9 @@ importers:
       '@gopdfjs/model':
         specifier: workspace:*
         version: link:../model
+      '@gopdfjs/wasm':
+        specifier: workspace:*
+        version: link:../wasm
       '@napi-rs/canvas':
         specifier: 0.1.97
         version: 0.1.97
@@ -196,6 +230,9 @@ importers:
       '@gopdfjs/fixtures':
         specifier: workspace:*
         version: link:../fixtures
+      '@vitest/coverage-v8':
+        specifier: ^3.0.0
+        version: 3.2.4(vitest@3.2.4)
       typescript:
         specifier: ^5
         version: 5.9.3
@@ -294,6 +331,12 @@ importers:
 
   packages/plugin-compare:
     dependencies:
+      '@gopdfjs/model':
+        specifier: workspace:*
+        version: link:../model
+      '@gopdfjs/plugin':
+        specifier: workspace:*
+        version: link:../plugin
       '@gopdfjs/runtime':
         specifier: workspace:*
         version: link:../runtime
@@ -481,18 +524,6 @@ importers:
         specifier: ^1.17.1
         version: 1.17.1
     devDependencies:
-      '@gopdfjs/adapter':
-        specifier: workspace:*
-        version: link:../adapter
-      '@gopdfjs/adapter-node':
-        specifier: workspace:*
-        version: link:../adapter-node
-      '@gopdfjs/fixtures':
-        specifier: workspace:*
-        version: link:../fixtures
-      happy-dom:
-        specifier: ^20.8.4
-        version: 20.10.6
       typescript:
         specifier: ^5
         version: 5.9.3
@@ -559,6 +590,9 @@ importers:
       '@gopdfjs/adapter':
         specifier: workspace:*
         version: link:../adapter
+      '@vitest/coverage-v8':
+        specifier: ^3.0.0
+        version: 3.2.4(vitest@3.2.4)
       typescript:
         specifier: ^5
         version: 5.9.3
@@ -566,42 +600,14 @@ importers:
         specifier: ^3.0.0
         version: 3.2.4(@types/node@25.5.0)(@vitest/browser@3.2.6)(@vitest/ui@3.2.4)(happy-dom@20.10.6)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.32.0)(yaml@2.8.3)
 
-  packages/setup:
+  packages/wasm:
     devDependencies:
-      '@types/node':
-        specifier: ^20.0.0
-        version: 20.19.37
       typescript:
         specifier: ^5.0.0
         version: 5.9.3
       vitest:
         specifier: ^3.0.0
-        version: 3.2.4(@types/node@20.19.37)(@vitest/ui@3.2.4)(happy-dom@20.10.6)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.32.0)(yaml@2.8.3)
-
-  site:
-    dependencies:
-      react:
-        specifier: 19.2.4
-        version: 19.2.4
-      react-dom:
-        specifier: 19.2.4
-        version: 19.2.4(react@19.2.4)
-    devDependencies:
-      '@types/react':
-        specifier: ^19
-        version: 19.2.14
-      '@types/react-dom':
-        specifier: ^19
-        version: 19.2.3(@types/react@19.2.14)
-      '@vitejs/plugin-react':
-        specifier: ^5.1.0
-        version: 5.2.0(vite@7.3.1(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.32.0)(yaml@2.8.3))
-      typescript:
-        specifier: ^5
-        version: 5.9.3
-      vite:
-        specifier: ^7.2.0
-        version: 7.3.1(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.32.0)(yaml@2.8.3)
+        version: 3.2.4(@types/node@25.5.0)(@vitest/browser@3.2.6)(@vitest/ui@3.2.4)(happy-dom@20.10.6)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.32.0)(yaml@2.8.3)
 
 packages:
 
@@ -3493,6 +3499,25 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@vitest/coverage-v8@3.2.4(vitest@3.2.4)':
+    dependencies:
+      '@ampproject/remapping': 2.3.0
+      '@bcoe/v8-coverage': 1.0.2
+      ast-v8-to-istanbul: 0.3.12
+      debug: 4.4.3
+      istanbul-lib-coverage: 3.2.2
+      istanbul-lib-report: 3.0.1
+      istanbul-lib-source-maps: 5.0.6
+      istanbul-reports: 3.2.0
+      magic-string: 0.30.21
+      magicast: 0.3.5
+      std-env: 3.10.0
+      test-exclude: 7.0.2
+      tinyrainbow: 2.0.0
+      vitest: 3.2.4(@types/node@25.5.0)(@vitest/ui@3.2.4)(happy-dom@20.10.6)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.32.0)(yaml@2.8.3)
+    transitivePeerDependencies:
+      - supports-color
+
   '@vitest/expect@3.2.4':
     dependencies:
       '@types/chai': 5.2.3
@@ -4999,7 +5024,6 @@ snapshots:
       - terser
       - tsx
       - yaml
-    optional: true
 
   w3c-xmlserializer@5.0.0:
     dependencies:

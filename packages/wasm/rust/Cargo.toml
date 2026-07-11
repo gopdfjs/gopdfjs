@@ -1,0 +1,19 @@
+[package]
+name = "gopdf-wasm"
+version.workspace = true
+edition.workspace = true
+description = "wasm-bindgen facade for @gopdfjs/wasm — delegates to crates/gopdf-*"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+wasm-bindgen.workspace = true
+js-sys.workspace = true
+gopdf-compress.workspace = true
+gopdf-image.workspace = true
+gopdf-linearize.workspace = true
+console_error_panic_hook = { workspace = true, optional = true }
+
+[features]
+default = ["console_error_panic_hook"]

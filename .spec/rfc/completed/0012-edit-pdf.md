@@ -33,7 +33,7 @@ Provide a browser-based annotation layer for adding text, images, and shapes ont
 | **CLI** | `gopdf-cli edit` | node | **Planned** | thin wrapper over npm above |
 | **Rust / WASM** | — | — | N/A | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |
 | **Vitest** | — | — | **Partial** | `packages/annotate` |
-| **Browser e2e** | — | browser | **Not done** | `demos/react/e2e/tools/edit-pdf.spec.ts` |
+| **Browser e2e** | — | browser | **Not done** | `apps/demo/e2e/tools/edit-pdf.spec.ts` |
 | **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
 **Verdict**: **PARTIAL** — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-engine-plugin-charter.md)). CLI wraps npm; no forked logic.

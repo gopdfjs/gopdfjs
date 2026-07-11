@@ -8,7 +8,7 @@
 
 ## Context
 
-Umbrella for PDF tools as **`@gopdfjs/*` npm** — **one package by default**; split browser + `-node` only when required — plus **`gopdf-cli`** (thin Node wrapper). Stack: `pdf-lib` + `pdfjs-dist` + `@gopdfjs/engine` (RFC [0057](../0057-rust-wasm-engine-architecture.md), [0058](../0058-engine-plugin-charter.md)). **`site/`** = OSS docs; **`demos/react/`** = browser smoke tests.
+Umbrella for PDF tools as **`@gopdfjs/*` npm** — **one package by default**; split browser + `-node` only when required — plus **`gopdf-cli`** (thin Node wrapper). Stack: `pdf-lib` + `pdfjs-dist` + `@gopdfjs/engine` (RFC [0057](../0057-rust-wasm-engine-architecture.md), [0058](../0058-engine-plugin-charter.md)). **`apps/site/`** = OSS docs; **`apps/demo/`** = browser smoke tests.
 
 ## Objectives (original)
 

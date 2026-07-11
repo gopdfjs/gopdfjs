@@ -146,3 +146,46 @@ export type HtmlToPdfResult = {
   pageCount: number;
   truncated: boolean;
 };
+
+/** Dual-document PDF compare (RFC 0053) — consumer API on `Gopdf`. */
+export type ComparePdfTextOptions = {
+  displayScale?: number;
+};
+
+export type PdfRect = { x: number; y: number; width: number; height: number; pageIndex: number };
+
+export type TextChangeItem = {
+  pageIndex: number;
+  kind: "delete" | "insert";
+  text: string;
+};
+
+export type PagePairRender = {
+  canvasA: HTMLCanvasElement | null;
+  canvasB: HTMLCanvasElement | null;
+  widthPx: number;
+  heightPx: number;
+  scale: number;
+};
+
+export type VisualDiffResult = {
+  diffCanvas: HTMLCanvasElement;
+  changedPixels: number;
+};
+
+export type TextDiffResult = {
+  rectsA: PdfRect[];
+  rectsB: PdfRect[];
+  changes: TextChangeItem[];
+  hasTextLayer: boolean;
+};
+
+/** Browser-only interactive compare viewer session (`Gopdf.createCompareSession`). */
+export interface CompareSession {
+  readonly pageCount: number;
+  diffText(options?: ComparePdfTextOptions): Promise<TextDiffResult>;
+  getPagePair(pageIndex: number): Promise<PagePairRender>;
+  getVisualDiff(pageIndex: number): Promise<VisualDiffResult | null>;
+  evictOutside(centerPageIndex: number): void;
+  clear(): void;
+}

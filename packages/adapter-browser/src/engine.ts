@@ -1,25 +1,9 @@
-import {
-  compress_pdf,
-  encode_images,
-  grayscale_pdf,
-  linearize_pdf,
-} from "@gopdfjs/engine/pkg/gopdf_wasm.js";
 import type { GopdfEngine, ImageFormat } from "@gopdfjs/adapter/engine";
+import { loadGopdfWasm } from "./loadWasm";
 
-let initialized = false;
-
-async function ensureWasm(): Promise<void> {
-  if (initialized) {
-    return;
-  }
-  const initWasm = (await import("@gopdfjs/engine/pkg/gopdf_wasm.js")).default;
-  await initWasm();
-  initialized = true;
-}
-
-/** Browser WASM adapter — fetch-based init. */
+/** Browser `GopdfEngine` — loads shared `@gopdfjs/wasm`, init fetches co-located `.wasm`. */
 export async function createBrowserEngine(): Promise<GopdfEngine> {
-  await ensureWasm();
+  const { compress_pdf, encode_images, grayscale_pdf, linearize_pdf } = await loadGopdfWasm();
   return {
     async compressPdf(bytes, level, onProgress) {
       return compress_pdf(bytes, level, onProgress ? (p) => onProgress(p) : undefined);

@@ -95,4 +95,32 @@ describe("createEngine", () => {
     const engine = createEngine(mockAdapter());
     await expect(engine.ocr(new Uint8Array())).resolves.toBe("text");
   });
+
+  it.each([
+    ["low", "low"],
+    ["recommended", "med"],
+    ["extreme", "high"],
+  ] as const)("maps CompressionLevel %s → plugin %s", async (level, expected) => {
+    const engine = createEngine(mockAdapter());
+    await engine.compressPdf(new Uint8Array(), level);
+    expect(shrinkCompress).toHaveBeenCalledWith(
+      expect.any(Uint8Array),
+      expect.anything(),
+      expected,
+      expect.any(Function),
+    );
+  });
+
+  it("forwards compress onProgress as fraction", async () => {
+    vi.mocked(shrinkCompress).mockImplementationOnce(
+      async (_b, _r, _l, onProgress) => {
+        onProgress?.(50, "step");
+        return new Uint8Array([9]);
+      },
+    );
+    const engine = createEngine(mockAdapter());
+    const progress = vi.fn();
+    await engine.compressPdf(new Uint8Array(), "recommended", progress);
+    expect(progress).toHaveBeenCalledWith(0.5);
+  });
 });

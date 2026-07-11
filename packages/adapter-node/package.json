@@ -2,7 +2,7 @@
   "name": "@gopdfjs/adapter-node",
   "version": "0.1.0",
   "private": true,
-  "description": "Node implementations of @gopdfjs/adapter (napi-canvas/fs/pdf.js/OCR)",
+  "description": "Node GopdfAdapter — loads shared @gopdfjs/wasm (feeds .wasm bytes to init), pdf.js, napi-canvas, OCR. Run pnpm --filter=@gopdfjs/wasm build:wasm first.",
   "type": "module",
   "exports": {
     ".": "./src/index.ts"
@@ -14,6 +14,7 @@
     "@gopdfjs/adapter": "workspace:*",
     "@gopdfjs/engine": "workspace:*",
     "@gopdfjs/model": "workspace:*",
+    "@gopdfjs/wasm": "workspace:*",
     "@napi-rs/canvas": "0.1.97",
     "pdfjs-dist": "^5.4.296",
     "tesseract.js": "^7.0.0"

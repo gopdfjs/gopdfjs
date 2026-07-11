@@ -1,32 +1,31 @@
 # Rust workspace (`crates/`)
 
-All PDF algorithms live in **`crates/gopdf-*`** as host-testable `rlib` crates.  
-**`crates/gopdf-wasm`** is the only `cdylib` (wasm-bindgen); build it from the **repo root**.
+Host-testable PDF algorithms in **`crates/gopdf-*`** (`rlib` only).
 
-## Layout
+**WASM bindgen + npm artifacts** live in **`@gopdfjs/wasm`** (`packages/wasm/`):
 
-| Crate | Role |
-|-------|------|
-| `gopdf-compress` | RFC 0008 Phase 1 |
-| `gopdf-image` | RFC 0017 / 0018 / 0028 |
-| `gopdf-linearize` | RFC 0042 |
-| `gopdf-wasm` | Thin WASM exports → delegates to `gopdf-*` |
+| Path | Role |
+|------|------|
+| `packages/wasm/rust/` | `gopdf-wasm` cdylib — wasm-bindgen exports → `crates/gopdf-*` |
+| `packages/wasm/pkg/` | single wasm-pack `--target web` build; **one** `.wasm` + glue |
 
-`packages/engine/` is **JavaScript only** (Worker + thin proxy). **Do not** add `Cargo.toml` or `.rs` files there.
+One shared `.wasm`; adapters decide init: browser `init()` fetches the co-located binary, Node feeds `.wasm` bytes to the same `init()`. No per-host JS duplication.
 
-## Commands (always from repo root)
+`packages/engine/` is **JavaScript only**. Adapters **init** `@gopdfjs/wasm` (shared binary); engine builds runtime from adapter ports.
+
+## Commands
 
 ```bash
-cargo test --workspace          # Rust unit tests (all gopdf-* + gopdf-wasm rlib)
-pnpm build:wasm                 # wasm-pack → packages/engine/pkg/
+cargo test --workspace              # Rust unit tests (crates + packages/wasm/rust)
+pnpm build:wasm                     # → pnpm --filter=@gopdfjs/wasm build:wasm
+pnpm --filter=@gopdfjs/wasm build:wasm
 ```
 
-`wasm-pack` must target **`crates/gopdf-wasm`** with output **`../../packages/engine/pkg/`** (from crate root; use `pnpm build:wasm` at repo root).
 Use rustup (`~/.cargo/bin` on `PATH`); Homebrew `rustc` alone lacks `wasm32-unknown-unknown`.
 
 ## Adding a new L1 capability
 
 1. Create `crates/gopdf-<feature>/` with algorithm + `#[cfg(test)]`.
 2. Register in root `Cargo.toml` `[workspace].members` and `[workspace.dependencies]`.
-3. Wire export in `crates/gopdf-wasm/src/lib.rs` + `packages/engine/worker.ts` + `index.ts`.
-4. Update RFC 0057 §5.2 and 0058 §4.
+3. Wire export in `packages/wasm/rust/src/lib.rs`; `pnpm build:wasm`.
+4. Update RFC 0057 §5.3 and 0058 §4.

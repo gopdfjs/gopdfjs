@@ -36,7 +36,7 @@ Design: `.spec/rfc/0058-engine-plugin-charter.md` · WASM: `.spec/rfc/0057-rust-
 | **Runtime contracts** | `@gopdfjs/runtime` | `GopdfRuntime` — plugins only |
 | **Plugin contracts** | `@gopdfjs/plugin` | Domain options/results |
 | **Plugins** | `@gopdfjs/plugin-shrink`, `plugin-extract`, … | Wired inside engine |
-| **Rust** | `crates/gopdf-*` → `packages/engine/pkg/` | WASM — adapter loads via engine/pkg |
+| WASM | `@gopdfjs/wasm` | `rust/` → `crates/gopdf-*` · single `pkg/` (web target) | adapters init |
 
 ### Public API (consumer)
 
@@ -50,21 +50,11 @@ const out = await engine.compressPdf(inputBytes, "recommended", (p) => {
 });
 ```
 
-All §2.6 tools live on `Gopdf` — implemented by `plugin-*`, exposed by `createEngine`. Type: `@gopdfjs/engine` (`Gopdf`).
-
-**Separate entry points** (intentional):
-
-| Export | Role |
-|--------|------|
-| `@gopdfjs/engine/compare` | Token-level PDF compare |
-| `@gopdfjs/engine/render` | `renderPageToJpeg` / `renderPageToPng` helpers |
-| `splitEncodedImages` | Parse length-prefixed blobs from `encodeImages` |
-
-`loadDocument` and `encodeImages` exist on `Gopdf` for engine/plugin wiring; they are not the primary consumer documentation surface.
+All §2.6 tools live on `Gopdf` — implemented by `plugin-*`, exposed by `createEngine`. Type: `@gopdfjs/engine` (`Gopdf`). Compare (RFC 0053): `engine.comparePdfText()` · `engine.createCompareSession()`.
 
 ## Install & use (app code)
 
-In this monorepo, depend on **`@gopdfjs/adapter-browser`** or **`@gopdfjs/adapter-node`** plus **`@gopdfjs/engine`** via `workspace:*` (see `demos/react`).
+In this monorepo, depend on **`@gopdfjs/adapter-browser`** or **`@gopdfjs/adapter-node`** plus **`@gopdfjs/engine`** via `workspace:*` (see `apps/demo`).
 
 Browser (Vite/React or any bundler with Worker + WASM support):
 
@@ -85,7 +75,7 @@ const engine = await createNodeGopdf();
 await engine.pdfToText(pdfBytes, { format: "txt" });
 ```
 
-Terminal CLI without embedding the library: separate [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) repo.
+Terminal CLI without embedding the library: separate [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) repo (`gopdf compress`, `gopdf mcp`, `gopdf install cursor`, …).
 
 ## Build the WASM binary (contributors)
 
@@ -93,7 +83,7 @@ Prerequisites: **Rust**, target **`wasm32-unknown-unknown`**, and **`wasm-pack`*
 
 ```bash
 pnpm install
-pnpm build:wasm        # release → packages/engine/pkg/
+pnpm build:wasm        # release → adapter-browser/pkg + adapter-node/pkg
 pnpm build:wasm:dev    # faster iteration
 ```
 
@@ -104,22 +94,22 @@ Without a successful `build:wasm`, adapter WASM init will fail at runtime.
 | Path | Purpose |
 |------|---------|
 | **`crates/gopdf-*`** | Rust PDF algorithms |
-| **`crates/gopdf-wasm`** | `wasm-bindgen` `cdylib` → `packages/engine/pkg/` |
+| **`packages/wasm/rust`** | `wasm-bindgen` `cdylib` → single `pkg/`; adapters init per host |
 | **`packages/engine`** | `createEngine` facade |
 | **`packages/adapter-*`** | Browser / Node env bundles |
-| **`packages/ports`** | Shared contracts |
-| **`packages/struct`**, **`shrink`**, **`grayscale`**, **`extract`**, … | Plugin domains (engine-internal) |
-| **`demos/react`** | Browser smoke + Playwright e2e |
-| **`site`** | CLI docs landing (GitHub Pages) |
+| **`packages/adapter`**, **`runtime`**, **`plugin`**, **`model`** | Shared contracts |
+| **`packages/plugin-*`** | Plugin domains (engine-internal) |
+| **`apps/demo`** | Browser smoke + Playwright e2e |
+| **`apps/site`** | CLI docs landing (GitHub Pages) |
 | **CLI** | [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) — standalone repo |
 
 ```bash
 pnpm dev          # monorepo dev
 pnpm build        # turbo build
-pnpm build:wasm   # wasm-pack → packages/engine/pkg
+pnpm build:wasm   # wasm-pack → adapter-*/pkg
 pnpm test:rust    # cargo test --workspace
 pnpm test         # test:rust + turbo vitest
-pnpm test:e2e     # Playwright (demos/react/e2e)
+pnpm test:e2e     # Playwright (apps/demo/e2e)
 pnpm validate     # test + lint + build
 ```
 

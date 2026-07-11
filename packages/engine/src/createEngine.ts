@@ -1,5 +1,6 @@
 import type { CompressionLevel, Gopdf, GopdfAdapter } from "@gopdfjs/adapter/gopdf";
 import { applyEdits } from "@gopdfjs/plugin-annotate";
+import { comparePdfText, createCompareSession, visualDiffCanvas } from "@gopdfjs/plugin-compare";
 import { htmlToPdf, markdownToHtml } from "@gopdfjs/plugin-author";
 import {
   extractImages,
@@ -58,20 +59,10 @@ function mapCompressionLevel(level: CompressionLevel): CompressLevel {
 export function createEngine(adapter: GopdfAdapter): Gopdf {
   const wasm = adapter.engine;
   const runtime = createGopdfRuntime(adapter);
-  const gopdf = { adapter } as Gopdf;
+  const gopdf = {} as Gopdf;
 
   Object.assign(gopdf, {
-    encodeImages: (
-      pixelsFlat: Uint8Array,
-      widths: number[],
-      heights: number[],
-      format: Parameters<Gopdf["encodeImages"]>[3],
-      quality?: number,
-    ) => wasm.encodeImages(pixelsFlat, widths, heights, format, quality),
-
     linearizePdf: (bytes: Uint8Array) => wasm.linearizePdf(ownPdfBytes(bytes)),
-
-    loadDocument: (bytes: Uint8Array) => adapter.pdfjs.loadDocument(ownPdfBytes(bytes)),
 
     compressPdf: (
       bytes: Uint8Array,
@@ -211,6 +202,18 @@ export function createEngine(adapter: GopdfAdapter): Gopdf {
 
     htmlToPdf,
     markdownToHtml,
+
+    comparePdfText: (
+      bytesA: Uint8Array,
+      bytesB: Uint8Array,
+      options?: Parameters<Gopdf["comparePdfText"]>[2],
+    ) => comparePdfText(ownPdfBytes(bytesA), ownPdfBytes(bytesB), runtime, options),
+
+    createCompareSession: (bytesA: Uint8Array, bytesB: Uint8Array) =>
+      createCompareSession(ownPdfBytes(bytesA), ownPdfBytes(bytesB), runtime),
+
+    visualDiffCanvases: (canvasA: HTMLCanvasElement, canvasB: HTMLCanvasElement) =>
+      visualDiffCanvas(canvasA, canvasB),
   });
 
   return gopdf;

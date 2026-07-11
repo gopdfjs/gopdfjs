@@ -17,7 +17,7 @@ tests:
 
 ## 1. Objective
 
-Reduce PDF file size locally. Rust in `crates/gopdf-compress`; **`@gopdfjs/engine`** (one pkg target — browser Worker today, Node in same pkg). **npm:** `compressPdf()`. **CLI:** `gopdf compress` wraps `@gopdfjs/engine/node`. **e2e:** `demos/react/e2e/tools/compress.spec.ts`.
+Reduce PDF file size locally. Rust in `crates/gopdf-compress`; **`@gopdfjs/engine`** (one pkg target — browser Worker today, Node in same pkg). **npm:** `compressPdf()`. **CLI:** `gopdf compress` wraps `@gopdfjs/engine/node`. **e2e:** `apps/demo/e2e/tools/compress.spec.ts`.
 
 Two mechanisms at different readiness levels:
 
@@ -202,7 +202,7 @@ Add `lopdf` (or chosen alternative) as an optional dependency behind a Cargo fea
 | **CLI** | `gopdf compress` | node | **Done** | thin wrapper over `@gopdfjs/engine/node` |
 | **Rust / WASM** | — | — | P1 Done | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |
 | **Vitest** | — | — | **Partial** | `packages/engine` |
-| **Browser e2e** | — | browser | **Done** | `demos/react/e2e/tools/compress.spec.ts` |
+| **Browser e2e** | — | browser | **Done** | `apps/demo/e2e/tools/compress.spec.ts` |
 | **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
 **Verdict**: **PARTIAL** — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-engine-plugin-charter.md)). CLI wraps npm; no forked logic.

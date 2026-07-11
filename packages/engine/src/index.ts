@@ -1,12 +1,15 @@
-export type {
-  CompressionLevel,
-  GopdfEngine,
-  ImageFormat,
-} from "@gopdfjs/adapter/engine";
+/**
+ * Consumer-facing `@gopdfjs/engine` entry.
+ *
+ * Import **`Gopdf` methods** and **`createEngine`** here only.
+ *
+ * Adapter authors: `@gopdfjs/adapter` · `@gopdfjs/adapter-browser` / `@gopdfjs/adapter-node`
+ */
+
+export type { CompressionLevel } from "@gopdfjs/adapter/engine";
 
 export type {
   Gopdf,
-  GopdfAdapter,
   PdfJpegPage,
   PdfToJpegOptions,
   PdfToTextFormat,
@@ -15,14 +18,19 @@ export type {
 
 export type {
   Annotation,
+  ComparePdfTextOptions,
+  CompareSession,
   GrayscalePdfOptions,
   GrayscalePdfResult,
   HtmlToPdfOptions,
   HtmlToPdfResult,
+  PagePairRender,
   PdfAnalysisResult,
+  PdfRect,
   RedactRegion,
+  TextChangeItem,
+  TextDiffResult,
+  VisualDiffResult,
 } from "@gopdfjs/plugin";
 
-export { splitEncodedImages } from "./splitEncodedImages";
 export { createEngine } from "./createEngine";
-export { renderPageToJpeg, renderPageToPng } from "./renderPage";

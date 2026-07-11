@@ -16,11 +16,10 @@ dist/
 build/
 .next/
 
-# Rust / wasm-pack (workspace root + packages/engine output)
+# Rust / wasm-pack (workspace + adapter pkg output)
 target/
 Cargo.lock
-packages/engine/pkg/
-crates/gopdf-wasm/packages/
+packages/wasm/pkg/
 
 # Tests & coverage (Vitest)
 coverage/

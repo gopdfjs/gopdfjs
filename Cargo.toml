@@ -3,7 +3,7 @@ members = [
     "crates/gopdf-compress",
     "crates/gopdf-image",
     "crates/gopdf-linearize",
-    "crates/gopdf-wasm",
+    "packages/wasm/rust",
 ]
 resolver = "2"
 

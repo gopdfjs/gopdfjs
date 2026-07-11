@@ -10,7 +10,7 @@ Convert raster image files into search-optimized PDF documents.
 
 ## 2. Technical Specification
 - **Core Library (product assembly)**: **`pdf-lib`** — 将图像嵌入为 `XObject`、页尺寸与边距（当前产品常见路径）。
-- **Core Library (batch encode)**: **`@gopdfjs/engine`** — `encodeImages` / `splitEncodedImages`，对 **RGBA 像素缓冲** 做 JPEG/PNG 编码（RFC 0057 / 0058）；**不负责**整册 PDF 拼装（crate 未导出 `imagesToPdf` 前不得写为已实现 API）。
+- **Core Library (batch encode)**: **`@gopdfjs/engine`** — WASM batch JPEG/PNG via adapter `encodeImages`（engine 内部 `splitEncodedImages` 解析 length-prefixed 输出；**不对外 export**）；**不负责**整册 PDF 拼装。
 - **Processing Logic**:
     - （JS）解码用户图片为位图 → 可选调用 WASM 批量编码 → 再用 pdf-lib 写入 PDF 页。
     - 页尺寸：A4 / Auto / Custom；边距与方向由产品层处理。
@@ -31,18 +31,7 @@ Convert raster image files into search-optimized PDF documents.
 
 大批量图片时，主线程 `canvas.toBlob()` 易卡顿；**库已提供** `encode_images`，用于在 Worker 内对 **已展开的 RGBA 帧** 做 JPEG/PNG 编码。整册 PDF 的拼装仍由 **pdf-lib**（或未来 Rust 侧 mux，需单独 RFC）完成。
 
-**Integration（编码子步骤）** — consumer 走 `Gopdf` facade（RFC 0058 §2.4）：
-
-```ts
-import { createBrowserGopdf } from "@gopdfjs/adapter-browser";
-import { splitEncodedImages } from "@gopdfjs/engine";
-
-const engine = await createBrowserGopdf();
-// pixelsFlat: 多页 RGBA 拼接；widths/heights: 每帧宽高
-const packed = await engine.encodeImages(pixelsFlat, widths, heights, "jpeg", 92);
-const jpegChunks = splitEncodedImages(packed);
-// 再将 jpegChunks[i] 交给 pdf-lib 嵌入 PDF（产品层编排）
-```
+**Integration（consumer 走 `Gopdf` facade — RFC 0058 §2.4）** — 产品用 `engine.jpgToPdf()`。WASM 批量编码与 blob 拆分由 engine/plugin 内部完成；**不要** import `splitEncodedImages` 或 adapter `encodeImages`。
 
 **Scope of Rust work（当前 crate）**: 仅 **像素 → 编码字节**（见 `encode_images`）。**不在**本文档中承诺「单函数输入文件数组、输出完整 PDF」除非 `lib.rs` 已导出对应符号。
 
@@ -55,7 +44,7 @@ const jpegChunks = splitEncodedImages(packed);
 | **CLI** | `gopdf-cli jpg-to-pdf` | node | **Planned** | thin wrapper over npm above |
 | **Rust / WASM** | — | — | Hybrid encode leg | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |
 | **Vitest** | — | — | **Partial** | `packages/struct + packages/engine` |
-| **Browser e2e** | — | browser | **Not done** | `demos/react/e2e/tools/jpg-to-pdf.spec.ts` |
+| **Browser e2e** | — | browser | **Not done** | `apps/demo/e2e/tools/jpg-to-pdf.spec.ts` |
 | **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
 **Verdict**: **PARTIAL** — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-engine-plugin-charter.md)). CLI wraps npm; no forked logic.

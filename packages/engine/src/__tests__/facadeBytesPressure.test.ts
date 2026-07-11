@@ -129,8 +129,8 @@ const HOST = new Uint8Array([37, 80, 68, 70, 45, 49, 46, 52]);
 const PNG_STUB = new Uint8Array([137, 80, 78, 71]);
 
 const FACADE_CASES: FacadeCase[] = [
-  { name: "loadDocument", run: (e, h) => e.loadDocument(h) },
   { name: "linearizePdf", run: (e, h) => e.linearizePdf(h) },
+  { name: "analyzePdf", run: (e, h) => e.analyzePdf(h) },
   { name: "compressPdf", run: (e, h) => e.compressPdf(h, "recommended") },
   { name: "grayscalePdf", run: (e, h) => e.grayscalePdf(h, { mode: "grayscale" }) },
   { name: "redactPdf", run: (e, h) => e.redactPdf(h, []) },
@@ -237,7 +237,11 @@ describe("createEngine facade byte pressure (RFC 0058 §2.4)", () => {
     const host = new Uint8Array(HOST);
     const engine = createEngine(createDetachingAdapter());
 
-    await engine.loadDocument(host);
+    try {
+      await engine.analyzePdf(host);
+    } catch {
+      // ignore junk fixture tool errors
+    }
     assertPdfBytesReadable(host);
 
     try {
@@ -254,7 +258,11 @@ describe("createEngine facade byte pressure (RFC 0058 §2.4)", () => {
     }
     assertPdfBytesReadable(host);
 
-    await engine.loadDocument(host);
+    try {
+      await engine.analyzePdf(host);
+    } catch {
+      // ignore
+    }
     assertPdfBytesReadable(host);
   });
 });

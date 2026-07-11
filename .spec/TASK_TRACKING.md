@@ -34,7 +34,7 @@ MISSING    Node adapter full port tests · full e2e green · pdf object layer
 - [x] 0001 closed → `completed/0001-site-work.md`
 - [x] 0002 closed → `completed/0002-conversion-tools.md` (0017–0025, 0033–0039 covered)
 - [x] 0003 closed → `completed/0003-editing-organization-tools.md` (0006–0016, 0026, 0030–0032, 0040–0041, 0044–0045 covered)
-- [x] 0008 P1: `compress_pdf` + `cargo test` + `demos/react/e2e/tools/compress.spec.ts`
+- [x] 0008 P1: `compress_pdf` + `cargo test` + `apps/demo/e2e/tools/compress.spec.ts`
 - [x] WASM exports: `compressPdf`, `encodeImages`, `grayscalePdf`, `linearizePdf`
 - [x] **L3 libs** — `@gopdfjs/files`, `render`, `struct` + tool packages
 - [x] **`@gopdfjs/pdf-cli`** — migrated to standalone `gopdf-cli` repo (publish + build there)
@@ -68,10 +68,10 @@ MISSING    Node adapter full port tests · full e2e green · pdf object layer
 
 **Charter:** RFC 0058 §3 — 每个 `Gopdf` 方法 = Vitest（工具包）+ Node integration + browser e2e。
 
-Template: `demos/react/e2e/tools/all-tools.spec.ts` + skill `gopdf-e2e`.
+Template: `apps/demo/e2e/tools/all-tools.spec.ts` + skill `gopdf-e2e`.
 
 - [x] Engine facade bytes pressure (all methods)
-- [x] `demos/react` tool registry + 31 generic routes
+- [x] `apps/demo` tool registry + 31 generic routes
 - [x] `all-tools.spec.ts` e2e matrix
 - [ ] `pnpm test:e2e` full green (33 tests)
 - [ ] Node `Gopdf` integration per method (`createNodeGopdf` + fixtures)

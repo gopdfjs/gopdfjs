@@ -231,13 +231,13 @@ def e2e_slug(stem: str) -> str:
 def implementation_block(stem: str, section: str = "6", e2e_done: bool = False) -> str:
     spec = TOOL_SPECS.get(stem)
     slug = e2e_slug(stem)
-    e2e_path = f"demos/react/e2e/tools/{slug}.spec.ts"
+    e2e_path = f"apps/demo/e2e/tools/{slug}.spec.ts"
     e2e_state = "**Done**" if e2e_done else "**Not done**"
 
     if stem == "0008-compress-pdf":
         e2e_done = True
         e2e_state = "**Done**"
-        e2e_path = "demos/react/e2e/tools/compress.spec.ts"
+        e2e_path = "apps/demo/e2e/tools/compress.spec.ts"
 
     if not spec:
         spec = ToolSpec(

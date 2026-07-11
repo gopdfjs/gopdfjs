@@ -2,7 +2,7 @@
   "name": "@gopdfjs/adapter-browser",
   "version": "0.1.0",
   "private": true,
-  "description": "Browser implementations of @gopdfjs/adapter (Worker/DOM canvas/pdf.js)",
+  "description": "Browser GopdfAdapter — loads shared @gopdfjs/wasm (init fetches .wasm), pdf.js, canvas. Run pnpm --filter=@gopdfjs/wasm build:wasm first.",
   "type": "module",
   "exports": {
     ".": "./src/index.ts"
@@ -14,6 +14,7 @@
     "@gopdfjs/adapter": "workspace:*",
     "@gopdfjs/engine": "workspace:*",
     "@gopdfjs/model": "workspace:*",
+    "@gopdfjs/wasm": "workspace:*",
     "pdfjs-dist": "^5.4.296"
   },
   "devDependencies": {

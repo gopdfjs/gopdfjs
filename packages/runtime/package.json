@@ -10,13 +10,15 @@
     "./document": "./src/document.ts"
   },
   "scripts": {
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@gopdfjs/model": "workspace:*"
   },
   "devDependencies": {
     "@gopdfjs/adapter": "workspace:*",
+    "@vitest/coverage-v8": "^3.0.0",
     "typescript": "^5",
     "vitest": "^3.0.0"
   },

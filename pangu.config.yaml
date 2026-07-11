@@ -6,3 +6,7 @@ demos:
     value: site
     description: GoPDF.js 宣传落地页（Vite 静态站，GitHub Pages base + 404.html）
     package: "@gopdfjs/site"
+  - name: Demo — browser acceptance
+    value: demo
+    description: Engine smoke + Playwright e2e 宿主（`apps/demo`）
+    package: "@gopdfjs/demo-react"

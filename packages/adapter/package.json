@@ -14,13 +14,15 @@
     "./bytes": "./src/bytes.ts"
   },
   "scripts": {
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@gopdfjs/model": "workspace:*",
     "@gopdfjs/plugin": "workspace:*"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^3.0.0",
     "typescript": "^5",
     "vitest": "^3.0.0"
   },

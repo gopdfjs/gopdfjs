@@ -11,6 +11,10 @@ import type {
   PdfTextRun,
   HtmlToPdfOptions,
   HtmlToPdfResult,
+  ComparePdfTextOptions,
+  CompareSession,
+  TextDiffResult,
+  VisualDiffResult,
   RedactPdfOptions,
   RedactRegion,
   RepairPdfOptions,
@@ -19,7 +23,6 @@ import type {
   WatermarkImage,
   WatermarkPosition,
 } from "@gopdfjs/plugin/domain";
-import type { PdfDocument } from "@gopdfjs/model/document";
 import type { GopdfAdapter } from "./adapter";
 
 export type { GopdfAdapter } from "./adapter";
@@ -46,11 +49,9 @@ export type PdfToTextOptions = {
  * Consumer-facing PDF API (`engine.compressPdf()`, …).
  * **Type lives here; implementation lives in `@gopdfjs/engine` `createEngine()`**, which
  * wires `@gopdfjs/plugin-*` functions onto this facade. Do not import from apps — use
- * `@gopdfjs/engine`.
+ * `@gopdfjs/engine`. Does **not** expose `adapter`, `loadDocument`, or `encodeImages`.
  */
 export interface Gopdf {
-  readonly adapter: GopdfAdapter;
-
   // —— WASM / core ——
   compressPdf(
     bytes: Uint8Array,
@@ -59,16 +60,6 @@ export interface Gopdf {
   ): Promise<Uint8Array>;
 
   linearizePdf(bytes: Uint8Array): Promise<Uint8Array>;
-
-  encodeImages(
-    pixelsFlat: Uint8Array,
-    widths: number[],
-    heights: number[],
-    format: ImageFormat,
-    quality?: number,
-  ): Promise<Uint8Array>;
-
-  loadDocument(bytes: Uint8Array): Promise<PdfDocument>;
 
   // —— render / extract ——
   pdfToJpeg(bytes: Uint8Array, options?: PdfToJpegOptions): Promise<PdfJpegPage[]>;
@@ -263,6 +254,22 @@ export interface Gopdf {
 
   /** Browser-only — compile Markdown to sanitized HTML for `htmlToPdf()`. */
   markdownToHtml(source: string): Promise<string>;
+
+  // —— compare (RFC 0053) ——
+  comparePdfText(
+    bytesA: Uint8Array,
+    bytesB: Uint8Array,
+    options?: ComparePdfTextOptions,
+  ): Promise<TextDiffResult>;
+
+  /** Browser-only — dual-pane compare viewer session. */
+  createCompareSession(bytesA: Uint8Array, bytesB: Uint8Array): Promise<CompareSession>;
+
+  /** Browser-only — pixel diff between two same-size canvases. */
+  visualDiffCanvases(
+    canvasA: HTMLCanvasElement,
+    canvasB: HTMLCanvasElement,
+  ): VisualDiffResult;
 }
 
 export type CreateGopdf = (adapter: GopdfAdapter) => Gopdf;

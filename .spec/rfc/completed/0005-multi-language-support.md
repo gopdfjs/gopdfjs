@@ -12,10 +12,10 @@ Product i18n for gopdf.fyi (11 locales, locale-prefixed URLs). **Not** an OSS `@
 
 | Item | Location |
 |------|----------|
-| Docs i18n | `site/public/locales/` (i18next) |
+| Docs i18n | `apps/site/public/locales/` (i18next) |
 | Product i18n | **ilovepdf** — `use-intl` / next-intl JSON / UI |
 
-Removed from gopdfjs: `@gopdfjs/i18n`, `@gopdfjs/locale-cli`, `@gopdfjs/components`, `site/messages/`.
+Removed from gopdfjs: `@gopdfjs/i18n`, `@gopdfjs/locale-cli`, `@gopdfjs/components`, `apps/site/messages/`.
 
 ## 3. Closure
 

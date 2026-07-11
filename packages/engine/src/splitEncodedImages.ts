@@ -1,6 +1,6 @@
 /**
- * Split length-prefixed output from `encodeImages` into individual image buffers.
- * Pure helper — safe to unit test without loading the WASM Worker.
+ * Split length-prefixed output from WASM `encodeImages` into individual image buffers.
+ * Engine-internal — not part of consumer `Gopdf` facade (RFC 0058).
  */
 export function splitEncodedImages(packed: Uint8Array): Uint8Array[] {
   const images: Uint8Array[] = [];

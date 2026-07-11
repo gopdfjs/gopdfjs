@@ -42,7 +42,7 @@ The browser's `SubtleCrypto` API (specifically `crypto.subtle.encrypt` with AES-
 | **CLI** | `gopdf-cli protect` | node | **Planned** | thin wrapper over npm above |
 | **Rust / WASM** | — | — | Web Crypto (Node + browser) | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |
 | **Vitest** | — | — | **Partial** | `packages/struct` |
-| **Browser e2e** | — | browser | **Not done** | `demos/react/e2e/tools/protect-pdf.spec.ts` |
+| **Browser e2e** | — | browser | **Not done** | `apps/demo/e2e/tools/protect-pdf.spec.ts` |
 | **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
 **Verdict**: **PARTIAL** — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-engine-plugin-charter.md)). CLI wraps npm; no forked logic.

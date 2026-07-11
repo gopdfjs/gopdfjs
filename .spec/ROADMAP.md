@@ -35,8 +35,8 @@ RFC bodies: `.spec/rfc/NNNN-kebab-slug.md` (active) · `.spec/rfc/completed/` (s
 
 - **Consumer (ilovepdf)** — gopdf.fyi tool UX (out of repo; consumes `@gopdfjs/*` npm)
 - **WASM L1** — `packages/engine/src/*.rs` + Worker `op`
-- **Monorepo** — verifiable in this repo (`packages/*`, `demos/react`, tests)
-- **Tests** — `cargo test` · Vitest · `demos/react/e2e/tools/*.spec.ts` · skill `gopdf-e2e`
+- **Monorepo** — verifiable in this repo (`packages/*`, `apps/demo`, tests)
+- **Tests** — `cargo test` · Vitest · `apps/demo/e2e/tools/*.spec.ts` · skill `gopdf-e2e`
 
 - **Monorepo gap (global)**: **engine + adapter publish model locked** (RFC 0058 §2.3) — all tools via `createEngine`; browser e2e + Node unit gate before npm publish.
 
@@ -48,7 +48,7 @@ RFC bodies: `.spec/rfc/NNNN-kebab-slug.md` (active) · `.spec/rfc/completed/` (s
 
 | ID | RFC | Verdict | Consumer (ilovepdf) | WASM L1 | Monorepo | Tests | Notes |
 |----|-----|---------|---------------------|---------|----------|-------|-------|
-| 0001 | Site work | **CLOSED** | baseline live | n/a | `site/` (WSX docs) | — | Umbrella → child RFCs; [completed/0001](rfc/completed/0001-site-work.md) |
+| 0001 | Site work | **CLOSED** | baseline live | n/a | `apps/site/` (WSX docs) | — | Umbrella → child RFCs; [completed/0001](rfc/completed/0001-site-work.md) |
 | 0002 | Conversion umbrella | **CLOSED** | — | — | — | — | Umbrella → 0017–0025, 0033–0039; [completed/0002](rfc/completed/0002-conversion-tools.md) |
 | 0003 | Editing umbrella | **CLOSED** | — | — | — | — | Umbrella → 0006–0016, 0026, 0030–0032, 0040–0041, 0044–0045; [completed/0003](rfc/completed/0003-editing-organization-tools.md) |
 | 0004 | Optimize/security umbrella | **CLOSED** | — | — | — | — | Child RFCs generated; [completed/0004](rfc/completed/0004-optimization-security-advanced-tools.md) |
@@ -157,7 +157,7 @@ Reserved: **0059**, **0060**.
 2. ~~**0061** live on product vs RFC **Proposed**~~ — **fixed 2026-06-28** → Implemented (L3) / Planned (L1)
 3. ~~**`packages/tools`**~~ — removed; use npm packages + `gopdf-cli` directly
 4. **0058 PDF Object Layer** — planned; blocks 0008 P2, full 0028/0042, 0061 L1
-5. ~~**0005** — `site/messages/` + parity tests~~ — **done 2026-06-28**
+5. ~~**0005** — `apps/site/messages/` + parity tests~~ — **done 2026-06-28**
 6. ~~**completed/0006–0022** missing §6 monorepo honesty~~ — **fixed 2026-06-28**
 7. **Runtime model** — **fixed 2026-06-28** — **one npm pkg default**; split `-node` only if infeasible; CLI thin wrapper ([0058 §2.3](rfc/0058-engine-plugin-charter.md))
 

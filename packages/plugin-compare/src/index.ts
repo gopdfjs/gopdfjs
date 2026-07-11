@@ -1,6 +1,15 @@
 export * from "./pdfTypes";
 export * from "./constants";
-export * from "./types";
+export type {
+  ComparePdfTextOptions,
+  CompareSession,
+  PagePairRender,
+  PdfRect,
+  TextChangeItem,
+  TextDiffResult,
+  VisualDiffResult,
+} from "./types";
+export { comparePdfText, createCompareSession } from "./comparePdf";
 export {
     computeCompareRenderScale,
     getPageBoxPt,

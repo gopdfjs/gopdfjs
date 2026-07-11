@@ -33,16 +33,9 @@ Facilitate high-fidelity rendering of PDF pages into JPEG/PNG image formats.
 
 **Split responsibility**:
 1. **pdfjs (JS)** — 每页渲染到 `ImageData`（RGBA）。
-2. **Rust/WASM Worker** — `encodeImages(pixelsFlat, widths, heights, format, quality)`，再用 **`splitEncodedImages`** 拆成多份 JPEG/PNG 字节。
+2. **Rust/WASM Worker** — `encodeImages(...)`；engine 内部 `splitEncodedImages` 拆成多份 JPEG/PNG 字节（不对外 export）。
 
-```ts
-import { createBrowserGopdf } from "@gopdfjs/adapter-browser";
-import { splitEncodedImages } from "@gopdfjs/engine";
-
-const engine = await createBrowserGopdf();
-const packed = await engine.encodeImages(pixelsFlat, widths, heights, "jpeg", 92);
-const jpegChunks = splitEncodedImages(packed);
-```
+**Consumer API（RFC 0058 §2.6）** — 使用 `engine.pdfToJpeg(bytes, { scale, quality })`（engine 内部 pdf.js + canvas + JPEG 编码；WASM blob 拆分亦在 engine 内部）。
 
 **Scope of Rust work（当前 crate）**: 仅 RGBA → 编码流；**不包含**「从 PDF 直接光栅化」（仍由 pdfjs 完成）。
 
@@ -55,7 +48,7 @@ const jpegChunks = splitEncodedImages(packed);
 | **CLI** | `gopdf-cli pdf-to-jpg` | node | **Planned** | thin wrapper over npm above |
 | **Rust / WASM** | — | — | Hybrid | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |
 | **Vitest** | — | — | **Partial** | `packages/render + packages/engine` |
-| **Browser e2e** | — | browser | **Not done** | `demos/react/e2e/tools/pdf-to-jpg.spec.ts` |
+| **Browser e2e** | — | browser | **Not done** | `apps/demo/e2e/tools/pdf-to-jpg.spec.ts` |
 | **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
 **Verdict**: **PARTIAL** — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-engine-plugin-charter.md)). CLI wraps npm; no forked logic.
