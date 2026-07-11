@@ -1,5 +1,5 @@
 /**
- * Generate sitemap.xml for GitHub Pages (hash routes use root paths for SEO landing).
+ * Generate sitemap.xml for GitHub Pages hash-router site.
  */
 
 import { writeFileSync } from 'fs';
@@ -20,11 +20,18 @@ const routes = [
   '/docs/faq/index',
 ];
 
+function toHashUrl(route: string): string {
+  if (route === '/') {
+    return `${BASE_URL}/#/`;
+  }
+  return `${BASE_URL}/#${route}`;
+}
+
 function generateSitemap(): string {
   const urls = routes
     .map(
       (route) => `  <url>
-    <loc>${BASE_URL}${route}</loc>
+    <loc>${toHashUrl(route)}</loc>
     <changefreq>weekly</changefreq>
     <priority>${route === '/' ? '1.0' : '0.8'}</priority>
   </url>`,

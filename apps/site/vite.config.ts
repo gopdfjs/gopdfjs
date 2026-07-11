@@ -5,6 +5,7 @@ import UnoCSS from 'unocss/vite';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { cpSync, existsSync, readFileSync, writeFileSync } from 'fs';
+import { buildGhPagesHashFallbackScript } from './vite-plugins/ghPagesHashFallback';
 import { rewriteSubpathFetches } from './vite-plugins/rewriteSubpathFetches';
 
 const SITE_DEV_PORT = 5175;
@@ -46,11 +47,7 @@ function copy404Plugin(): Plugin {
       if (!existsSync(indexHtml)) return;
 
       const redirectScript = `
-    <script>
-      if (!window.location.hash && window.location.pathname !== '${SITE_BASE}' && window.location.pathname !== '${SITE_BASE.replace(/\/$/, '')}') {
-        window.location.replace('${SITE_BASE}');
-      }
-    </script>`;
+    <script>${buildGhPagesHashFallbackScript(SITE_BASE)}</script>`;
 
       const htmlContent = readFileSync(indexHtml, 'utf-8').replace(
         '</head>',
