@@ -11,6 +11,7 @@
     "build": "turbo build",
     "lint": "turbo lint",
     "format": "cargo fmt --all",
+    "format:check": "prettier --check \"**/*.{ts,tsx,md}\"",
     "build:wasm": "pnpm --filter=@gopdfjs/wasm build:wasm",
     "build:wasm:dev": "pnpm --filter=@gopdfjs/wasm build:wasm:dev",
     "test:rust": "cargo test --workspace",
@@ -32,6 +33,7 @@
     "@systembug/pangu": "^0.1.0",
     "@systembug/qingniao": "^0.0.13",
     "husky": "^9.1.7",
+    "prettier": "^3.6.2",
     "rollup": "^4.52.4",
     "rollup-plugin-dts": "^6.2.3",
     "turbo": "latest"

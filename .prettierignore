@@ -1,0 +1,10 @@
+node_modules
+dist
+.turbo
+coverage
+packages/wasm/pkg
+pnpm-lock.yaml
+**/*.wasm
+**/*.lock
+**/CHANGELOG.md
+.spec/
