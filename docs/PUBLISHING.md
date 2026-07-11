@@ -37,13 +37,14 @@ RFC 0058 §2.1 — implementation stays in repo; **禁止产品 import**:
 | `@gopdfjs/wasm` | WASM bindgen `pkg/` |
 | `@gopdfjs/fixtures` | Dev/e2e only |
 
-Engine **bundles or workspace-resolves** plugins at build time — consumers do not add `@gopdfjs/plugin-shrink` etc.
+Engine **bundles** internal `@gopdfjs/*` at publish build — consumers do not add `@gopdfjs/plugin-shrink` etc.
 
 ## OSS publish gate (this repo)
 
 | Gate | Command / artifact |
 |------|---------------------|
 | Public export guards | `pnpm check:public-exports` · `check:layer-deps` |
+| Vite publish sanity | `pnpm check:vite-sanity` |
 | Unit tests | `pnpm test` · `pnpm test:rust` |
 | Browser acceptance | `pnpm test:e2e` |
 | Build | `dist/` via **Vite library mode** on the **3 public** packages |
@@ -51,46 +52,73 @@ Engine **bundles or workspace-resolves** plugins at build time — consumers do 
 
 **Not in this repo:** `gopdf-cli` subcommands · MCP install · ilovepdf UI.
 
-## Current state
+## Local dev — `@systembug/pangu`
 
-| Gate | Status |
-|------|--------|
-| `pnpm check:public-exports` | ✓ |
-| `pnpm check:layer-deps` | ✓ |
-| `createEngine` covers `Gopdf` (§2.6) | ✓ |
-| Browser e2e | ✓ |
-| `dist/` on engine + adapters | **Todo** |
-| Engine bundles internal deps for npm | **Todo** (Vite lib build) |
-
-## Monorepo dev (Vite)
-
-Public packages expose **`exports.development` → `./src/*.ts`**. Vite (demo, site) resolves source directly — **no `dist/` build for local dev**.
+Root **`pangu.config.json`** lists workspace demos (`package` must have a `"dev"` script; `value` is the CLI arg):
 
 ```bash
 pnpm build:wasm   # once
-pnpm dev demo     # Vite + HMR on workspace packages
+pnpm dev          # interactive menu
+pnpm dev demo     # direct — browser acceptance (@gopdfjs/demo-react)
+pnpm dev site     # direct — docs landing (@gopdfjs/site)
 ```
 
-Publish build (`pnpm --filter=@gopdfjs/engine build`) uses the same Vite toolchain in **library mode** — not a separate bundler.
+Never `pnpm dev dev` — second arg is the demo **value** from config, not the script name.
 
-## Before first npm publish (3 packages only)
+Public packages expose **`exports.development` → `./src/*.ts`**. Vite resolves source directly — **no `dist/` build for local dev**.
 
-1. `engine` build bundles `@gopdfjs/plugin-*` + runtime deps (no separate plugin npm installs for consumers).
-2. `adapter-browser` / `adapter-node` ship WASM + boot helpers; `pnpm build:wasm` first.
-3. `exports` → `dist/` on the 3 public packages only.
-4. `publishConfig.access: public` — **only** engine · adapter-browser · adapter-node.
+## Release — `@systembug/qingniao` + changesets
+
+Tooling (root `package.json`):
+
+```json
+"dev": "pangu",
+"release": "qingniao",
+"changeset": "changeset"
+```
+
+**One-time setup** (already done in repo):
+
+```bash
+pnpm add -D @systembug/pangu @systembug/qingniao @changesets/cli
+pnpm exec qingniao changeset-init
+```
+
+Optional **`qingniao.config.json`**: `{ "publish": { "skipExisting": true } }`.
+
+**`.changeset/config.json`** — three public packages in **`fixed`** (lockstep version); all private workspace packages in **`ignore`**.
+
+### Release flow (maintainer)
+
+1. Gate green: `pnpm check:vite-sanity` · `pnpm test` · `pnpm test:e2e`
+2. `pnpm changeset` — describe bump; creates `.changeset/*.md`
+3. `git add .changeset && git commit -m "chore: changeset"`
+4. `git push`
+5. `pnpm login` (if needed)
+6. **`pnpm release -y`** in your terminal — NPM 2FA OTP must be entered interactively here
+7. Verify:
+
+```bash
+npm view @gopdfjs/engine version
+npm view @gopdfjs/adapter-browser version
+npm view @gopdfjs/adapter-node version
+```
+
+`package.json` version + CHANGELOG must match after `changeset version` (qingniao runs this in the release pipeline).
+
+**Before first publish:** `@gopdfjs/*` return 404 on npm until the first successful release.
 
 ## Automated guards
 
 - `pnpm check:layer-deps` — `plugin-*` prod deps must not pull `@gopdfjs/adapter*` / `engine`
 - `pnpm check:public-exports` — engine exports only `"."`; adapter barrels must not re-export engine/plugins/WASM
+- `pnpm check:vite-sanity` — builds 3 public packages; no private `@gopdfjs/*` in published JS/d.ts
 
 ## Bundler guidance (browser consumers)
 
-Your app already uses Vite — mirror `apps/demo/vite.config.ts`:
+Mirror `apps/demo/vite.config.ts`:
 
 ```ts
-// vite.config.ts — same as apps/demo
 import wasm from "vite-plugin-wasm";
 import topLevelAwait from "vite-plugin-top-level-await";
 
@@ -101,10 +129,8 @@ export default defineConfig({
 });
 ```
 
-**Monorepo / linked packages:** `exports.development` points at TypeScript source; Vite picks it up in dev without prebuilding `dist/`.
-
-WASM asset: `@gopdfjs/wasm/gopdf_wasm_bg.wasm` (resolved via adapter-browser). See RFC 0057 §4.3.
+WASM ships inside `@gopdfjs/adapter-browser` / `@gopdfjs/adapter-node` tarballs (vendored `.wasm` in `dist/`). See RFC 0057 §4.3.
 
 ## Versioning
 
-Lockstep `0.x` for the 3 public packages until API freeze.
+Lockstep `0.x` for the 3 public packages (`fixed` in `.changeset/config.json`) until API freeze.

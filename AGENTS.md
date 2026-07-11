@@ -29,8 +29,8 @@
 | 命令 | 用途 |
 |------|------|
 | CLI | **separate repo** [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) — zero coupling |
-| `pnpm --filter=@gopdfjs/site dev` | CLI docs landing |
-| `pnpm --filter=@gopdfjs/demo-react dev` | 浏览器 acceptance |
+| `pnpm dev` / `pnpm dev demo` | **Pangu** — `pangu.config.json` → workspace demo（`apps/demo`） |
+| `pnpm dev site` | Pangu → `@gopdfjs/site` docs landing |
 
 ## RFC
 

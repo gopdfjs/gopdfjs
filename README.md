@@ -105,7 +105,8 @@ Without a successful `build:wasm`, adapter WASM init will fail at runtime.
 | **CLI** | [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) — standalone repo |
 
 ```bash
-pnpm dev          # monorepo dev
+pnpm dev          # pangu menu — pick demo
+pnpm dev demo     # browser acceptance (never "pnpm dev dev")
 pnpm build        # turbo build
 pnpm build:wasm   # wasm-pack → adapter-*/pkg
 pnpm test:rust    # cargo test --workspace

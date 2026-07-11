@@ -1,0 +1,18 @@
+{
+  "projectName": "gopdfjs",
+  "packageManager": "pnpm",
+  "demos": [
+    {
+      "name": "Site — @gopdfjs landing",
+      "value": "site",
+      "description": "GoPDF.js docs landing (Vite, GitHub Pages)",
+      "package": "@gopdfjs/site"
+    },
+    {
+      "name": "Demo — browser acceptance",
+      "value": "demo",
+      "description": "Engine smoke + Playwright e2e host (apps/demo)",
+      "package": "@gopdfjs/demo-react"
+    }
+  ]
+}

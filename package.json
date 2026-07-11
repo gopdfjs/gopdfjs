@@ -5,6 +5,8 @@
   "packageManager": "pnpm@10.27.0",
   "scripts": {
     "dev": "pangu",
+    "release": "qingniao",
+    "changeset": "changeset",
     "dev:turbo": "turbo dev",
     "build": "turbo build",
     "lint": "turbo lint",
@@ -24,6 +26,7 @@
   },
   "devDependencies": {
     "@gopdfjs/fixtures": "workspace:*",
+    "@changesets/cli": "^2.31.0",
     "@playwright/test": "^1.55.1",
     "@systembug/pangu": "^0.1.0",
     "@systembug/qingniao": "^0.0.13",

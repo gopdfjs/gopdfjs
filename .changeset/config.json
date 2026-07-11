@@ -1,0 +1,35 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.1.4/schema.json",
+  "changelog": "@changesets/cli/changelog",
+  "commit": false,
+  "fixed": [
+    ["@gopdfjs/engine", "@gopdfjs/adapter-browser", "@gopdfjs/adapter-node"]
+  ],
+  "linked": [],
+  "access": "public",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "ignore": [
+    "@gopdfjs/adapter",
+    "@gopdfjs/demo-react",
+    "@gopdfjs/files",
+    "@gopdfjs/fixtures",
+    "@gopdfjs/model",
+    "@gopdfjs/plugin",
+    "@gopdfjs/plugin-annotate",
+    "@gopdfjs/plugin-author",
+    "@gopdfjs/plugin-compare",
+    "@gopdfjs/plugin-extract",
+    "@gopdfjs/plugin-grayscale",
+    "@gopdfjs/plugin-inspect",
+    "@gopdfjs/plugin-redact",
+    "@gopdfjs/plugin-repair",
+    "@gopdfjs/plugin-shrink",
+    "@gopdfjs/plugin-struct",
+    "@gopdfjs/render",
+    "@gopdfjs/runtime",
+    "@gopdfjs/setup",
+    "@gopdfjs/site",
+    "@gopdfjs/wasm"
+  ]
+}
