@@ -18,7 +18,7 @@
     },
     "browserNode": {
       "title": "浏览器与 Node",
-      "description": "应用内用 createBrowserGopdf()，脚本内用 createNodeGopdf()，引擎 API 一致。"
+      "description": "createEngine(await createBrowserAdapter()) 或 createEngine(await createNodeAdapter()) — 同一 Gopdf API。"
     },
     "aiHelp": {
       "title": "AI 与代理",
@@ -27,6 +27,6 @@
   },
   "quickStart": {
     "title": "快速开始（浏览器）",
-    "description": "在 monorepo 中先构建 WASM，再在应用中引入 browser adapter。"
+    "description": "从 @gopdfjs/engine 调用 createEngine(adapter)，配合 adapter-browser 或 adapter-node。"
   }
 }

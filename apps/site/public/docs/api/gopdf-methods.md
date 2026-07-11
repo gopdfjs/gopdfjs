@@ -7,16 +7,17 @@ description: 'Complete engine.*() reference — browser and Node availability'
 
 # `Gopdf` method reference
 
-All methods live on the object returned by **`createBrowserGopdf()`** / **`createNodeGopdf()`**.  
+All methods live on **`Gopdf`** — returned by **`createEngine(adapter)`**.  
 Types: `@gopdfjs/engine`. Authority: `packages/adapter/src/gopdf.ts` + `createEngine.ts`.
 
 ## Boot
 
 ```ts
-import { createBrowserGopdf } from "@gopdfjs/adapter-browser";
-// Node: import { createNodeGopdf } from "@gopdfjs/adapter-node";
+import { createEngine } from "@gopdfjs/engine";
+import { createBrowserAdapter } from "@gopdfjs/adapter-browser";
+// Node: import { createNodeAdapter } from "@gopdfjs/adapter-node";
 
-const engine = await createBrowserGopdf();
+const engine = createEngine(await createBrowserAdapter());
 ```
 
 ## WASM / optimize

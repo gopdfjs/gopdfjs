@@ -2,41 +2,47 @@
 title: Engine API
 order: 1
 category: api
-description: 'createEngine and the Gopdf consumer surface'
+description: 'createEngine(adapter) — the only consumer entry; plugins wired inside'
 ---
 
 # @gopdfjs/engine
 
-**`createEngine(adapter)`** returns **`Gopdf`** — the only API product code should call.
+**`createEngine(adapter)`** returns **`Gopdf`**. That is the **only** consumer API.  
+Call tools as **`engine.compressPdf()`**, **`engine.mergePdfs()`**, etc.
 
 ## Architecture
 
 ```
-Consumer  →  engine.*()
-                 ↓
-              plugin-*  (compress, repair, extract, …)
-                 ↓
-              GopdfRuntime
-                 ↓
-              GopdfAdapter  (browser or node)
-                 ↓
-              @gopdfjs/wasm
+App
+  → createEngine(adapter)     @gopdfjs/engine
+       → engine.*()            Gopdf facade (what you call)
+            ↓ wires @gopdfjs/plugin-* (compress, repair, struct, …)
+            ↓ createGopdfRuntime(adapter)
+       → GopdfAdapter           createBrowserAdapter() / createNodeAdapter()
+            ↓ engine (WASM) · pdfjs · canvas · ocr?
+       → @gopdfjs/wasm
 ```
 
-## Boot (v1 public path)
+**Apps never import `@gopdfjs/plugin-*`.** Plugins are assembled inside `createEngine`.
+
+## Boot — canonical
 
 ```ts
-import { createBrowserGopdf } from "@gopdfjs/adapter-browser";
-// Node: import { createNodeGopdf } from "@gopdfjs/adapter-node";
+import { createEngine } from "@gopdfjs/engine";
+import { createBrowserAdapter } from "@gopdfjs/adapter-browser";
+// Node: import { createNodeAdapter } from "@gopdfjs/adapter-node";
 
-const engine = await createBrowserGopdf();
+const engine = createEngine(await createBrowserAdapter());
+await engine.compressPdf(pdfBytes, "recommended");
 ```
 
-`createEngine(adapter)` exists for monorepo internals. Custom `GopdfAdapter` is **not** a v1 public surface — do not import `@gopdfjs/adapter` from apps.
+| Package | Role |
+|---------|------|
+| `@gopdfjs/engine` | `createEngine(adapter)` → `Gopdf` + types |
+| `@gopdfjs/adapter-browser` | `createBrowserAdapter()` → host ports (WASM, pdf.js, canvas) |
+| `@gopdfjs/adapter-node` | `createNodeAdapter()` → host ports (+ OCR on Node) |
 
 ## Representative methods
-
-Methods are assembled from `plugin-*` packages. Examples:
 
 ```ts
 await engine.compressPdf(bytes, "recommended", onProgress);
@@ -45,16 +51,14 @@ await engine.pdfToText(bytes, { format: "txt" });
 await engine.analyzePdf(bytes);
 ```
 
-Exact signatures live in `@gopdfjs/engine` types.
-
-**Full reference:** [Gopdf methods](./gopdf-methods) · [AI help](../guide/ai-help)
+Exact signatures: `@gopdfjs/engine` types · [Gopdf methods](./gopdf-methods) · [AI help](../guide/ai-help)
 
 ## Import map
 
 | Need | Import from |
 |------|-------------|
-| `engine.compressPdf()` … types | `@gopdfjs/engine` |
-| Browser boot | `@gopdfjs/adapter-browser` |
-| Node boot | `@gopdfjs/adapter-node` |
+| `createEngine`, `Gopdf` types | `@gopdfjs/engine` |
+| `createBrowserAdapter` | `@gopdfjs/adapter-browser` |
+| `createNodeAdapter` | `@gopdfjs/adapter-node` |
 
 Do **not** import `@gopdfjs/adapter`, `@gopdfjs/plugin-*`, `@gopdfjs/runtime`, or `@gopdfjs/wasm` from application code.

@@ -285,7 +285,7 @@ export const SMOKE_ROUTE = {
   path: "/",
   label: "Engine smoke",
   icon: "engine" as ToolIcon,
-  description: "createBrowserGopdf probes",
+  description: "createEngine(await createBrowserAdapter()) probes",
 };
 
 export const TOOL_REGISTRY: readonly ToolDef[] = TOOL_IDS.map(buildTool);

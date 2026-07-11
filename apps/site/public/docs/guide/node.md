@@ -13,10 +13,11 @@ Node scripts use **`@gopdfjs/adapter-node`** with the same **`Gopdf`** API as th
 
 ```ts
 import { readFile, writeFile } from "node:fs/promises";
-import { createNodeGopdf } from "@gopdfjs/adapter-node";
+import { createEngine } from "@gopdfjs/engine";
+import { createNodeAdapter } from "@gopdfjs/adapter-node";
 
 const input = await readFile("input.pdf");
-const engine = await createNodeGopdf();
+const engine = createEngine(await createNodeAdapter());
 const output = await engine.compressPdf(input, "recommended");
 await writeFile("output.pdf", output);
 ```

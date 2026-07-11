@@ -1,6 +1,6 @@
 # GoPDF.js — engine + plugin PDF library
 
-**`@gopdfjs/engine`** is the **feature API** (`engine.compressPdf()` …). Apps boot via **`@gopdfjs/adapter-browser`** or **`@gopdfjs/adapter-node`** (`createBrowserGopdf()` / `createNodeGopdf()`).
+**`@gopdfjs/engine`** is the **feature API** (`engine.compressPdf()` …). Apps boot with **`createEngine(await createBrowserAdapter())`** or **`createEngine(await createNodeAdapter())`**.
 
 ## Four roles
 
@@ -18,7 +18,7 @@ Consumer  →  engine.*()           (@gopdfjs/engine — public API)
 |------|---------|-------------|
 | **Engine** | `@gopdfjs/engine` | Apps, demo, CLI — `createEngine(adapter)` → `Gopdf` |
 | **Runtime** | `@gopdfjs/runtime` | `plugin-*` only — capability API from engine |
-| **Adapters (public boot)** | `adapter-browser` / `adapter-node` | Apps — `createBrowserGopdf()` / `createNodeGopdf()` |
+| **Adapters (host boot)** | `adapter-browser` / `adapter-node` | Apps — `createBrowserAdapter()` / `createNodeAdapter()` |
 | **Adapter contracts** | `@gopdfjs/adapter` | Internal — engine + adapters only (not v1 app import) |
 | **Plugin** | `@gopdfjs/plugin-*` | Engine only — feature logic; consumer API assembled here |
 
@@ -31,7 +31,7 @@ Design: `.spec/rfc/completed/0058-engine-plugin-charter.md` · WASM: `.spec/rfc/
 | Layer | Package | Role |
 |-------|---------|------|
 | **Consumer API** | `@gopdfjs/engine` | `Gopdf` methods + types |
-| **Public boot** | `@gopdfjs/adapter-browser` · `@gopdfjs/adapter-node` | `createBrowserGopdf()` / `createNodeGopdf()` |
+| **Host boot** | `@gopdfjs/adapter-browser` · `@gopdfjs/adapter-node` | `createBrowserAdapter()` / `createNodeAdapter()` |
 | **Internal** | `@gopdfjs/adapter` | Port types — not v1 app import |
 | **Shared model** | `@gopdfjs/model` | `PdfDocument`, `CanvasSurface` |
 | **Runtime contracts** | `@gopdfjs/runtime` | `GopdfRuntime` — plugins only |
@@ -42,10 +42,11 @@ Design: `.spec/rfc/completed/0058-engine-plugin-charter.md` · WASM: `.spec/rfc/
 ### Public API (consumer)
 
 ```ts
-import { createBrowserGopdf } from "@gopdfjs/adapter-browser";
-// or: import { createNodeGopdf } from "@gopdfjs/adapter-node";
+import { createEngine } from "@gopdfjs/engine";
+import { createBrowserAdapter } from "@gopdfjs/adapter-browser";
+// Node: import { createNodeAdapter } from "@gopdfjs/adapter-node";
 
-const engine = await createBrowserGopdf();
+const engine = createEngine(await createBrowserAdapter());
 const out = await engine.compressPdf(inputBytes, "recommended", (p) => {
   console.log("progress", p);
 });
@@ -60,9 +61,10 @@ In this monorepo, depend on **`@gopdfjs/adapter-browser`** or **`@gopdfjs/adapte
 Browser (Vite/React or any bundler with Worker + WASM support):
 
 ```ts
-import { createBrowserGopdf } from "@gopdfjs/adapter-browser";
+import { createEngine } from "@gopdfjs/engine";
+import { createBrowserAdapter } from "@gopdfjs/adapter-browser";
 
-const engine = await createBrowserGopdf();
+const engine = createEngine(await createBrowserAdapter());
 await engine.analyzePdf(pdfBytes);
 await engine.compressPdf(pdfBytes, "recommended");
 ```
@@ -70,9 +72,10 @@ await engine.compressPdf(pdfBytes, "recommended");
 Node:
 
 ```ts
-import { createNodeGopdf } from "@gopdfjs/adapter-node";
+import { createEngine } from "@gopdfjs/engine";
+import { createNodeAdapter } from "@gopdfjs/adapter-node";
 
-const engine = await createNodeGopdf();
+const engine = createEngine(await createNodeAdapter());
 await engine.pdfToText(pdfBytes, { format: "txt" });
 ```
 

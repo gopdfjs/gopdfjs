@@ -1,9 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { createNodeAdapter, createNodeGopdf, createNodeRuntime } from "../index";
+import { createNodeAdapter, createNodeRuntime } from "../index";
 
 describe("@gopdfjs/adapter-node public exports", () => {
-  it("exports only consumer + host adapter entrypoints", () => {
-    expect(typeof createNodeGopdf).toBe("function");
+  it("exports only host adapter entrypoints", () => {
     expect(typeof createNodeAdapter).toBe("function");
     expect(typeof createNodeRuntime).toBe("function");
   });

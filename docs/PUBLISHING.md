@@ -8,8 +8,10 @@ CLI + MCP → **[`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli)** (separate 
 **All product features via `engine.*()` on `Gopdf`.** Apps **never** import `@gopdfjs/plugin-*`, `@gopdfjs/runtime`, `@gopdfjs/wasm`, etc.
 
 ```ts
-import { createBrowserGopdf } from "@gopdfjs/adapter-browser";
-const engine = await createBrowserGopdf();
+import { createEngine } from "@gopdfjs/engine";
+import { createBrowserAdapter } from "@gopdfjs/adapter-browser";
+
+const engine = createEngine(await createBrowserAdapter());
 await engine.compressPdf(bytes, "recommended");
 ```
 
@@ -17,9 +19,9 @@ await engine.compressPdf(bytes, "recommended");
 
 | Package | Apps import |
 |---------|-------------|
-| `@gopdfjs/engine` | `Gopdf` types + `engine.*()` |
-| `@gopdfjs/adapter-browser` | `createBrowserGopdf()` |
-| `@gopdfjs/adapter-node` | `createNodeGopdf()` |
+| `@gopdfjs/engine` | `createEngine(adapter)` + `Gopdf` types |
+| `@gopdfjs/adapter-browser` | `createBrowserAdapter()` |
+| `@gopdfjs/adapter-node` | `createNodeAdapter()` |
 
 **Not v1 public:** `@gopdfjs/adapter` (custom adapter story not ready).
 

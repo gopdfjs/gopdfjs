@@ -10,7 +10,7 @@
     "adapters": {
       "name": "Adapters",
       "description": "adapter-browser and adapter-node wire WASM, Workers, and host I/O into a GopdfAdapter.",
-      "import": "import { createBrowserGopdf } from \"@gopdfjs/adapter-browser\""
+      "import": "import { createBrowserAdapter } from \"@gopdfjs/adapter-browser\""
     },
     "plugins": {
       "name": "@gopdfjs/plugin-*",

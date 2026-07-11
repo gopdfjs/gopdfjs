@@ -18,7 +18,7 @@
     },
     "browserNode": {
       "title": "Browser and Node",
-      "description": "Use createBrowserGopdf() in apps or createNodeGopdf() in scripts with the same engine API."
+      "description": "createEngine(await createBrowserAdapter()) or createEngine(await createNodeAdapter()) — same Gopdf API."
     },
     "aiHelp": {
       "title": "AI & agents",
@@ -27,6 +27,6 @@
   },
   "quickStart": {
     "title": "Quick start (browser)",
-    "description": "Build WASM once in the monorepo, then import the browser adapter in your app."
+    "description": "createEngine(adapter) from @gopdfjs/engine + adapter-browser or adapter-node."
   }
 }

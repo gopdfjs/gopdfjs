@@ -254,7 +254,7 @@ export function ToolDemoPanel(props: ToolDemoPanelProps) {
         <h1>{props.label}</h1>
         <p>
           Browser acceptance for <code>{props.engineMethod}()</code> via{" "}
-          <code>createBrowserGopdf()</code>.
+          <code>createEngine(await createBrowserAdapter())</code>.
         </p>
         <p className="muted">{props.description}</p>
       </header>

@@ -44,7 +44,7 @@
 | 契约 npm | **`@gopdfjs/adapter`** — adapter ports · **`@gopdfjs/runtime`** — `GopdfRuntime` · **`@gopdfjs/plugin`** — domain 类型 |
 | Browser adapter | **`@gopdfjs/adapter-browser`** — browser env：`GopdfEngine`（wasm-pack `web` → `pkg/`）+ pdf.js + canvas |
 | Node adapter | **`@gopdfjs/adapter-node`** — Node env：`GopdfEngine`（wasm-pack `nodejs` → `pkg/`）+ pdf.js + canvas + OCR |
-| Node CLI | **separate `gopdf-cli` repo** — 薄包装 `createNodeGopdf()`；不在本 monorepo |
+| Node CLI | **separate `gopdf-cli` repo** — `createEngine(await createNodeAdapter())` via `getEngine()`；不在本 monorepo |
 | Rust / WASM | `crates/gopdf-*` → **`@gopdfjs/wasm`**（`rust/` bindgen + `pkg/`） | 算法 workspace；WASM 单一 npm 包；adapter 负责 load |
 
 ### 2.1 Monorepo layout
@@ -68,8 +68,8 @@
 
 | 消费方式 | 入口 | 浏览器 |
 |----------|------|--------|
-| **Browser app** | `createBrowserGopdf()` 或 `createEngine(await createBrowserAdapter())` | 要 |
-| **Node script** | `createNodeGopdf()` 或 `createEngine(await createNodeAdapter())` | 不要 |
+| **Browser app** | `createEngine(await createBrowserAdapter())` | 要 |
+| **Node script** | `createEngine(await createNodeAdapter())` | 不要 |
 | **Terminal** | **`gopdf-cli <cmd>`**（独立仓） | 不要 |
 | **AI agent (MCP)** | **`gopdf-cli`** — `gopdf mcp`（stdio server）+ `gopdf install cursor|claude|…`（agent config）；tool 面 = §2.6 方法表 | 不要 |
 | **Product (ilovepdf)** | `import` from `@gopdfjs/engine` + adapter | 按路由 |
@@ -138,7 +138,7 @@ flowchart TD
 - `plugin-*` import `@gopdfjs/engine` 或 `@gopdfjs/adapter-*`
 - plugin 签名收 `GopdfAdapter` — 只能收 `GopdfRuntime`
 - adapter 依赖 runtime（adapter 不知 runtime；runtime 契约在 `@gopdfjs/runtime`，构造在 engine）
-- demo 暴露底层库名；UI 只写 `engine.*()` / `createBrowserGopdf()`
+- demo 暴露底层库名；UI 只写 `engine.*()` / `createEngine(await createBrowserAdapter())`
 - consumer 访问 `engine.adapter` 或 `engine.loadDocument()` / `engine.encodeImages()` — adapter 与 WASM primitives 不暴露在 `Gopdf` 上
 
 ### 2.3.3 Adapter vs Runtime
@@ -213,9 +213,10 @@ Factories 均为 **`async`**（`CreateGopdfAdapter`），即使 Node WASM 内部
 #### Browser
 
 ```ts
-import { createBrowserGopdf } from "@gopdfjs/adapter-browser";
+import { createEngine } from "@gopdfjs/engine";
+import { createBrowserAdapter } from "@gopdfjs/adapter-browser";
 
-const engine = await createBrowserGopdf();
+const engine = createEngine(await createBrowserAdapter());
 const bytes = new Uint8Array(await file.arrayBuffer());
 
 const out = await engine.compressPdf(bytes, "recommended");
@@ -227,10 +228,11 @@ const pdf = await engine.htmlToPdf("<h1>Hi</h1>");
 #### Node
 
 ```ts
-import { createNodeGopdf } from "@gopdfjs/adapter-node";
+import { createEngine } from "@gopdfjs/engine";
+import { createNodeAdapter } from "@gopdfjs/adapter-node";
 import fs from "node:fs";
 
-const engine = await createNodeGopdf();
+const engine = createEngine(await createNodeAdapter());
 const bytes = new Uint8Array(fs.readFileSync("in.pdf"));
 
 const text = await engine.ocr(bytes, "eng");

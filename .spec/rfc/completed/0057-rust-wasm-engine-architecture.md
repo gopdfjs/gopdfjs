@@ -225,9 +225,10 @@ await init({ module_or_path: fs.readFileSync(wasmPath) });
 ### 5.5 消费者示例（唯一正确路径）
 
 ```ts
-import { createBrowserGopdf } from "@gopdfjs/adapter-browser";
+import { createEngine } from "@gopdfjs/engine";
+import { createBrowserAdapter } from "@gopdfjs/adapter-browser";
 
-const engine = await createBrowserGopdf();
+const engine = createEngine(await createBrowserAdapter());
 const bytes = new Uint8Array(await file.arrayBuffer());
 
 const out = await engine.compressPdf(bytes, "recommended", (f) => {
@@ -238,9 +239,10 @@ const out = await engine.compressPdf(bytes, "recommended", (f) => {
 ```
 
 ```ts
-import { createNodeGopdf } from "@gopdfjs/adapter-node";
+import { createEngine } from "@gopdfjs/engine";
+import { createNodeAdapter } from "@gopdfjs/adapter-node";
 
-const engine = await createNodeGopdf();
+const engine = createEngine(await createNodeAdapter());
 const out = await engine.linearizePdf(bytes);
 ```
 
@@ -302,7 +304,7 @@ pnpm test:e2e
 
 ### 8.4 Node integration（发布前 P0）
 
-`packages/engine/src/__tests__/integrationBytesChain.test.ts` 模式扩展到 **每个** `Gopdf` 方法（`createNodeGopdf` + fixture）。
+`packages/adapter-node/src/__tests__/integrationBytesChain.test.ts` 模式扩展到 **每个** `Gopdf` 方法（`createEngine(await createNodeAdapter())` + fixture）。
 
 ## 9. Success criteria (architecture — closed)
 

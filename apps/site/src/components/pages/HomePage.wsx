@@ -6,9 +6,10 @@ import '@wsxjs/wsx-base-components';
 import styles from './HomePage.css?inline';
 import '../../components/common/Icon.wsx';
 
-const QUICK_START_CODE = `import { createBrowserGopdf } from "@gopdfjs/adapter-browser";
+const QUICK_START_CODE = `import { createEngine } from "@gopdfjs/engine";
+import { createBrowserAdapter } from "@gopdfjs/adapter-browser";
 
-const engine = await createBrowserGopdf();
+const engine = createEngine(await createBrowserAdapter());
 const out = await engine.compressPdf(pdfBytes, "recommended", (p) => {
   console.log("progress", p);
 });`;

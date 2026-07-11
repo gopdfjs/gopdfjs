@@ -12,10 +12,11 @@ Browser apps use **`@gopdfjs/adapter-browser`**, which loads WASM in a Worker an
 ## Minimal example
 
 ```ts
-import { createBrowserGopdf } from "@gopdfjs/adapter-browser";
+import { createEngine } from "@gopdfjs/engine";
+import { createBrowserAdapter } from "@gopdfjs/adapter-browser";
 
 export async function compress(pdfBytes: Uint8Array) {
-  const engine = await createBrowserGopdf();
+  const engine = createEngine(await createBrowserAdapter());
   return engine.compressPdf(pdfBytes, "recommended", (progress) => {
     console.log("progress", progress);
   });
@@ -28,16 +29,15 @@ export async function compress(pdfBytes: Uint8Array) {
 - **WASM asset** handling — the adapter ships wasm-pack output; run `pnpm build:wasm` in the monorepo before dev
 - **Worker** bundling — see RFC 0057 (WASM Worker architecture)
 
-## Custom adapter + engine
+## Adapter + engine (canonical boot)
 
-When you need full control over ports:
+Every browser app follows this pattern — adapter supplies WASM/pdf.js/canvas ports; engine wires plugins:
 
 ```ts
-import { createBrowserAdapter } from "@gopdfjs/adapter-browser";
 import { createEngine } from "@gopdfjs/engine";
+import { createBrowserAdapter } from "@gopdfjs/adapter-browser";
 
-const adapter = await createBrowserAdapter(/* options */);
-const engine = createEngine(adapter);
+const engine = createEngine(await createBrowserAdapter());
 await engine.analyzePdf(bytes);
 ```
 

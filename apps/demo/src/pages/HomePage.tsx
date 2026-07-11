@@ -126,7 +126,7 @@ export default function HomePage() {
         <div className="page-hero-eyebrow">Acceptance</div>
         <h1>Engine smoke</h1>
         <p>
-          Validates <code>createBrowserGopdf()</code> — adapter wiring, consumer{" "}
+          Validates <code>createEngine(await createBrowserAdapter())</code> — adapter wiring, consumer{" "}
           <code>engine.*</code> probes, and WASM passthrough before per-tool Playwright specs.
         </p>
       </header>

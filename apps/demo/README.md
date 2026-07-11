@@ -4,7 +4,7 @@ Browser acceptance host for Playwright e2e (`pnpm test:e2e`).
 
 | Route | Purpose |
 |-------|---------|
-| `/` | Engine smoke — `createBrowserGopdf`, chained `engine.*()` bytes pressure |
+| `/` | Engine smoke — `createEngine` + adapter, chained `engine.*()` bytes pressure |
 | `/tools/compress` | RFC 0008 compress (dedicated UI) |
 | `/tools/<slug>` | One page per engine tool (**32** generic surfaces — `src/config/toolIds.ts`) |
 

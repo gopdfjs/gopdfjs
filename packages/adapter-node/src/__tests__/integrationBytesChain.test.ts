@@ -2,14 +2,15 @@ import fs from "node:fs";
 import { describe, expect, it } from "vitest";
 import { PDF_FIXTURES } from "@gopdfjs/fixtures";
 import { assertPdfBytesReadable } from "@gopdfjs/adapter/bytes";
-import { createNodeGopdf } from "../index";
+import { createEngine } from "@gopdfjs/engine";
+import { createNodeAdapter } from "../index";
 
 const CHAIN_TIMEOUT_MS = 120_000;
 
 describe("integration — same host buffer chain (adapter-node + WASM)", () => {
   it("analyzePdf → grayscale → compress → linearize", async () => {
     const host = new Uint8Array(fs.readFileSync(PDF_FIXTURES.BMAUPIN_BASIC));
-    const engine = await createNodeGopdf();
+    const engine = createEngine(await createNodeAdapter());
 
     const analysis = await engine.analyzePdf(host);
     expect(analysis.pages).toBeGreaterThan(0);
