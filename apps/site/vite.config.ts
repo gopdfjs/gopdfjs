@@ -64,6 +64,7 @@ export default defineConfig({
   base: SITE_BASE,
 
   define: {
+    __GOPDF_SITE_BASE__: JSON.stringify(SITE_BASE),
     __GOPDF_LOCALE_LOAD_PATH__: JSON.stringify(`${SITE_BASE}locales/{{lng}}/{{ns}}.json`),
   },
 
