@@ -1,6 +1,6 @@
 {
   "name": "@gopdfjs/engine",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Consumer PDF API — createEngine(adapter) builds runtime from adapter, wires plugin-* into Gopdf.",
   "type": "module",
   "main": "./dist/index.js",
@@ -34,7 +34,6 @@
   },
   "devDependencies": {
     "@gopdfjs/adapter": "workspace:*",
-    "@gopdfjs/adapter-node": "workspace:*",
     "@gopdfjs/model": "workspace:*",
     "@gopdfjs/plugin": "workspace:*",
     "@gopdfjs/plugin-annotate": "workspace:*",

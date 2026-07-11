@@ -278,9 +278,6 @@ importers:
       '@gopdfjs/adapter':
         specifier: workspace:*
         version: link:../adapter
-      '@gopdfjs/adapter-node':
-        specifier: workspace:*
-        version: link:../adapter-node
       '@gopdfjs/fixtures':
         specifier: workspace:*
         version: link:../fixtures

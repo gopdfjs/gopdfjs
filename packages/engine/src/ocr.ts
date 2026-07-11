@@ -12,7 +12,7 @@ export async function ocrPdf(
   onProgress?: (fraction: number) => void,
 ): Promise<string> {
   if (!adapter.ocr) {
-    throw new Error("OCR requires adapter.ocr — use @gopdfjs/adapter-node");
+    throw new Error("OCR requires adapter.ocr on the host adapter");
   }
 
   const pdf = await adapter.pdfjs.loadDocument(bytes);

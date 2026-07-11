@@ -2,7 +2,7 @@ import fs from "node:fs";
 import { describe, expect, it } from "vitest";
 import { PDF_FIXTURES } from "@gopdfjs/fixtures";
 import { assertPdfBytesReadable } from "@gopdfjs/adapter/bytes";
-import { createNodeGopdf } from "@gopdfjs/adapter-node";
+import { createNodeGopdf } from "../index";
 
 const CHAIN_TIMEOUT_MS = 120_000;
 

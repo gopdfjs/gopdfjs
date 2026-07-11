@@ -40,7 +40,7 @@ function mockAdapter(numPages: number, withOcr = true): GopdfAdapter {
 
 describe("ocrPdf", () => {
   it("throws when adapter.ocr is missing", async () => {
-    await expect(ocrPdf(mockAdapter(1, false), new Uint8Array())).rejects.toThrow(/adapter-node/);
+    await expect(ocrPdf(mockAdapter(1, false), new Uint8Array())).rejects.toThrow(/adapter\.ocr/);
   });
 
   it("OCRs each page and joins text", async () => {
