@@ -21,8 +21,8 @@ importers:
         specifier: ^0.1.0
         version: 0.1.0(@types/react@19.2.14)
       '@systembug/qingniao':
-        specifier: ^0.0.13
-        version: 0.0.13(@changesets/cli@2.31.0(@types/node@25.5.0))(@types/node@25.5.0)(typescript@5.9.3)
+        specifier: ^0.1.0
+        version: 0.1.0(@changesets/cli@2.31.0(@types/node@25.5.0))(@types/node@25.5.0)(@types/react@19.2.14)(typescript@5.9.3)
       husky:
         specifier: ^9.1.7
         version: 9.1.7
@@ -2220,8 +2220,8 @@ packages:
     resolution: {integrity: sha512-u+MR5NjtXwHG8s+LEN7x+QQ+ssYSMo06v2CS6GQMK6RPLAEPGm9xBmLv+EhDcyMnrcNy21ajNYHk44zC772yeQ==}
     hasBin: true
 
-  '@systembug/qingniao@0.0.13':
-    resolution: {integrity: sha512-s6zyov+maYwMheYldANbu6G4XeksZjht2C+ekfY6tRYCMV/sCmI6YRlGUscO0Ajz8zqYJEmmMJSVGD8zijUQ3w==}
+  '@systembug/qingniao@0.1.0':
+    resolution: {integrity: sha512-zTyuPUHY1rVWQ598eJ14qToLoiBfJDyU/g5C8/l61o15CjgR4bHh7iLXwNYQ13egTV7J6SWI2ezI1nJbZRK+rg==}
     engines: {node: '>=16.0.0'}
     hasBin: true
     peerDependencies:
@@ -6444,18 +6444,26 @@ snapshots:
       - react-devtools-core
       - utf-8-validate
 
-  '@systembug/qingniao@0.0.13(@changesets/cli@2.31.0(@types/node@25.5.0))(@types/node@25.5.0)(typescript@5.9.3)':
+  '@systembug/qingniao@0.1.0(@changesets/cli@2.31.0(@types/node@25.5.0))(@types/node@25.5.0)(@types/react@19.2.14)(typescript@5.9.3)':
     dependencies:
       '@changesets/cli': 2.31.0(@types/node@25.5.0)
+      '@inkjs/ui': 2.0.0(ink@7.1.0(@types/react@19.2.14)(react@19.2.4))
       '@systembug/diting': 0.0.13
+      '@systembug/tongyu': 0.1.0
       chalk: 4.1.2
       commander: 9.5.0
+      ink: 7.1.0(@types/react@19.2.14)(react@19.2.4)
       inquirer: 13.4.3(@types/node@25.5.0)
       listr2: 8.3.3
       ora: 9.4.1
+      react: 19.2.4
       typescript: 5.9.3
     transitivePeerDependencies:
       - '@types/node'
+      - '@types/react'
+      - bufferutil
+      - react-devtools-core
+      - utf-8-validate
 
   '@systembug/tongyu@0.1.0':
     dependencies:
