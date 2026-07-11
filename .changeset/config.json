@@ -12,7 +12,6 @@
   "ignore": [
     "@gopdfjs/adapter",
     "@gopdfjs/demo-react",
-    "@gopdfjs/files",
     "@gopdfjs/fixtures",
     "@gopdfjs/model",
     "@gopdfjs/plugin",
@@ -26,9 +25,7 @@
     "@gopdfjs/plugin-repair",
     "@gopdfjs/plugin-shrink",
     "@gopdfjs/plugin-struct",
-    "@gopdfjs/render",
     "@gopdfjs/runtime",
-    "@gopdfjs/setup",
     "@gopdfjs/site",
     "@gopdfjs/wasm"
   ]
