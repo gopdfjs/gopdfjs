@@ -1,7 +1,8 @@
 import type { CompressionLevel } from "@gopdfjs/engine";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { downloadPdfBytes } from "../../lib/downloadBlob";
 import { getBrowserEngine } from "../../lib/engine";
+import { createPdfPreviewUrl, revokePreviewUrl } from "../../lib/pdfBlobPreview";
 import {
   buildCompressionStats,
   compressedPdfFilename,
@@ -22,6 +23,8 @@ export type CompressToolState = {
   progress: number;
   error: string | null;
   stats: CompressionStats | null;
+  beforePreviewUrl: string | null;
+  afterPreviewUrl: string | null;
   canCompress: boolean;
 };
 
@@ -41,21 +44,50 @@ export function useCompressTool(): CompressToolState & CompressToolActions {
   const [error, setError] = useState<string | null>(null);
   const [stats, setStats] = useState<CompressionStats | null>(null);
   const [outputBytes, setOutputBytes] = useState<Uint8Array | null>(null);
+  const [beforePreviewUrl, setBeforePreviewUrl] = useState<string | null>(null);
+  const [afterPreviewUrl, setAfterPreviewUrl] = useState<string | null>(null);
+  const beforePreviewUrlRef = useRef<string | null>(null);
+  const afterPreviewUrlRef = useRef<string | null>(null);
+
+  const replaceBeforePreview = useCallback((bytes: Uint8Array | null) => {
+    revokePreviewUrl(beforePreviewUrlRef.current);
+    const next = bytes ? createPdfPreviewUrl(bytes) : null;
+    beforePreviewUrlRef.current = next;
+    setBeforePreviewUrl(next);
+  }, []);
+
+  const replaceAfterPreview = useCallback((bytes: Uint8Array | null) => {
+    revokePreviewUrl(afterPreviewUrlRef.current);
+    const next = bytes ? createPdfPreviewUrl(bytes) : null;
+    afterPreviewUrlRef.current = next;
+    setAfterPreviewUrl(next);
+  }, []);
+
+  useEffect(
+    () => () => {
+      revokePreviewUrl(beforePreviewUrlRef.current);
+      revokePreviewUrl(afterPreviewUrlRef.current);
+    },
+    [],
+  );
 
   const onPickFile = useCallback(async (file: File | null) => {
     setError(null);
     setStats(null);
     setOutputBytes(null);
     setProgress(0);
+    replaceAfterPreview(null);
     if (!file) {
       setFileName(null);
       setInputBytes(null);
+      replaceBeforePreview(null);
       return;
     }
     const buf = new Uint8Array(await file.arrayBuffer());
     setFileName(file.name);
     setInputBytes(buf);
-  }, []);
+    replaceBeforePreview(buf);
+  }, [replaceAfterPreview, replaceBeforePreview]);
 
   const onCompress = useCallback(async () => {
     if (!inputBytes) {
@@ -71,13 +103,14 @@ export function useCompressTool(): CompressToolState & CompressToolActions {
       });
       setOutputBytes(output);
       setStats(buildCompressionStats(inputBytes.byteLength, output.byteLength));
+      replaceAfterPreview(output);
     } catch (e) {
       const raw = e instanceof Error ? e.message : String(e);
       setError(formatCompressError(raw));
     } finally {
       setBusy(false);
     }
-  }, [inputBytes, level]);
+  }, [inputBytes, level, replaceAfterPreview]);
 
   const onDownload = useCallback(() => {
     if (!outputBytes) {
@@ -93,6 +126,8 @@ export function useCompressTool(): CompressToolState & CompressToolActions {
     progress,
     error,
     stats,
+    beforePreviewUrl,
+    afterPreviewUrl,
     canCompress: inputBytes != null && !busy,
     onPickFile,
     onLevelChange: setLevel,

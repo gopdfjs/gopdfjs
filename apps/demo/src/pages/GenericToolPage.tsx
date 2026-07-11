@@ -1,8 +1,8 @@
 import { Navigate, useParams } from "react-router-dom";
+import { ToolDemoPanel } from "../components/ToolDemoPanel";
 import { findToolById } from "../config/tools";
 import { isToolId } from "../config/toolIds";
-import { GenericToolPanel } from "../components/GenericToolPanel";
-import { useGenericTool } from "../hooks/useGenericTool";
+import { useToolDemo } from "../hooks/useToolDemo";
 
 export default function GenericToolPage() {
   const { toolId } = useParams<{ toolId: string }>();
@@ -15,6 +15,6 @@ export default function GenericToolPage() {
     return <Navigate to="/" replace />;
   }
 
-  const state = useGenericTool(tool);
-  return <GenericToolPanel {...tool} {...state} />;
+  const state = useToolDemo(tool);
+  return <ToolDemoPanel {...tool} {...state} />;
 }

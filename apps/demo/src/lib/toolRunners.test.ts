@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import type { Gopdf } from "@gopdfjs/engine";
-import { runBrowserTool, runAuthorTool, toolInputKind } from "./toolRunners";
+import { runToolDemo, toolInputKind } from "./toolRunners";
 
 function mockEngine(): Gopdf {
   const bytes = new Uint8Array([37, 80, 68, 70]);
@@ -83,6 +83,9 @@ function mockEngine(): Gopdf {
     pdfToEpub: async () => new Blob(),
     htmlToPdf: async () => ({ bytes, pageCount: 1, truncated: false }),
     markdownToHtml: async () => "<p>ok</p>",
+    comparePdfText: async () => ({ equal: true, diff: "" }),
+    createCompareSession: async () => ({}) as never,
+    visualDiffCanvases: async () => ({}) as never,
   };
 }
 
@@ -91,15 +94,25 @@ describe("toolRunners", () => {
     const engine = mockEngine();
     const input = new Uint8Array([1, 2, 3]);
     const linearize = vi.spyOn(engine, "linearizePdf");
-    await runBrowserTool(engine, "linearize", input);
+    await runToolDemo(engine, "linearize", { pdfBytes: input });
     expect(linearize).toHaveBeenCalledWith(input);
   });
 
   it("runs author html tool", async () => {
     const engine = mockEngine();
     const htmlToPdf = vi.spyOn(engine, "htmlToPdf");
-    await runAuthorTool(engine, "html-to-pdf", "<p>x</p>");
+    await runToolDemo(engine, "html-to-pdf", { textSource: "<p>x</p>" });
     expect(htmlToPdf).toHaveBeenCalled();
+  });
+
+  it("uses uploaded images for jpg-to-pdf", async () => {
+    const engine = mockEngine();
+    const jpgToPdf = vi.spyOn(engine, "jpgToPdf");
+    const imageBytes = new Uint8Array([255, 216, 255]);
+    await runToolDemo(engine, "jpg-to-pdf", {
+      images: [{ bytes: imageBytes, mimeType: "image/jpeg", name: "a.jpg" }],
+    });
+    expect(jpgToPdf).toHaveBeenCalledWith([{ bytes: imageBytes, mimeType: "image/jpeg" }]);
   });
 
   it("classifies input kinds", () => {

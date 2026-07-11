@@ -6,6 +6,8 @@ const PDF_ACCEPT = "application/pdf" as const;
 type FileDropzoneProps = {
   accept?: string;
   fileName: string | null;
+  emptyTitle?: string;
+  loadedTitle?: string;
   hint?: string;
   onPick: (file: File | null) => void;
 };
@@ -13,6 +15,8 @@ type FileDropzoneProps = {
 export function FileDropzone({
   accept = PDF_ACCEPT,
   fileName,
+  emptyTitle = "Upload PDF",
+  loadedTitle = "PDF loaded",
   hint = "Drop a PDF here or click to browse",
   onPick,
 }: FileDropzoneProps) {
@@ -62,7 +66,7 @@ export function FileDropzone({
         <Icon name={fileName ? "file" : "upload"} size={22} />
       </div>
       <div id={`${inputId}-title`} className="dropzone-title">
-        {fileName ? "PDF loaded" : "Upload PDF"}
+        {fileName ? loadedTitle : emptyTitle}
       </div>
       <div className="dropzone-hint">{hint}</div>
       {fileName ? (

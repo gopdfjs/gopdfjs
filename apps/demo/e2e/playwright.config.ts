@@ -1,5 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
-import { GOPDF_PORTS } from "../ports";
+import { GOPDF_PORTS } from "../../ports";
 
 const DEMO_PORT = GOPDF_PORTS.demoE2e;
 const BASE_URL = `http://127.0.0.1:${DEMO_PORT}`;

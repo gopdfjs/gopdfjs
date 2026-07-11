@@ -1,12 +1,14 @@
+import type { DemoKind } from "./demoKind";
+import { demoKindFor } from "./demoKind";
 import type { ToolIcon } from "../components/icons";
 import { TOOL_IDS, type ToolId } from "./toolIds";
-import { toolInputKind } from "../lib/toolRunners";
 
 export type ToolDef = {
   id: ToolId;
   path: string;
   label: string;
   icon: ToolIcon;
+  demoKind: DemoKind;
   rfc?: string;
   description: string;
   engineMethod: string;
@@ -17,7 +19,7 @@ export type ToolDef = {
 
 const META: Record<
   Exclude<ToolId, "compress">,
-  Omit<ToolDef, "id" | "path" | "icon"> & { icon?: ToolIcon }
+  Omit<ToolDef, "id" | "path" | "icon" | "demoKind"> & { icon?: ToolIcon }
 > = {
   grayscale: {
     label: "Grayscale",
@@ -261,6 +263,7 @@ function buildTool(id: ToolId): ToolDef {
       path: "/tools/compress",
       label: "Compress PDF",
       icon: "compress",
+      demoKind: "pdf-transform",
       rfc: "RFC 0008",
       description: "engine.compressPdf",
       engineMethod: "compressPdf",
@@ -273,6 +276,7 @@ function buildTool(id: ToolId): ToolDef {
     path: `/tools/${id}`,
     icon: meta.icon ?? "tool",
     ...meta,
+    demoKind: demoKindFor(id),
   };
 }
 
@@ -314,7 +318,7 @@ export function assertToolCoverage(): void {
     }
   }
   for (const tool of GENERIC_TOOL_ROUTES) {
-    toolInputKind(tool.id);
+    demoKindFor(tool.id);
   }
 }
 

@@ -1,6 +1,7 @@
 import type { CompressionLevel } from "@gopdfjs/engine";
 import { FileDropzone } from "../../components/FileDropzone";
 import { Icon } from "../../components/Icon";
+import { PdfComparePreview } from "../../components/PdfComparePreview";
 import { formatBytes } from "../../lib/formatBytes";
 import {
   COMPRESS_LEVELS,
@@ -15,6 +16,8 @@ type CompressToolPanelProps = {
   progress: number;
   error: string | null;
   stats: CompressionStats | null;
+  beforePreviewUrl: string | null;
+  afterPreviewUrl: string | null;
   canCompress: boolean;
   onPickFile: (file: File | null) => void;
   onLevelChange: (level: CompressionLevel) => void;
@@ -29,6 +32,8 @@ export function CompressToolPanel({
   progress,
   error,
   stats,
+  beforePreviewUrl,
+  afterPreviewUrl,
   canCompress,
   onPickFile,
   onLevelChange,
@@ -108,6 +113,8 @@ export function CompressToolPanel({
             </div>
           </div>
           <div className="card-body">
+            <PdfComparePreview beforeUrl={beforePreviewUrl} afterUrl={afterPreviewUrl} />
+
             {stats ? (
               <>
                 <div className="result-banner">
@@ -146,7 +153,7 @@ export function CompressToolPanel({
                 <div className="empty-state-icon">
                   <Icon name="compress" size={18} />
                 </div>
-                Run compress to see before/after stats
+                Run compress to see before/after stats and previews
               </div>
             )}
           </div>
