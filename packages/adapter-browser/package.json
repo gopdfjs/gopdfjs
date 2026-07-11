@@ -16,16 +16,17 @@
     "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
-    "@gopdfjs/adapter": "workspace:*",
     "@gopdfjs/engine": "workspace:*",
-    "@gopdfjs/model": "workspace:*",
-    "@gopdfjs/wasm": "workspace:*",
     "pdfjs-dist": "^5.4.296"
   },
   "devDependencies": {
+    "@gopdfjs/adapter": "workspace:*",
+    "@gopdfjs/model": "workspace:*",
+    "@gopdfjs/wasm": "workspace:*",
+    "rollup": "^4.52.4",
+    "rollup-plugin-dts": "^6.2.3",
     "typescript": "^5.0.0",
     "vite": "^7.2.0",
-    "vite-plugin-dts": "^4.5.4",
     "vitest": "^3.0.0"
   },
   "license": "MIT",

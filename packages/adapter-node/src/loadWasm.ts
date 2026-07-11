@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import init, {
@@ -10,8 +10,10 @@ import init, {
 
 let initialized = false;
 
-/** Resolve shared `.wasm` from `@gopdfjs/wasm` exports (Vitest lacks `import.meta.resolve`). */
+/** Published dist: `./gopdf_wasm_bg.wasm` beside bundle. Monorepo dev: `@gopdfjs/wasm` pkg. */
 function resolveWasmPath(): string {
+  const vendored = fileURLToPath(new URL("./gopdf_wasm_bg.wasm", import.meta.url));
+  if (existsSync(vendored)) return vendored;
   if (typeof import.meta.resolve === "function") {
     return fileURLToPath(import.meta.resolve("@gopdfjs/wasm/gopdf_wasm_bg.wasm"));
   }

@@ -1,8 +1,8 @@
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
-import dts from "vite-plugin-dts";
 import { externalNpmOnly } from "../../scripts/vite-lib-externals.mjs";
+import { bundlePublicTypesPlugin } from "../../scripts/vite-plugin-bundle-public-dts.mjs";
 import pkg from "./package.json";
 
 const ROOT = fileURLToPath(new URL(".", import.meta.url));
@@ -19,10 +19,10 @@ export default defineConfig({
     rollupOptions: {
       external: (id) => externalNpmOnly(id, NPM_EXTERNAL),
     },
-    sourcemap: true,
+    sourcemap: false,
     target: "es2022",
     outDir: "dist",
     emptyOutDir: true,
   },
-  plugins: [dts({ rollupTypes: true, exclude: ["src/**/__tests__/**"] })],
+  plugins: [bundlePublicTypesPlugin({ pkgDir: ROOT })],
 });

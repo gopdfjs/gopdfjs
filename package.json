@@ -27,6 +27,8 @@
     "@playwright/test": "^1.55.1",
     "@systembug/pangu": "^0.0.13",
     "husky": "^9.1.7",
+    "rollup": "^4.52.4",
+    "rollup-plugin-dts": "^6.2.3",
     "turbo": "latest"
   }
 }

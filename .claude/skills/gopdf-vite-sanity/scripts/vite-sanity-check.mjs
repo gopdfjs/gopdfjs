@@ -54,10 +54,12 @@ function rg(pattern, file) {
 console.log("gopdf vite sanity check\n");
 
 // —— Repo hygiene ——
-if (execSync("git grep -l tsup -- . ':!pnpm-lock.yaml' 2>/dev/null || true", {
-  cwd: ROOT,
-  encoding: "utf8",
-}).trim()) {
+if (
+  execSync(
+    "git grep -l tsup -- . ':!pnpm-lock.yaml' ':!.claude/skills/gopdf-vite-sanity' 2>/dev/null || true",
+    { cwd: ROOT, encoding: "utf8" },
+  ).trim()
+) {
   fail("tsup still referenced in repo — use Vite lib build only");
 }
 
@@ -136,6 +138,9 @@ for (const dir of PUBLIC) {
     if (text.includes(`'${prefix}`) || text.includes(`"${prefix}`)) {
       fail(`packages/${dir}/dist/index.d.ts imports private ${prefix}* — inline public types`);
     }
+  }
+  if (/\.\.\/\.\.\/(plugin|adapter|model|runtime|wasm)\//.test(text)) {
+    fail(`packages/${dir}/dist/index.d.ts has monorepo relative imports — bundle types into dist`);
   }
 }
 

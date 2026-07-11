@@ -6,7 +6,14 @@
     "lib": ["ES2022", "DOM", "WebWorker"],
     "strict": true,
     "skipLibCheck": true,
-    "noEmit": true
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@gopdfjs/adapter/*": ["../adapter/src/*"],
+      "@gopdfjs/plugin": ["../plugin/src/index.ts"],
+      "@gopdfjs/plugin/*": ["../plugin/src/*"],
+      "@gopdfjs/model/*": ["../model/src/*"]
+    }
   },
   "include": ["src/**/*.ts"]
 }

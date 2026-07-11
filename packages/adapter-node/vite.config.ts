@@ -1,15 +1,15 @@
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
-import dts from "vite-plugin-dts";
-import { externalWithBundledGopdf } from "../../scripts/vite-lib-externals.mjs";
+import { adapterExternal } from "../../scripts/vite-adapter-external.mjs";
+import { bundlePublicTypesPlugin } from "../../scripts/vite-plugin-bundle-public-dts.mjs";
+import { vendorWasmPlugin } from "../../scripts/vite-plugin-vendor-wasm.mjs";
 import pkg from "./package.json";
 
 const ROOT = fileURLToPath(new URL(".", import.meta.url));
+const WASM_PKG = resolve(ROOT, "../wasm/pkg");
 const NPM_EXTERNAL = Object.keys(pkg.dependencies ?? {});
-const BUNDLE_GOPDF = ["@gopdfjs/adapter", "@gopdfjs/model"];
 
-/** Node adapter — bundles internal adapter/model; engine + wasm stay peer deps. */
 export default defineConfig({
   build: {
     lib: {
@@ -20,19 +20,14 @@ export default defineConfig({
     ssr: true,
     target: "node20",
     rollupOptions: {
-      external: (id) => {
-        if (id.startsWith("node:")) return true;
-        return externalWithBundledGopdf(id, BUNDLE_GOPDF, NPM_EXTERNAL);
-      },
+      external: (id) => adapterExternal(id, NPM_EXTERNAL),
     },
-    sourcemap: true,
+    sourcemap: false,
     outDir: "dist",
     emptyOutDir: true,
   },
   plugins: [
-    dts({
-      rollupTypes: true,
-      tsconfigPath: resolve(ROOT, "tsconfig.json"),
-    }),
+    bundlePublicTypesPlugin({ pkgDir: ROOT, keepEngineExternal: true }),
+    vendorWasmPlugin({ wasmPkgDir: WASM_PKG, outDir: resolve(ROOT, "dist") }),
   ],
 });
