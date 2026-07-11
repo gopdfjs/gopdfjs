@@ -32,7 +32,10 @@ export class AppFooter extends LightComponent {
                   <wsx-link to="/docs/guide/getting-started">{this.t('resources.docs')}</wsx-link>
                 </li>
                 <li>
-                  <wsx-link to="/docs/guide/cli">{this.t('resources.cli')}</wsx-link>
+                  <wsx-link to="/docs/guide/ai-help">{this.t('resources.aiHelp')}</wsx-link>
+                </li>
+                <li>
+                  <wsx-link to="/docs/api/gopdf-methods">{this.t('resources.api')}</wsx-link>
                 </li>
                 <li>
                   <a

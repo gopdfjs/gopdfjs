@@ -120,6 +120,16 @@
   gap: 1.25rem;
 }
 
+.feature-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.feature-card-link:hover {
+  text-decoration: none;
+}
+
 .feature-card {
   padding: 1.5rem;
   border-radius: var(--gopdf-radius-md);

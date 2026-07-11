@@ -20,9 +20,9 @@
       "title": "浏览器与 Node",
       "description": "应用内用 createBrowserGopdf()，脚本内用 createNodeGopdf()，引擎 API 一致。"
     },
-    "cli": {
-      "title": "终端 CLI（独立仓库）",
-      "description": "gopdf-cli 不在本仓 — 需要命令行或 MCP 时请从 github.com/gopdfjs/gopdf-cli 安装。"
+    "aiHelp": {
+      "title": "AI 与代理",
+      "description": "给 LLM 的集成说明 — 浏览器与 Node 用法、黄金规则、完整 API 索引。"
     }
   },
   "quickStart": {

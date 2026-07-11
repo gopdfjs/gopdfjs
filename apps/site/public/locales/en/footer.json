@@ -4,7 +4,8 @@
   "resources": {
     "title": "Resources",
     "docs": "Documentation",
-    "cli": "CLI (external repo)",
+    "aiHelp": "AI help",
+    "api": "API reference",
     "github": "Monorepo",
     "cliRepo": "gopdf-cli"
   },

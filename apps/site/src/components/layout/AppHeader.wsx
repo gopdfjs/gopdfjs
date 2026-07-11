@@ -36,7 +36,7 @@ export class AppHeader extends LightComponent {
               {this.t('packages')}
             </wsx-link>
             <wsx-link
-              to="/docs/guide/getting-started"
+              to="/docs/guide/ai-help"
               class="nav-link"
               active-class="nav-link-active"
             >

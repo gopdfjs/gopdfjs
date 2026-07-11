@@ -2,14 +2,13 @@
 
 ## 本仓是什么（OSS）
 
-**发布 `@gopdfjs/*` npm 包（browser + Node）+ standalone `gopdf-cli`（无浏览器）。**
+**发布 `@gopdfjs/*` npm 包（browser + Node）。本仓不是 CLI 仓。**
 
 | 交付物 | 路径 | npm 发布 |
 |--------|------|----------|
 | Rust 算法 | `crates/gopdf-*` | 否 |
 | WASM 绑定 | `@gopdfjs/wasm`（`packages/wasm/rust` + `pkg/`） | 是（adapter 内部） |
-| 全部 JS/TS 库 | `packages/*`（`engine`、`struct`、`render`、工具域库…） | 是 |
-| Node CLI | **separate `gopdf-cli` repo** — not in this monorepo |
+| 全部 JS/TS 库 | `packages/*` | 是 |
 
 **不在本仓维护（ilovepdf / gopdf.fyi 产品仓）：** React 工具壳、i18n、`use-intl`、L2 `runXxx` 编排。产品 **`pnpm add @gopdfjs/*`** 消费本仓 npm，不复制库代码。
 
@@ -23,7 +22,7 @@ gopdfjs/                          # OSS monorepo
 ├── packages/                     # 全部 @gopdfjs/*（无 pdf-cli）
 ├── apps/
 │   ├── demo/                     # 本地浏览器 smoke + Playwright e2e
-│   └── site/                     # CLI docs landing（GitHub Pages）；private
+│   └── site/                     # OSS docs landing（GitHub Pages）；private
 ├── docs/                         # PUBLISHING.md、persona/
 ├── .spec/                        # 仅规格：ROADMAP、TASK_TRACKING、rfc/
 │   └── rfc/                      # 工具 RFC；umbrella  closed → completed/
@@ -36,22 +35,20 @@ gopdfjs/                          # OSS monorepo
 | **`packages/wasm/`** | `@gopdfjs/wasm` — bindgen + wasm-pack 产物 | 是（adapter 依赖） |
 | **`packages/`** | 可发布的 `@gopdfjs/*` | 不是产品 UI |
 | **`apps/demo/`** | 浏览器联调 + **e2e 宿主** | 不是 gopdf.fyi |
-| **`apps/site/`** | CLI docs landing（GitHub Pages） | 不是 16 工具产品站 |
-| **CLI** | separate **`gopdf-cli`** repo | `gopdf` bin — owns Rust + CLI |
-| **`.spec/`** | RFC、路线图、任务 | **没有** e2e 代码、没有 npm 源码 |
+| **`apps/site/`** | OSS docs landing | 不是产品工具站 |
+| **`.spec/`** | npm tool RFC · ROADMAP · TASK_TRACKING | **没有** CLI · 代码 · e2e |
 | **ilovepdf 仓** | gopdf.fyi UI + 路由 + i18n | 依赖本仓 npm |
 
 ---
 
-## 三种消费方式
+## 消费方式（本仓）
 
-| 方式 | 入口 | 浏览器 |
-|------|------|--------|
-| **Browser app** | `import` from `@gopdfjs/engine` 等 | 要 |
-| **Node script** | `import` from `@gopdfjs/*` | 不要 |
-| **Terminal** | **`gopdf-cli <cmd>`** | 不要 |
+| 方式 | 入口 |
+|------|------|
+| **Browser app** | `@gopdfjs/adapter-browser` → `engine.*()` |
+| **Node script** | `@gopdfjs/adapter-node` → `engine.*()` |
 
-每个 **tool RFC** 应对齐：**npm 公开 API** + **`gopdf-cli` 子命令**（实现进度见各 RFC）。详见 **RFC 0058 §2.2**。
+每个 **tool RFC（本仓）** 只定义 **npm API** + 浏览器 e2e（`apps/demo/e2e/`）。
 
 ---
 
@@ -59,7 +56,7 @@ gopdfjs/                          # OSS monorepo
 
 | 类型 | 规则 |
 |------|------|
-| **Tool RFC**（0006+） | 定义 `@gopdfjs/*` 包 + CLI；验收：`cargo test` · 包 Vitest · `apps/demo/e2e/tools/<slug>.spec.ts` |
+| **Tool RFC**（0006+） | `@gopdfjs/*` npm；验收：Vitest · `apps/demo/e2e/` |
 | **Umbrella RFC**（0001–0004） | 只规划；**子 RFC 文件齐了就 close** → `completed/`；**禁止 reopen** |
 | **架构 RFC**（0057、0058） | 普通 RFC；完成 **close** → `completed/`；关不掉 = mono RFC → split |
 | **索引** | `.spec/ROADMAP.md` · `.spec/TASK_TRACKING.md` |

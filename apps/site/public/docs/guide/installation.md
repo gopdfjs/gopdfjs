@@ -1,13 +1,23 @@
 ---
 title: Installation
-order: 2
+order: 3
 category: guide
-description: 'Install @gopdfjs packages in this monorepo or from npm after publish'
+description: 'Install @gopdfjs packages from npm or from this monorepo workspace'
 ---
 
 # Installation
 
-## In this monorepo
+## From npm
+
+```bash
+pnpm add @gopdfjs/adapter-browser @gopdfjs/engine
+# or
+pnpm add @gopdfjs/adapter-node @gopdfjs/engine
+```
+
+Publish order and gates: monorepo `docs/PUBLISHING.md`.
+
+## Monorepo contributors
 
 Add workspace dependencies to your app package:
 
@@ -27,16 +37,6 @@ pnpm build:wasm
 ```
 
 See `apps/demo` for a working Vite + React integration.
-
-## After npm publish (future)
-
-```bash
-pnpm add @gopdfjs/adapter-browser @gopdfjs/engine
-# or
-pnpm add @gopdfjs/adapter-node @gopdfjs/engine
-```
-
-Publish order and gates are documented in the monorepo `docs/PUBLISHING.md`.
 
 ## CLI (separate repo)
 

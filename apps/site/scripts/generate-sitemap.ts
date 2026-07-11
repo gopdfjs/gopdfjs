@@ -11,11 +11,12 @@ const routes = [
   '/',
   '/packages',
   '/docs/guide/getting-started',
+  '/docs/guide/ai-help',
   '/docs/guide/installation',
   '/docs/guide/browser',
   '/docs/guide/node',
-  '/docs/guide/cli',
   '/docs/api/engine',
+  '/docs/api/gopdf-methods',
   '/docs/faq/index',
 ];
 

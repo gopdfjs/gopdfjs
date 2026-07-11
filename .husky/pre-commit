@@ -2,5 +2,5 @@
 set -eu
 
 pnpm format:check
-pnpm check:layer-deps
-pnpm check:public-exports
+node scripts/check-layer-deps.mjs
+node scripts/check-public-exports.mjs

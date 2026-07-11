@@ -16,6 +16,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://gopdfjs.github.io/gopdfjs/docs/guide/ai-help</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://gopdfjs.github.io/gopdfjs/docs/guide/installation</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -31,12 +36,12 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://gopdfjs.github.io/gopdfjs/docs/guide/cli</loc>
+    <loc>https://gopdfjs.github.io/gopdfjs/docs/api/engine</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://gopdfjs.github.io/gopdfjs/docs/api/engine</loc>
+    <loc>https://gopdfjs.github.io/gopdfjs/docs/api/gopdf-methods</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

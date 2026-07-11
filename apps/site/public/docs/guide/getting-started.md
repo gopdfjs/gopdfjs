@@ -15,7 +15,7 @@ description: 'Install GoPDF.js packages and run your first compress in browser o
 |------|------|
 | **Browser app** | `import` from `@gopdfjs/adapter-browser` |
 | **Node script** | `import` from `@gopdfjs/adapter-node` |
-| **Terminal** | **[gopdf-cli](https://github.com/gopdfjs/gopdf-cli)** — separate repo, not in this monorepo |
+| **AI / coding agent** | [AI help](./ai-help) — copy-paste integration context |
 
 ## Monorepo contributors
 
@@ -45,7 +45,8 @@ const text = await engine.pdfToText(pdfBytes, { format: "txt" });
 
 ## Next steps
 
-- [Installation](./installation) — workspace vs npm (when published)
+- [AI & agents](./ai-help) — LLM integration cheat sheet
+- [Installation](./installation) — workspace vs npm
 - [Browser guide](./browser) — Vite, Worker, WASM assets
 - [Node guide](./node) — adapter-node setup
-- [CLI](./cli) — `gopdf` commands in the separate repo
+- [Gopdf methods](../api/gopdf-methods) — full `engine.*()` reference

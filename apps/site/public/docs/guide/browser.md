@@ -1,6 +1,6 @@
 ---
 title: Browser
-order: 3
+order: 4
 category: guide
 description: 'Use @gopdfjs/adapter-browser with Vite, Workers, and WASM'
 ---

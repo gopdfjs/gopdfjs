@@ -80,13 +80,13 @@ export class HomePage extends LightComponent {
                 <h3 class="feature-title">{this.t('features.browserNode.title')}</h3>
                 <p class="feature-description">{this.t('features.browserNode.description')}</p>
               </div>
-              <div class="feature-card">
+              <wsx-link to="/docs/guide/ai-help" class="feature-card feature-card-link">
                 <div class="feature-icon">
-                  <wsx-icon name="plug" />
+                  <wsx-icon name="sparkles" />
                 </div>
-                <h3 class="feature-title">{this.t('features.cli.title')}</h3>
-                <p class="feature-description">{this.t('features.cli.description')}</p>
-              </div>
+                <h3 class="feature-title">{this.t('features.aiHelp.title')}</h3>
+                <p class="feature-description">{this.t('features.aiHelp.description')}</p>
+              </wsx-link>
             </div>
           </div>
         </section>

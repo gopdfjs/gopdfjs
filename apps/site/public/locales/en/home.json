@@ -20,9 +20,9 @@
       "title": "Browser and Node",
       "description": "Use createBrowserGopdf() in apps or createNodeGopdf() in scripts with the same engine API."
     },
-    "cli": {
-      "title": "Terminal (separate repo)",
-      "description": "gopdf-cli is not in this monorepo — install it from github.com/gopdfjs/gopdf-cli when you need a CLI or MCP server."
+    "aiHelp": {
+      "title": "AI & agents",
+      "description": "Copy-paste guide for LLMs — browser and Node patterns, golden rules, full API index."
     }
   },
   "quickStart": {

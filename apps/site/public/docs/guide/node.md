@@ -1,6 +1,6 @@
 ---
 title: Node
-order: 4
+order: 5
 category: guide
 description: 'Use @gopdfjs/adapter-node in scripts and servers'
 ---
@@ -29,6 +29,7 @@ Adapters initialize `@gopdfjs/wasm` from the built `pkg/` directory. Contributor
 pnpm build:wasm
 ```
 
-## When to prefer CLI
+## Related
 
-If you only need terminal workflows (batch compress, repair, MCP), use **[gopdf-cli](https://github.com/gopdfjs/gopdf-cli)** instead of embedding the library.
+- [Installation](./installation)
+- [Gopdf methods](../api/gopdf-methods)

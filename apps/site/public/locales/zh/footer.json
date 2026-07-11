@@ -4,7 +4,8 @@
   "resources": {
     "title": "资源",
     "docs": "文档",
-    "cli": "CLI（独立仓库）",
+    "aiHelp": "AI 帮助",
+    "api": "API 参考",
     "github": "Monorepo",
     "cliRepo": "gopdf-cli"
   },

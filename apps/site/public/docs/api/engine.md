@@ -45,7 +45,9 @@ await engine.pdfToText(bytes, { format: "txt" });
 await engine.analyzePdf(bytes);
 ```
 
-Exact signatures live in `@gopdfjs/engine` types and each tool RFC.
+Exact signatures live in `@gopdfjs/engine` types.
+
+**Full reference:** [Gopdf methods](./gopdf-methods) · [AI help](../guide/ai-help)
 
 ## Import map
 
