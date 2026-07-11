@@ -2,6 +2,10 @@
   "publish": {
     "skipExisting": true
   },
+  "checks": {
+    "format": true,
+    "typecheck": true
+  },
   "build": {
     "steps": [
       { "name": "format (Rust)", "command": "pnpm format" },

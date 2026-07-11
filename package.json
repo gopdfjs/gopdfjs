@@ -11,6 +11,8 @@
     "build": "turbo build",
     "lint": "turbo lint",
     "format": "cargo fmt --all",
+    "format:check": "cargo fmt --all -- --check",
+    "typecheck": "pnpm --filter=@gopdfjs/site typecheck",
     "build:wasm": "pnpm --filter=@gopdfjs/wasm build:wasm",
     "build:wasm:dev": "pnpm --filter=@gopdfjs/wasm build:wasm:dev",
     "test:rust": "cargo test --workspace",
@@ -23,9 +25,7 @@
     "test:coverage": "turbo run test:coverage",
     "test:e2e": "playwright test -c apps/demo/e2e/playwright.config.ts",
     "fixtures:download": "bash scripts/download-e2e-fixtures.sh",
-    "prepare": "husky",
-    "format:check": "prettier --check \"**/*.{ts,tsx,md,json}\"",
-    "typecheck": "turbo run typecheck"
+    "prepare": "husky"
   },
   "devDependencies": {
     "@gopdfjs/fixtures": "workspace:*",
