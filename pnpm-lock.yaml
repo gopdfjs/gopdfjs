@@ -267,18 +267,6 @@ importers:
         specifier: ^3.0.0
         version: 3.2.4(@types/node@25.5.0)(@vitest/browser@3.2.6)(@vitest/ui@3.2.4)(happy-dom@20.10.6)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.32.0)(tsx@4.23.0)(yaml@2.8.3)
 
-  packages/files:
-    devDependencies:
-      happy-dom:
-        specifier: ^20.8.4
-        version: 20.10.6
-      typescript:
-        specifier: ^5
-        version: 5.9.3
-      vitest:
-        specifier: ^3.0.0
-        version: 3.2.4(@types/node@25.5.0)(@vitest/browser@3.2.6)(@vitest/ui@3.2.4)(happy-dom@20.10.6)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.32.0)(tsx@4.23.0)(yaml@2.8.3)
-
   packages/fixtures:
     devDependencies:
       '@types/node':
@@ -573,31 +561,6 @@ importers:
       '@vitest/coverage-v8':
         specifier: ^3.0.0
         version: 3.2.4(@vitest/browser@3.2.6)(vitest@3.2.4)
-      happy-dom:
-        specifier: ^20.8.4
-        version: 20.10.6
-      typescript:
-        specifier: ^5
-        version: 5.9.3
-      vitest:
-        specifier: ^3.0.0
-        version: 3.2.4(@types/node@25.5.0)(@vitest/browser@3.2.6)(@vitest/ui@3.2.4)(happy-dom@20.10.6)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.32.0)(tsx@4.23.0)(yaml@2.8.3)
-
-  packages/render:
-    dependencies:
-      '@gopdfjs/adapter':
-        specifier: workspace:*
-        version: link:../adapter
-      '@gopdfjs/model':
-        specifier: workspace:*
-        version: link:../model
-      '@napi-rs/canvas':
-        specifier: 0.1.97
-        version: 0.1.97
-      pdfjs-dist:
-        specifier: ^5.4.296
-        version: 5.5.207
-    devDependencies:
       happy-dom:
         specifier: ^20.8.4
         version: 20.10.6

@@ -124,7 +124,7 @@ TOOL_SPECS: dict[str, ToolSpec] = {
         RuntimeKind.HYBRID_RENDER_ENGINE,
         "render + encode",
         "gopdf-cli pdf-to-jpg",
-        "packages/render + packages/engine",
+        "packages/engine (renderPage.ts internal)",
         "Hybrid",
     ),
     "0020-ocr-pdf": ToolSpec(
@@ -209,10 +209,28 @@ IMPL_STATUS_RE = re.compile(
 )
 
 VERDICT = (
-    "**Verdict**: {verdict} — **one npm pkg by default**; split browser + `-node` "
-    "**only if** single pkg infeasible ([0058 §2.3](../0058-engine-plugin-charter.md)). "
-    "CLI wraps npm; no forked logic."
+    "**Verdict**: {verdict} — OSS gate only ([0058 §3.5](../0058-engine-plugin-charter.md) · "
+    "[`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)). "
+    "**Not** gated on `gopdf-cli` (separate repo)."
 )
+
+# Demo registry tools covered by apps/demo/e2e/tools/all-tools.spec.ts (not OCR).
+E2E_ALL_TOOLS = {
+    "0006-merge-pdf",
+    "0007-split-pdf",
+    "0009-rotate-pdf",
+    "0010-organize-pdf",
+    "0011-crop-pdf",
+    "0012-edit-pdf",
+    "0013-sign-pdf",
+    "0014-watermark-pdf",
+    "0015-page-numbers",
+    "0016-header-footer",
+    "0017-jpg-to-pdf",
+    "0018-pdf-to-jpg",
+    "0021-protect-pdf",
+    "0022-unlock-pdf",
+}
 
 MERGE_RE = re.compile(
     r"^<<<<<<<<[^\n]*\n(?:.*?\n)*?========\n>>>>>>>>[^\n]*\n",
@@ -228,10 +246,16 @@ def e2e_slug(stem: str) -> str:
     return re.sub(r"^\d{4}-", "", stem)
 
 
-def implementation_block(stem: str, section: str = "6", e2e_done: bool = False) -> str:
+def implementation_block(stem: str, section: str = "6", e2e_done: bool | None = None) -> str:
     spec = TOOL_SPECS.get(stem)
+    if e2e_done is None:
+        e2e_done = stem in E2E_ALL_TOOLS
     slug = e2e_slug(stem)
-    e2e_path = f"apps/demo/e2e/tools/{slug}.spec.ts"
+    e2e_path = (
+        "apps/demo/e2e/tools/all-tools.spec.ts"
+        if stem in E2E_ALL_TOOLS
+        else f"apps/demo/e2e/tools/{slug}.spec.ts"
+    )
     e2e_state = "**Done**" if e2e_done else "**Not done**"
 
     if stem == "0008-compress-pdf":
@@ -274,10 +298,7 @@ def implementation_block(stem: str, section: str = "6", e2e_done: bool = False) 
         )
     elif spec.kind == RuntimeKind.HYBRID_RENDER_ENGINE:
         rows.append(
-            "| **npm** | `@gopdfjs/render` | isomorphic (target) | **Partial** | pdf.js render — one pkg; split only if Node blocked |"
-        )
-        rows.append(
-            "| **npm** | `@gopdfjs/engine` | isomorphic (target) | **Partial** | WASM encode — one pkg with render |"
+            "| **npm** | `@gopdfjs/engine` | isomorphic (target) | **Partial** | pdf.js render via adapter canvas (`renderPage.ts` internal) + WASM encode |"
         )
     elif spec.kind == RuntimeKind.EXTRACT_SINGLE:
         rows.append(
@@ -291,9 +312,8 @@ def implementation_block(stem: str, section: str = "6", e2e_done: bool = False) 
             "| **npm** | `@gopdfjs/engine` | isomorphic (target) | **Not started** | planned `analyzePdf()` in same engine pkg |"
         )
 
-    cli_state = "**Planned**"
     rows.append(
-        f"| **CLI** | `{spec.cli}` | node | {cli_state} | thin wrapper over npm above |"
+        f"| **CLI** | `{spec.cli}` | node | **Out of repo** | [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) — not OSS gate |"
     )
     rows.append(
         f"| **Rust / WASM** | — | — | {spec.wasm} | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |"
@@ -323,7 +343,7 @@ def implementation_block(stem: str, section: str = "6", e2e_done: bool = False) 
 """
 
 
-def replace_impl_status(text: str, stem: str, section: str = "6", e2e_done: bool = False) -> str:
+def replace_impl_status(text: str, stem: str, section: str = "6", e2e_done: bool | None = None) -> str:
     block = implementation_block(stem, section=section, e2e_done=e2e_done)
     if IMPL_STATUS_RE.search(text):
         return IMPL_STATUS_RE.sub(block, text, count=1)
@@ -343,7 +363,7 @@ def fix_0019_delivery(text: str) -> str:
 | Surface | Package | Runtime | Notes |
 |---------|---------|---------|-------|
 | **npm** | `@gopdfjs/engine` | isomorphic (target) | `pdfToDocx()` — one pkg; browser Worker + Node WASM; split `-node` only if blocked |
-| **CLI** | `gopdf-cli pdf-to-word` | node | thin wrapper over `@gopdfjs/engine` |
+| **CLI** | `gopdf-cli pdf-to-word` | node | **Out of repo** | not OSS gate |
 | **ilovepdf** | consumes npm | — | UI out of repo |
 
 """
@@ -372,10 +392,9 @@ def main() -> None:
         text = strip_merge_markers(text)
 
         section = section_by_stem.get(stem, "6")
-        e2e_done = stem == "0008-compress-pdf"
 
         if "Implementation status (2026-06-28)" in text:
-            text = replace_impl_status(text, stem, section=section, e2e_done=e2e_done)
+            text = replace_impl_status(text, stem, section=section)
         elif stem == "0019-pdf-to-word":
             text = text.rstrip() + "\n\n" + implementation_block(stem, section="9")
 

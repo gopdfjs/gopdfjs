@@ -22,27 +22,54 @@ RFC bodies: `.spec/rfc/NNNN-kebab-slug.md` (active) · `.spec/rfc/completed/` (s
 
 ## How to read the snapshot
 
-| Verdict | Meaning |
-|---------|---------|
-| **DONE** | Acceptance criteria met; safe to treat as shipped |
-| **PARTIAL** | Live or coded, but spec, tests, or monorepo coverage has gaps |
-| **NOT STARTED** | No meaningful implementation in repo or product |
+| Verdict | Meaning (**this repo only**) |
+|---------|------------------------------|
+| **DONE** | OSS publish gate met for that tool/npm surface |
+| **PARTIAL** | Code in monorepo, but Vitest · browser e2e · or npm publish prep still open |
+| **NOT STARTED** | No meaningful implementation in this repo |
 | **DEFERRED** | In `pending/` — blocked on browser-only AI path |
-| **CHARTER** | Architecture / charter doc — stays active until superseded |
-| **CLOSED** | Umbrella: all child RFCs **generated** — moved to `completed/`; do not reopen |
+| **CHARTER** | Architecture doc — stays active until superseded |
+| **CLOSED** | Umbrella: child RFCs generated → `completed/`; do not reopen |
+
+**OSS publish gate (RFC 0058 §3.5 + [`docs/PUBLISHING.md`](../docs/PUBLISHING.md))** — verdicts **ignore** [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) (separate repo):
+
+| Gate | Where |
+|------|--------|
+| `engine.*()` on `Gopdf` | `packages/engine` |
+| Plugin Vitest | `packages/plugin-*` |
+| Browser demo e2e | `apps/demo/e2e/tools/` |
+| Rust/WASM (if tool uses L1) | `crates/*` · `pnpm test:rust` |
+| Public exports + layer deps | `pnpm check:public-exports` · `check:layer-deps` |
+| npm publish prep | `dist/` build · `exports` → dist · remove `private` |
+
+**Not an OSS gate:** CLI subcommands · MCP install · ilovepdf product UI.
 
 **Columns**
 
-- **Consumer (ilovepdf)** — gopdf.fyi tool UX (out of repo; consumes `@gopdfjs/*` npm)
-- **WASM L1** — `packages/engine/src/*.rs` + Worker `op`
-- **Monorepo** — verifiable in this repo (`packages/*`, `apps/demo`, tests)
-- **Tests** — `cargo test` · Vitest · `apps/demo/e2e/tools/*.spec.ts` · skill `gopdf-e2e`
-
-- **Monorepo gap (global)**: **engine + adapter publish model locked** (RFC 0058 §2.3) — all tools via `createEngine`; browser e2e + Node unit gate before npm publish.
+- **Consumer (ilovepdf)** — gopdf.fyi UX (out of repo; consumes `@gopdfjs/*`)
+- **WASM L1** — `crates/gopdf-*` + `@gopdfjs/wasm`
+- **Monorepo** — verifiable here (`packages/*`, `apps/demo`)
+- **Tests** — Vitest · `pnpm test:e2e` · `cargo test` (when WASM)
 
 ---
 
-## Full implementation snapshot (2026-06-28)
+## Publish-ready goal
+
+Ship **`@gopdfjs/engine`** + **`adapter-browser`** + **`adapter-node`** to npm. Remaining OSS work:
+
+| Priority | Item | Status |
+|----------|------|--------|
+| **P0** | Shared `dist/` build + `exports` rewrite | ❌ |
+| **P0** | Remove `"private": true` / `publishConfig` | ❌ |
+| **P0** | Bundler WASM docs (Vite) | ❌ |
+| **P1** | Plugin Vitest gaps (organize · crop · sign · page-numbers · header-footer) | ❌ |
+| **P1** | OCR demo route + e2e (0020) | ❌ |
+| **P1** | Node adapter integration (0058 §3.4) | partial |
+| **P2** | 0008 P2 · full 0028/0042 WASM · PDF Object Layer | future |
+
+---
+
+## Full implementation snapshot (2026-07-11)
 
 ### Closed / charter
 
@@ -56,25 +83,25 @@ RFC bodies: `.spec/rfc/NNNN-kebab-slug.md` (active) · `.spec/rfc/completed/` (s
 | 0057 | WASM Worker arch | **PARTIAL** | n/a | Worker + 4 ops | `packages/engine` | compress only | Approved; matrix matches code except 0028/0042 depth |
 | 0058 | WASM PDF charter | **PARTIAL** | n/a | see L1 column | docs only | — | Approved; **PDF Object Layer** not built; 0058 §3.1 overstates 0028/0042 |
 
-### Shipped tools (`completed/`)
+### Shipped tools (`completed/`) — OSS npm surface
 
-| ID | Tool | Verdict | Consumer (ilovepdf) | WASM L1 | Monorepo | Tests | Notes |
-|----|------|---------|---------------------|---------|----------|-------|-------|
-| 0006 | Merge | **PARTIAL** | live | JS (pdf-lib) | `@gopdfjs/plugin-struct` | ❌ no E2E | RFC in `completed/`; CLI planned |
-| 0007 | Split | **PARTIAL** | live | JS | `@gopdfjs/plugin-struct` | ❌ | same |
-| 0009 | Rotate | **PARTIAL** | live | JS | `@gopdfjs/plugin-struct` | ❌ | same |
-| 0010 | Organize | **PARTIAL** | live | JS | `@gopdfjs/plugin-struct` | ❌ | same |
-| 0011 | Crop | **PARTIAL** | live | JS | `@gopdfjs/plugin-struct` | ❌ | same |
-| 0012 | Edit | **PARTIAL** | live | JS + canvas | `@gopdfjs/plugin-annotate` | ❌ | same |
-| 0013 | Sign | **PARTIAL** | live | JS | `@gopdfjs/plugin-struct` | ❌ | same |
-| 0014 | Watermark | **PARTIAL** | live | JS | `@gopdfjs/plugin-struct` | ❌ | same |
-| 0015 | Page numbers | **PARTIAL** | live | JS | `@gopdfjs/plugin-struct` | ❌ | same |
-| 0016 | Header/footer | **PARTIAL** | live | JS | `@gopdfjs/plugin-struct` | ❌ | same |
-| 0017 | JPG→PDF | **PARTIAL** | live | **encode_images** ✅ | `@gopdfjs/plugin-struct` + engine | ❌ | Hybrid: WASM encoding leg in repo |
-| 0018 | PDF→JPG | **PARTIAL** | live | **encode_images** ✅ | `@gopdfjs/render` + engine | ❌ | Hybrid: render = pdfjs |
-| 0020 | OCR | **PARTIAL** | live | tesseract.js | `@gopdfjs/plugin-extract` | ❌ | Not in Header nav; on product |
-| 0021 | Protect | **PARTIAL** | live | JS crypto | `@gopdfjs/plugin-struct` | ❌ | same |
-| 0022 | Unlock | **PARTIAL** | live | JS | `@gopdfjs/plugin-struct` | ❌ | same |
+| ID | Tool | Verdict | Monorepo | Vitest | Browser e2e | OSS gap |
+|----|------|---------|----------|--------|-------------|---------|
+| 0006 | Merge | **PARTIAL** | `plugin-struct` + engine | ✓ | ✓ `all-tools` | npm `dist` |
+| 0007 | Split | **PARTIAL** | same | ✓ | ✓ | npm `dist` |
+| 0009 | Rotate | **PARTIAL** | same | ✓ | ✓ | npm `dist` |
+| 0010 | Organize | **PARTIAL** | same | ❌ | ✓ | Vitest + npm `dist` |
+| 0011 | Crop | **PARTIAL** | same | ❌ | ✓ | Vitest + npm `dist` |
+| 0012 | Edit | **PARTIAL** | `plugin-annotate` | ✓ | ✓ | npm `dist` |
+| 0013 | Sign | **PARTIAL** | `plugin-struct` | ❌ | ✓ | Vitest + npm `dist` |
+| 0014 | Watermark | **PARTIAL** | same | ✓ | ✓ | npm `dist` |
+| 0015 | Page numbers | **PARTIAL** | same | ❌ | ✓ | Vitest + npm `dist` |
+| 0016 | Header/footer | **PARTIAL** | same | ❌ | ✓ | Vitest + npm `dist` |
+| 0017 | JPG→PDF | **PARTIAL** | struct + engine WASM | ✓ | ✓ | npm `dist` |
+| 0018 | PDF→JPG | **PARTIAL** | engine `renderPage` | ✓ | ✓ | npm `dist` |
+| 0020 | OCR | **PARTIAL** | `plugin-extract` / engine | partial | ❌ no demo | demo + e2e + npm `dist` |
+| 0021 | Protect | **PARTIAL** | `plugin-struct` | ✓ | ✓ | npm `dist` |
+| 0022 | Unlock | **PARTIAL** | same | ✓ | ✓ | npm `dist` |
 
 ### Active — WASM / verified
 
@@ -141,8 +168,8 @@ Reserved: **0059**, **0060**.
 
 | Verdict | Count | RFC IDs (summary) |
 |---------|-------|---------------------|
-| **DONE** (strict) | 0 | — (no RFC has full spec + monorepo + E2E except 0008 P1 only) |
-| **DONE** (0008 P1 only) | 1 | 0008 Phase 1 |
+| **DONE** (strict OSS) | 0 | — npm `dist` + publish blocks all tools |
+| **DONE** (0008 P1 only) | 1 | 0008 Phase 1 — WASM + dedicated e2e |
 | **PARTIAL** | 20 | 0006–0018, 0020–0022, 0008 P2, 0028, 0042, 0057, 0058, 0035?, 0061 |
 | **CLOSED** | 4 | 0001–0004 umbrellas |
 | **CHARTER** | 2 | 0057, 0058 architecture |
@@ -155,11 +182,12 @@ Reserved: **0059**, **0060**.
 
 1. ~~**0058 §3.1** marks 0028 / 0042 as «已实现»~~ — **fixed 2026-06-28** → Partial stub
 2. ~~**0061** live on product vs RFC **Proposed**~~ — **fixed 2026-06-28** → Implemented (L3) / Planned (L1)
-3. ~~**`packages/tools`**~~ — removed; use npm packages + `gopdf-cli` directly
+3. ~~**`packages/tools`**~~ — removed; consume `@gopdfjs/*` npm directly
 4. **0058 PDF Object Layer** — planned; blocks 0008 P2, full 0028/0042, 0061 L1
 5. ~~**0005** — `apps/site/messages/` + parity tests~~ — **done 2026-06-28**
 6. ~~**completed/0006–0022** missing §6 monorepo honesty~~ — **fixed 2026-06-28**
-7. **Runtime model** — **fixed 2026-06-28** — **one npm pkg default**; split `-node` only if infeasible; CLI thin wrapper ([0058 §2.3](rfc/0058-engine-plugin-charter.md))
+7. **Runtime model** — **fixed 2026-06-28** — one npm pkg default; split `-node` only if blocked ([0058 §2.3](rfc/0058-engine-plugin-charter.md))
+8. **CLI not OSS gate** — **fixed 2026-07-11** — `gopdf-cli` is separate repo; ROADMAP/RFC §6 verdicts = npm + tests only
 
 ---
 
@@ -205,12 +233,12 @@ Reserved: **0059**, **0060**.
 
 | Phase | Focus | State |
 |-------|--------|-------|
-| **A** | npm + CLI parity | **one pkg per tool when possible**; wire `gopdf-cli` as thin wrappers |
-| **B** | Verification | E2E + Vitest for each `completed/` tool (0008 template) |
-| **C** | WASM truth | Align 0058 / 0028 / 0042 RFC text with stub vs done; build Object Layer |
+| **A** | **npm publish prep** | `dist/` build · exports · un-`private` · Vite WASM docs |
+| **B** | Verification | Vitest gaps · OCR demo/e2e · Node adapter (0058 §3.4) |
+| **C** | WASM truth | 0028/0042 stubs · PDF Object Layer |
 | **D** | 0008 P2 | Image re-encode after parser |
-| **E** | Proposed queue | 0019, 0061, then 0023+ per priority |
-| **F** | Deferred AI | 0046–0048 when browser-only path exists |
+| **E** | Proposed queue | 0019, 0061, then 0023+ |
+| **F** | Deferred AI | 0046–0048 |
 
 ## RFC conventions
 

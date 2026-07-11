@@ -29,10 +29,10 @@ Identify and extract all raster image assets embedded within a PDF document at t
 | Surface | Package | Runtime | State | Notes |
 |---------|---------|---------|-------|-------|
 | **npm** | `@gopdfjs/plugin-extract` | isomorphic (target) | **Not started** | image extract — one pkg; pdfjs inside; split only if Node blocked |
-| **CLI** | `gopdf-cli extract-images` | node | **Planned** | thin wrapper over npm above |
+| **CLI** | `gopdf-cli extract-images` | node | **Out of repo** | [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) — not OSS gate |
 | **Rust / WASM** | — | — | N/A (pdfjs) | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |
-| **Vitest** | — | — | **Partial** | `packages/extract` |
+| **Vitest** | — | — | **Partial** | `packages/plugin-extract` |
 | **Browser e2e** | — | browser | **Not done** | `apps/demo/e2e/tools/extract-images.spec.ts` |
 | **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: **NOT STARTED** — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-engine-plugin-charter.md)). CLI wraps npm; no forked logic.
+**Verdict**: **NOT STARTED** — OSS gate only ([0058 §3.5](../0058-engine-plugin-charter.md) · [`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)). **Not** gated on `gopdf-cli` (separate repo).

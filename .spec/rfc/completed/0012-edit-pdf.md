@@ -30,10 +30,10 @@ Provide a browser-based annotation layer for adding text, images, and shapes ont
 | Surface | Package | Runtime | State | Notes |
 |---------|---------|---------|-------|-------|
 | **npm** | `@gopdfjs/plugin-annotate` | isomorphic | **Partial** | annotation edit — one pkg, Node + browser |
-| **CLI** | `gopdf-cli edit` | node | **Planned** | thin wrapper over npm above |
+| **CLI** | `gopdf-cli edit` | node | **Out of repo** | [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) — not OSS gate |
 | **Rust / WASM** | — | — | N/A | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |
-| **Vitest** | — | — | **Partial** | `packages/annotate` |
-| **Browser e2e** | — | browser | **Not done** | `apps/demo/e2e/tools/edit-pdf.spec.ts` |
+| **Vitest** | — | — | **Partial** | `packages/plugin-annotate` |
+| **Browser e2e** | — | browser | **Done** | `apps/demo/e2e/tools/all-tools.spec.ts` |
 | **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: **PARTIAL** — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-engine-plugin-charter.md)). CLI wraps npm; no forked logic.
+**Verdict**: **PARTIAL** — OSS gate only ([0058 §3.5](../0058-engine-plugin-charter.md) · [`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)). **Not** gated on `gopdf-cli` (separate repo).

@@ -2,101 +2,82 @@
 
 Operational tasks linked to [ROADMAP.md](ROADMAP.md). Mark **Done** when merged to `main`.
 
+## Goal
+
+**Publish `@gopdfjs/engine` + adapters to npm.** OSS gates only — **not** `gopdf-cli` (separate repo).
+
 ## Full picture (one screen)
 
 ```
-CLOSED     0001 0002 0003 0004 umbrellas
-PARTIAL    0006–0022 tools (product live, monorepo thin) · 0008 P1 ✅ P2 ❌
-PARTIAL    0028 0042 WASM stubs · 0057 0058 arch · 0019? 0035? 0061 product ahead of RFC
+PUBLISH    dist/ build · exports → dist · un-private · Vite WASM docs
+PARTIAL    0006–0022 npm coded; global blocker = npm dist
+PARTIAL    0028 0042 WASM stubs · 0057 0058 arch
 NOT START  0023–0027 0029–0034 0036–0041 0043–0045 0049–0056
 DEFERRED   0046–0048 AI
-ONLY E2E   0008 compress + engine-smoke + all-tools matrix (31 routes)
-ONLY WASM  compress encode_images grayscale* linearize*  (*stubs)
-ARCH       0057/0058 engine+adapter publish model (2026-07-08)
-MISSING    Node adapter full port tests · full e2e green · pdf object layer
+E2E        all-tools matrix ✅ (except OCR — no demo route)
+VITEST GAP organize · crop · sign · page-numbers · header-footer
+ARCH       0057/0058 engine+adapter publish model
 ```
 
 ---
 
 ## rfc-workflow (agents)
 
-1. Read RFC → structured analysis ([ROADMAP snapshot](ROADMAP.md#full-implementation-snapshot-2026-06-28))
-2. User picks 1–4 (full / phased / partial / analysis-only)
+1. Read RFC → [ROADMAP snapshot](ROADMAP.md#full-implementation-snapshot-2026-07-11)
+2. User picks scope
 3. Plan → explicit `yes` before code
 4. Status change → update this file + ROADMAP + RFC header same PR
+
+**Never** count `gopdf-cli` subcommands as OSS partial/DONE.
 
 ---
 
 ## Done
 
 - [x] RFC layout: flat `.spec/rfc/` + `completed/` + `pending/`
-- [x] ROADMAP + TASK_TRACKING (no `rfc/README.md`)
-- [x] 0001 closed → `completed/0001-site-work.md`
-- [x] 0002 closed → `completed/0002-conversion-tools.md` (0017–0025, 0033–0039 covered)
-- [x] 0003 closed → `completed/0003-editing-organization-tools.md` (0006–0016, 0026, 0030–0032, 0040–0041, 0044–0045 covered)
-- [x] 0008 P1: `compress_pdf` + `cargo test` + `apps/demo/e2e/tools/compress.spec.ts`
-- [x] WASM exports: `compressPdf`, `encodeImages`, `grayscalePdf`, `linearizePdf`
-- [x] **L3 libs** — `@gopdfjs/files`, `render`, `struct` + tool packages
-- [x] **`@gopdfjs/pdf-cli`** — migrated to standalone `gopdf-cli` repo (publish + build there)
-- [x] ROADMAP full implementation snapshot (2026-06-28)
-- [x] 0004 closed → `completed/0004-optimization-security-advanced-tools.md` (child RFCs generated)
-- [x] **completed/0006–0022** — §6 Implementation status on all shipped tool RFCs
+- [x] ROADMAP + TASK_TRACKING
+- [x] 0001–0004 umbrellas closed
+- [x] 0008 P1: `compress_pdf` + `cargo test` + compress e2e
+- [x] WASM exports: compress · encode · grayscale* · linearize* (*stubs)
+- [x] L3 `plugin-*` wired via `@gopdfjs/engine`
+- [x] `gopdf-cli` migrated out — not in this repo
+- [x] Legacy `packages/files` + `packages/render` removed
+- [x] Public API: 3 consumer pkgs (engine + adapter-browser + adapter-node)
+- [x] `all-tools.spec.ts` e2e matrix (demo registry)
+- [x] `check:public-exports` + `check:layer-deps`
+- [x] completed/0006–0022 §6 Implementation status
+- [x] ROADMAP: CLI stripped from OSS verdict (2026-07-11)
 
-## In progress
+## In progress — P0 publish
 
-- [ ] **(CURRENT)** Publish gate — all features via `createEngine` only (0058 §2.6)
-- [ ] **(CURRENT)** Node adapter full coverage (0058 §3.4)
-- [ ] **(CURRENT)** Browser e2e full green — `pnpm test:e2e` all 33 specs
-- [ ] Wire ilovepdf `apps/web` to `@gopdfjs/*` (replace `@gopdf/*`)
+- [ ] **Shared `dist/` build** (tsup/tsc) for all publishable `@gopdfjs/*`
+- [ ] **`exports` → `dist/`** — no `src/` in published packages
+- [ ] **Remove `private: true`** + `publishConfig.access: public`
+- [ ] **Vite/webpack WASM bundler docs** in `docs/PUBLISHING.md`
+- [ ] **CHANGELOG** + version bump strategy
 
-## Done — spec drift (2026-06-28)
+## In progress — P1 verification (OSS)
 
-- [x] **0058 §3.1 + §4** — 0028/0042 marked Partial stub (not Done)
-- [x] **0028 / 0042** — added §6 Implementation status
-- [x] **0057 §6** — matrix notes stub for 0028/0042
-- [x] **0061** — L3 Implemented / L1 Planned + §5 status
-- [x] **0005** — product i18n moved out of OSS monorepo (ilovepdf owns `use-intl` stack)
-- [x] **0019 / 0035** — § Implementation status + ROADMAP verdict
+- [ ] Plugin Vitest: organize · crop · sign · page-numbers · header-footer
+- [ ] OCR demo route + e2e (RFC 0020)
+- [ ] Node adapter coverage (0058 §3.4)
+- [ ] `pnpm test:e2e` green in CI
 
-## To do — P0 (clarity / honesty)
+## To do — P2 (WASM depth)
 
-- [x] Add **§6 Implementation status** to all `completed/` tool RFCs (0006–0022)
-- [x] **L3 tool struct** (pdf-lib) wired via `@gopdfjs/engine` → `@gopdfjs/plugin-struct`
-- [ ] Manually verify **0035** on gopdf.fyi → bump RFC status if live
-
-## To do — P1 (verification gate)
-
-**Charter:** RFC 0058 §3 — 每个 `Gopdf` 方法 = Vitest（工具包）+ Node integration + browser e2e。
-
-Template: `apps/demo/e2e/tools/all-tools.spec.ts` + skill `gopdf-e2e`.
-
-- [x] Engine facade bytes pressure (all methods)
-- [x] `apps/demo` tool registry + 31 generic routes
-- [x] `all-tools.spec.ts` e2e matrix
-- [ ] `pnpm test:e2e` full green (33 tests)
-- [ ] Node `Gopdf` integration per method (`createNodeGopdf` + fixtures)
-- [ ] Node adapter: canvas · ocr · engine WASM smoke tests
-- [ ] 0006 merge · 0007 split · … (tool RFC §6 ↔ §2.6 row)
-
-## To do — P2 (WASM)
-
-- [ ] **PDF Object Layer** (0058 §3.2) — unblocks 0008 P2, real 0028/0042
-- [ ] 0008 Phase 2 — lossy image re-encode in PDF streams
-- [ ] 0028 — full grayscale (content streams, not byte scan only)
-- [ ] 0042 — real linearization (xref, hints, object order)
-- [ ] 0019 — `pdf_to_docx` in Rust (per RFC)
-- [ ] 0061 — `analyze_pdf` in Rust (per 0058 upgrade path)
+- [ ] PDF Object Layer (0058 §3.2)
+- [ ] 0008 P2 image re-encode
+- [ ] 0028 / 0042 full WASM (not stub)
+- [ ] 0019 L1 · 0061 L1
 
 ## To do — P3 (proposed backlog)
 
-Do not implement until **Approved** + rfc-workflow.
+0023–0027 · 0029–0034 · 0036–0041 · 0043–0045 · 0049–0056 — Approved + rfc-workflow first.
 
-0023–0027 · 0029–0034 · 0036–0041 · 0043–0045 · 0049–0056
+## Deferred
 
-## To do — deferred
-
-0046–0048 — browser-only AI path
+0046–0048 — browser-only AI
 
 ## Review queue
 
-Next RFC Phase 1 audit: first **open tool RFC** (0001–0004 umbrellas closed). See [ROADMAP umbrella lifecycle](ROADMAP.md#umbrella-rfc-lifecycle).
+Next audit: **P0 publish** (`dist/` pipeline) or first open tool RFC.

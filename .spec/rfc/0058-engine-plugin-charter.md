@@ -58,8 +58,6 @@
 | **`packages/engine`** | `createEngine` 门面 | 是 |
 | **`packages/adapter-browser`** · **`adapter-node`** | 环境端口 + **own** wasm-pack `pkg/` | 是 |
 | **`packages/plugin-{struct,shrink,…}`** | feature plugin 逻辑（import `@gopdfjs/runtime` + `@gopdfjs/plugin`） | 是（实现单元；**不作为 consumer facade**） |
-| **`packages/render`** | **legacy** — 未被 engine wire；低层 render 在 `packages/engine/src/renderPage.ts`（engine 内部，无公开 subpath） | 待定删除 |
-| **`packages/files`** | **legacy** — 宿主 `readFileAsArrayBuffer` helper；当前无 workspace 消费者 | 待定删除 |
 | **`packages/fixtures`** | 测试 fixture（dev only） | 否 |
 | **`apps/demo/`** | 浏览器 acceptance + Playwright e2e | 否 |
 | **`apps/site/`** | OSS 文档 | 否 |
@@ -379,13 +377,17 @@ Skill：**`gopdf-e2e`**。
 - [ ] `createNodeEngine` WASM 四 op smoke（compress · encode · grayscale · linearize）
 - [ ] **每个 `Gopdf` 方法** Node integration test（`createNodeGopdf` + fixture）
 
-### 3.5 Publish checklist（`@gopdfjs/*`）
+### 3.5 Publish checklist（`@gopdfjs/*` — **本仓 only**）
+
+**不含** [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli)（独立仓 · MCP · `gopdf install`）。
 
 - [ ] `createEngine` 覆盖 §2.6 全部方法
 - [ ] 工具包零 `@gopdfjs/engine` / `@gopdfjs/adapter-*` 依赖
 - [ ] `exports` 仅公开文档化路径；`@gopdfjs/engine` **only** `"."`；adapter 随包带 `pkg/` WASM
+- [ ] 每工具 Vitest（plugin 或 engine）+ browser demo e2e（`apps/demo/e2e/tools/`）
 - [ ] Browser e2e 全绿（`pnpm test:e2e`）
-- [ ] `pnpm test` 全 monorepo 绿
+- [ ] `pnpm test` + `pnpm test:rust` 全 monorepo 绿
+- [ ] `dist/` build · `exports` → dist · remove `private`
 - [ ] `docs/PUBLISHING.md` 版本与 changelog 同步
 
 ## 4. Plugin & acceleration layering

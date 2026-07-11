@@ -1,6 +1,24 @@
 # Publishing `@gopdfjs/*`
 
-RFC 0058 §2.2 / §3.5 — npm scope **`@gopdfjs`**. CLI + MCP install → **[`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli)** (not this repo).
+RFC 0058 §2.2 / §3.5 — npm scope **`@gopdfjs`**.  
+**This repo ships npm only.** Terminal CLI + MCP → **[`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli)** (separate repo — **not** an OSS publish gate).
+
+## Publish goal
+
+First public release: **`@gopdfjs/engine`** + **`@gopdfjs/adapter-browser`** + **`@gopdfjs/adapter-node`**.  
+Transitive packages publish in dependency order (see below). Apps stay private.
+
+## OSS gate (what blocks PARTIAL → DONE)
+
+| Gate | Command / artifact |
+|------|---------------------|
+| Public export guards | `pnpm check:public-exports` · `check:layer-deps` |
+| Unit tests | `pnpm test` · `pnpm test:rust` |
+| Browser acceptance | `pnpm test:e2e` |
+| Build artifacts | `dist/` per package |
+| npm metadata | remove `private`; `exports` → dist only |
+
+**Not in this repo:** `gopdf-cli` subcommands · MCP install.
 
 ## Golden rule
 
@@ -25,9 +43,8 @@ await engine.compressPdf(bytes, "recommended");
 | Package | Status |
 |---------|--------|
 | `@gopdfjs/adapter` | Internal — engine + `adapter-*` only. Custom `GopdfAdapter` / `createBrowserAdapter()` story **not** v1 public. |
-| `@gopdfjs/files` | Not ready — use native `File.arrayBuffer()` in apps. |
 
-**Never consumer-facing:** `@gopdfjs/wasm`, `@gopdfjs/runtime`, `@gopdfjs/model`, `@gopdfjs/plugin`, `@gopdfjs/plugin-*`, `@gopdfjs/fixtures`, `@gopdfjs/render`.
+**Never consumer-facing:** `@gopdfjs/wasm`, `@gopdfjs/runtime`, `@gopdfjs/model`, `@gopdfjs/plugin`, `@gopdfjs/plugin-*`, `@gopdfjs/fixtures`.
 
 ## Package inventory (`packages/`)
 
@@ -37,7 +54,6 @@ await engine.compressPdf(bytes, "recommended");
 | `@gopdfjs/adapter-browser` | Browser `GopdfAdapter` + `createBrowserGopdf()` | **Yes** |
 | `@gopdfjs/adapter-node` | Node `GopdfAdapter` + `createNodeGopdf()` | **Yes** |
 | `@gopdfjs/adapter` | Port types — engine + `adapter-*` only | **Yes** (transitive; **not** v1 consumer import) |
-| `@gopdfjs/files` | `readFileAsArrayBuffer` stub | **No** — not ready |
 | `@gopdfjs/wasm` | Single `pkg/` (web target); adapters init | **Yes** (transitive) |
 | `@gopdfjs/runtime` | `GopdfRuntime` — plugins only | **Yes** (transitive) |
 | `@gopdfjs/plugin` | Domain option/result types | **Yes** (transitive) |
@@ -52,7 +68,6 @@ await engine.compressPdf(bytes, "recommended");
 | `@gopdfjs/plugin-author` | htmlToPdf, markdownToHtml | **Yes** (transitive) |
 | `@gopdfjs/plugin-inspect` | analyzePdf | **Yes** (transitive) |
 | `@gopdfjs/plugin-compare` | compare (engine-only) | **Yes** (transitive) |
-| `@gopdfjs/render` | pdf.js canvas helpers — **no workspace deps** | **No** — wire into adapter or delete before v1 |
 | `@gopdfjs/fixtures` | Test PDFs | **Never** |
 
 Apps (`apps/demo`, `apps/site`) stay **private**.
@@ -69,7 +84,6 @@ Apps (`apps/demo`, `apps/site`) stay **private**.
 | `dist/` JS + `.d.ts` build | **Blocker** — not defined; exports still point at `src/` |
 | `exports` → `dist/` only (RFC §3.5) | **Blocker** |
 | Bundler WASM docs (Vite/webpack) | **Todo** — § below |
-| `@gopdfjs/render` orphan | **Todo** — integrate or remove |
 
 ## Before first npm publish (each package)
 

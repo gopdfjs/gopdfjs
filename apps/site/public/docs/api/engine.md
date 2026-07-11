@@ -55,4 +55,4 @@ Exact signatures live in `@gopdfjs/engine` types and each tool RFC.
 | Browser boot | `@gopdfjs/adapter-browser` |
 | Node boot | `@gopdfjs/adapter-node` |
 
-Do **not** import `@gopdfjs/adapter`, `@gopdfjs/files`, `@gopdfjs/plugin-*`, `@gopdfjs/runtime`, or `@gopdfjs/wasm` from application code.
+Do **not** import `@gopdfjs/adapter`, `@gopdfjs/plugin-*`, `@gopdfjs/runtime`, or `@gopdfjs/wasm` from application code.

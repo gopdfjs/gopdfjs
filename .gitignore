@@ -65,3 +65,4 @@ apps/demo/e2e/.tmp/*
 !apps/demo/e2e/.tmp/.gitignore
 .codegraph/
 graphify-out/
+__pycache__/

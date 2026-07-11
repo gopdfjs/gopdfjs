@@ -32,8 +32,11 @@ tests:
 | Surface | Package | Runtime | Notes |
 |---------|---------|---------|-------|
 | **npm** | `@gopdfjs/engine` | isomorphic (target) | `pdfToDocx()` — one pkg; browser Worker + Node WASM; split `-node` only if blocked |
-| **CLI** | `gopdf-cli pdf-to-word` | node | thin wrapper over `@gopdfjs/engine` |
+| **CLI** | `gopdf-cli pdf-to-word` | node | **Out of repo** | not OSS gate |
 | **ilovepdf** | consumes npm | — | UI out of repo |
+
+
+
 
 
 
@@ -77,10 +80,10 @@ tests:
 | Surface | Package | Runtime | State | Notes |
 |---------|---------|---------|-------|-------|
 | **npm** | `@gopdfjs/engine` | isomorphic (target) | **Not started** | `pdfToDocx()` (planned) — browser Worker today; Node in same pkg; split `-node` only if blocked |
-| **CLI** | `gopdf-cli pdf-to-word` | node | **Planned** | thin wrapper over npm above |
+| **CLI** | `gopdf-cli pdf-to-word` | node | **Out of repo** | [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) — not OSS gate |
 | **Rust / WASM** | — | — | Not started | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |
 | **Vitest** | — | — | **Partial** | `packages/engine (planned)` |
 | **Browser e2e** | — | browser | **Not done** | `apps/demo/e2e/tools/pdf-to-word.spec.ts` |
 | **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: **NOT STARTED** (L1) — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-engine-plugin-charter.md)). CLI wraps npm; no forked logic.
+**Verdict**: **NOT STARTED** (L1) — OSS gate only ([0058 §3.5](../0058-engine-plugin-charter.md) · [`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)). **Not** gated on `gopdf-cli` (separate repo).

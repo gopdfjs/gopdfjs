@@ -39,10 +39,10 @@ Merging PDFs is an I/O-bound operation, not a compute-bound one. `pdf-lib`'s `co
 | Surface | Package | Runtime | State | Notes |
 |---------|---------|---------|-------|-------|
 | **npm** | `@gopdfjs/plugin-struct` | isomorphic | **Partial** | `mergePdfs()` — one pkg, Node + browser |
-| **CLI** | `gopdf-cli merge` | node | **Planned** | thin wrapper over npm above |
+| **CLI** | `gopdf-cli merge` | node | **Out of repo** | [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) — not OSS gate |
 | **Rust / WASM** | — | — | N/A (pdf-lib) | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |
-| **Vitest** | — | — | **Partial** | `packages/struct` |
-| **Browser e2e** | — | browser | **Not done** | `apps/demo/e2e/tools/merge-pdf.spec.ts` |
+| **Vitest** | — | — | **Partial** | `packages/plugin-struct` |
+| **Browser e2e** | — | browser | **Done** | `apps/demo/e2e/tools/all-tools.spec.ts` |
 | **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: **PARTIAL** — **one npm pkg by default**; split browser + `-node` **only if** single pkg infeasible ([0058 §2.3](../0058-engine-plugin-charter.md)). CLI wraps npm; no forked logic.
+**Verdict**: **PARTIAL** — OSS gate only ([0058 §3.5](../0058-engine-plugin-charter.md) · [`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)). **Not** gated on `gopdf-cli` (separate repo).
