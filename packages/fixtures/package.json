@@ -8,7 +8,6 @@
     ".": "./src/index.ts",
     "./pdf/*": "./pdf/*"
   },
-  "files": ["src", "pdf"],
   "scripts": {
     "test": "vitest run"
   },

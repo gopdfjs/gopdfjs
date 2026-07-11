@@ -1,7 +1,6 @@
 {
   "name": "@gopdfjs/wasm",
   "version": "0.1.0",
-  "private": true,
   "description": "GoPDF WASM npm package — rust/ bindgen (→ crates/gopdf-*) + single web-target pkg/. One .wasm; adapters decide how to init (browser fetch / node bytes). Engine never imports this.",
   "type": "module",
   "exports": {
@@ -11,15 +10,16 @@
     },
     "./gopdf_wasm_bg.wasm": "./pkg/gopdf_wasm_bg.wasm"
   },
-  "files": ["pkg", "rust"],
   "scripts": {
     "build:wasm": "PATH=\"$HOME/.cargo/bin:$PATH\" wasm-pack build rust --target web --out-dir ../pkg --release",
     "build:wasm:dev": "PATH=\"$HOME/.cargo/bin:$PATH\" wasm-pack build rust --target web --out-dir ../pkg --dev",
-    "test": "vitest run"
+    "test": "vitest run",
+    "build": "pnpm run build:wasm"
   },
   "devDependencies": {
     "typescript": "^5.0.0",
     "vitest": "^3.0.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "private": true
 }

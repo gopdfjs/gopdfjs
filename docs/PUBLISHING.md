@@ -1,28 +1,11 @@
 # Publishing `@gopdfjs/*`
 
-RFC 0058 §2.2 / §3.5 — npm scope **`@gopdfjs`**.  
-**This repo ships npm only.** Terminal CLI + MCP → **[`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli)** (separate repo — **not** an OSS publish gate).
-
-## Publish goal
-
-First public release: **`@gopdfjs/engine`** + **`@gopdfjs/adapter-browser`** + **`@gopdfjs/adapter-node`**.  
-Transitive packages publish in dependency order (see below). Apps stay private.
-
-## OSS gate (what blocks PARTIAL → DONE)
-
-| Gate | Command / artifact |
-|------|---------------------|
-| Public export guards | `pnpm check:public-exports` · `check:layer-deps` |
-| Unit tests | `pnpm test` · `pnpm test:rust` |
-| Browser acceptance | `pnpm test:e2e` |
-| Build artifacts | `dist/` per package |
-| npm metadata | remove `private`; `exports` → dist only |
-
-**Not in this repo:** `gopdf-cli` subcommands · MCP install.
+RFC 0058 §2.2 / §3.5 — **this repo ships npm libraries only.**  
+CLI + MCP → **[`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli)** (separate repo — **not** an OSS gate).
 
 ## Golden rule
 
-**All product features via `engine.*()` on `Gopdf`.** No `@gopdfjs/plugin-*` imports in apps. No `loadDocument` / `encodeImages` on consumer surface.
+**All product features via `engine.*()` on `Gopdf`.** Apps **never** import `@gopdfjs/plugin-*`, `@gopdfjs/runtime`, `@gopdfjs/wasm`, etc.
 
 ```ts
 import { createBrowserGopdf } from "@gopdfjs/adapter-browser";
@@ -30,98 +13,98 @@ const engine = await createBrowserGopdf();
 await engine.compressPdf(bytes, "recommended");
 ```
 
-## Consumer import map (v1 — only these three)
+## v1 public npm — install these three only
 
-| Need | Import from |
-|------|-------------|
-| `engine.compressPdf()` … all §2.6 tools | `@gopdfjs/engine` (`Gopdf` types; `createEngine` exists but not the default app path) |
-| Browser | `@gopdfjs/adapter-browser` → `createBrowserGopdf()` |
-| Node | `@gopdfjs/adapter-node` → `createNodeGopdf()` |
+| Package | Apps import |
+|---------|-------------|
+| `@gopdfjs/engine` | `Gopdf` types + `engine.*()` |
+| `@gopdfjs/adapter-browser` | `createBrowserGopdf()` |
+| `@gopdfjs/adapter-node` | `createNodeGopdf()` |
 
-**Not public / not ready for apps:**
+**Not v1 public:** `@gopdfjs/adapter` (custom adapter story not ready).
 
-| Package | Status |
-|---------|--------|
-| `@gopdfjs/adapter` | Internal — engine + `adapter-*` only. Custom `GopdfAdapter` / `createBrowserAdapter()` story **not** v1 public. |
+## Monorepo-internal — `private: true`, not consumer npm
 
-**Never consumer-facing:** `@gopdfjs/wasm`, `@gopdfjs/runtime`, `@gopdfjs/model`, `@gopdfjs/plugin`, `@gopdfjs/plugin-*`, `@gopdfjs/fixtures`.
+RFC 0058 §2.1 — implementation stays in repo; **禁止产品 import**:
 
-## Package inventory (`packages/`)
+| Path | Role |
+|------|------|
+| `@gopdfjs/plugin-*` | Feature impl — engine wires only |
+| `@gopdfjs/runtime` | Plugin capability API |
+| `@gopdfjs/plugin` | Domain types |
+| `@gopdfjs/model` | Shared shapes |
+| `@gopdfjs/adapter` | Port contracts (engine + adapters) |
+| `@gopdfjs/wasm` | WASM bindgen `pkg/` |
+| `@gopdfjs/fixtures` | Dev/e2e only |
 
-| Package | Role | Publish? |
-|---------|------|----------|
-| `@gopdfjs/engine` | Consumer facade — `createEngine()` wires plugins | **Yes** (primary) |
-| `@gopdfjs/adapter-browser` | Browser `GopdfAdapter` + `createBrowserGopdf()` | **Yes** |
-| `@gopdfjs/adapter-node` | Node `GopdfAdapter` + `createNodeGopdf()` | **Yes** |
-| `@gopdfjs/adapter` | Port types — engine + `adapter-*` only | **Yes** (transitive; **not** v1 consumer import) |
-| `@gopdfjs/wasm` | Single `pkg/` (web target); adapters init | **Yes** (transitive) |
-| `@gopdfjs/runtime` | `GopdfRuntime` — plugins only | **Yes** (transitive) |
-| `@gopdfjs/plugin` | Domain option/result types | **Yes** (transitive) |
-| `@gopdfjs/model` | `PdfDocument`, `CanvasSurface` | **Yes** (transitive) |
-| `@gopdfjs/plugin-shrink` | compress | **Yes** (transitive) |
-| `@gopdfjs/plugin-grayscale` | grayscale | **Yes** (transitive) |
-| `@gopdfjs/plugin-struct` | merge, split, rotate, … | **Yes** (transitive) |
-| `@gopdfjs/plugin-extract` | pdfToWord, extractImages, … | **Yes** (transitive) |
-| `@gopdfjs/plugin-repair` | repairPdf | **Yes** (transitive) |
-| `@gopdfjs/plugin-redact` | redactPdf | **Yes** (transitive) |
-| `@gopdfjs/plugin-annotate` | applyEdits | **Yes** (transitive) |
-| `@gopdfjs/plugin-author` | htmlToPdf, markdownToHtml | **Yes** (transitive) |
-| `@gopdfjs/plugin-inspect` | analyzePdf | **Yes** (transitive) |
-| `@gopdfjs/plugin-compare` | compare (engine-only) | **Yes** (transitive) |
-| `@gopdfjs/fixtures` | Test PDFs | **Never** |
+Engine **bundles or workspace-resolves** plugins at build time — consumers do not add `@gopdfjs/plugin-shrink` etc.
 
-Apps (`apps/demo`, `apps/site`) stay **private**.
+## OSS publish gate (this repo)
 
-## Current state (pre-publish)
+| Gate | Command / artifact |
+|------|---------------------|
+| Public export guards | `pnpm check:public-exports` · `check:layer-deps` |
+| Unit tests | `pnpm test` · `pnpm test:rust` |
+| Browser acceptance | `pnpm test:e2e` |
+| Build | `dist/` via **Vite library mode** on the **3 public** packages |
+| npm metadata | `publishConfig.access: public` on those 3 only |
+
+**Not in this repo:** `gopdf-cli` subcommands · MCP install · ilovepdf UI.
+
+## Current state
 
 | Gate | Status |
 |------|--------|
 | `pnpm check:public-exports` | ✓ |
 | `pnpm check:layer-deps` | ✓ |
-| `createEngine` covers `Gopdf` (§2.6) | ✓ — compare on engine, no `loadDocument` leak |
-| Browser e2e (`pnpm test:e2e`) | ✓ (34/34) |
-| `"private": true` on all publishable pkgs | **Blocker** — remove per package at release |
-| `dist/` JS + `.d.ts` build | **Blocker** — not defined; exports still point at `src/` |
-| `exports` → `dist/` only (RFC §3.5) | **Blocker** |
-| Bundler WASM docs (Vite/webpack) | **Todo** — § below |
+| `createEngine` covers `Gopdf` (§2.6) | ✓ |
+| Browser e2e | ✓ |
+| `dist/` on engine + adapters | **Todo** |
+| Engine bundles internal deps for npm | **Todo** (Vite lib build) |
 
-## Before first npm publish (each package)
+## Monorepo dev (Vite)
 
-1. Add `build` → `dist/` (JS + `.d.ts`). Monorepo convention TBD (`tsup` / `tsc` — pick one shared config).
-2. Rewrite `package.json` `exports` / `main` / `types` to `dist/` paths only.
-3. Set `"files": ["dist"]` (+ `pkg/` for `@gopdfjs/wasm`).
-4. Remove `"private": true` or use `"publishConfig": { "access": "public" }`.
-5. Run `pnpm build:wasm` before publishing adapters.
+Public packages expose **`exports.development` → `./src/*.ts`**. Vite (demo, site) resolves source directly — **no `dist/` build for local dev**.
 
-## Publish order
-
-Avoid dev-only engine ↔ adapter cycle at **runtime** (pnpm tolerates it in workspace):
-
-```
-model → plugin → runtime → adapter
-  → wasm (pnpm build:wasm)
-  → plugin-* (any order)
-  → engine
-  → adapter-browser · adapter-node
+```bash
+pnpm build:wasm   # once
+pnpm dev demo     # Vite + HMR on workspace packages
 ```
 
-`engine` lists adapters in `devDependencies` (tests only). Adapters depend on `engine` at runtime for `createBrowserGopdf()` — publish adapters **after** engine.
+Publish build (`pnpm --filter=@gopdfjs/engine build`) uses the same Vite toolchain in **library mode** — not a separate bundler.
 
-## Automated guards (`pnpm test` / CI)
+## Before first npm publish (3 packages only)
+
+1. `engine` build bundles `@gopdfjs/plugin-*` + runtime deps (no separate plugin npm installs for consumers).
+2. `adapter-browser` / `adapter-node` ship WASM + boot helpers; `pnpm build:wasm` first.
+3. `exports` → `dist/` on the 3 public packages only.
+4. `publishConfig.access: public` — **only** engine · adapter-browser · adapter-node.
+
+## Automated guards
 
 - `pnpm check:layer-deps` — `plugin-*` prod deps must not pull `@gopdfjs/adapter*` / `engine`
-- `pnpm check:public-exports` — engine exports only `"."`; adapter barrels must not re-export engine/plugins/WASM ports
+- `pnpm check:public-exports` — engine exports only `"."`; adapter barrels must not re-export engine/plugins/WASM
 
-## Bundler guidance (browser)
+## Bundler guidance (browser consumers)
 
-Hosts bundling `@gopdfjs/adapter-browser` need:
+Your app already uses Vite — mirror `apps/demo/vite.config.ts`:
 
-- Top-level `await` (WASM init)
-- WASM asset resolution for `@gopdfjs/wasm/gopdf_wasm_bg.wasm`
+```ts
+// vite.config.ts — same as apps/demo
+import wasm from "vite-plugin-wasm";
+import topLevelAwait from "vite-plugin-top-level-await";
 
-Document concrete Vite / webpack snippets here before v1. See RFC 0057 §4.3.
+export default defineConfig({
+  plugins: [wasm(), topLevelAwait()],
+  optimizeDeps: { exclude: ["@gopdfjs/engine"] },
+  worker: { format: "es", plugins: () => [wasm(), topLevelAwait()] },
+});
+```
+
+**Monorepo / linked packages:** `exports.development` points at TypeScript source; Vite picks it up in dev without prebuilding `dist/`.
+
+WASM asset: `@gopdfjs/wasm/gopdf_wasm_bg.wasm` (resolved via adapter-browser). See RFC 0057 §4.3.
 
 ## Versioning
 
-- Lockstep `0.x` until first stable API freeze, or independent semver per package (prefer lockstep for `plugin-*` + `engine`).
-- Changelog: TBD (`CHANGELOG.md` per package or monorepo root).
+Lockstep `0.x` for the 3 public packages until API freeze.

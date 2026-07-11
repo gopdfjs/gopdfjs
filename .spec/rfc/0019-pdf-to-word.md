@@ -81,9 +81,9 @@ tests:
 |---------|---------|---------|-------|-------|
 | **npm** | `@gopdfjs/engine` | isomorphic (target) | **Not started** | `pdfToDocx()` (planned) — browser Worker today; Node in same pkg; split `-node` only if blocked |
 | **CLI** | `gopdf-cli pdf-to-word` | node | **Out of repo** | [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) — not OSS gate |
-| **Rust / WASM** | — | — | Not started | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |
+| **Rust / WASM** | — | — | Not started | per RFC + [0057](completed/0057-rust-wasm-engine-architecture.md) |
 | **Vitest** | — | — | **Partial** | `packages/engine (planned)` |
 | **Browser e2e** | — | browser | **Not done** | `apps/demo/e2e/tools/pdf-to-word.spec.ts` |
 | **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: **NOT STARTED** (L1) — OSS gate only ([0058 §3.5](../0058-engine-plugin-charter.md) · [`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)). **Not** gated on `gopdf-cli` (separate repo).
+**Verdict**: **NOT STARTED** (L1) — OSS gate only ([`docs/PUBLISHING.md`](../../docs/PUBLISHING.md) · [`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)). **Not** gated on `gopdf-cli` (separate repo).

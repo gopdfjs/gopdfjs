@@ -1,14 +1,19 @@
 {
   "name": "@gopdfjs/adapter-browser",
   "version": "0.1.0",
-  "private": true,
   "description": "Browser GopdfAdapter — loads shared @gopdfjs/wasm (init fetches .wasm), pdf.js, canvas. Run pnpm --filter=@gopdfjs/wasm build:wasm first.",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "development": "./src/index.ts",
+      "import": "./dist/index.js"
+    }
   },
   "scripts": {
-    "test": "vitest run"
+    "test": "vitest run",
+    "build": "vite build",
+    "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
     "@gopdfjs/adapter": "workspace:*",
@@ -19,7 +24,15 @@
   },
   "devDependencies": {
     "typescript": "^5.0.0",
+    "vite": "^7.2.0",
+    "vite-plugin-dts": "^4.5.4",
     "vitest": "^3.0.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ]
 }

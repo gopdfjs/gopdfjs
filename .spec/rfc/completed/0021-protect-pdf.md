@@ -40,9 +40,9 @@ The browser's `SubtleCrypto` API (specifically `crypto.subtle.encrypt` with AES-
 |---------|---------|---------|-------|-------|
 | **npm** | `@gopdfjs/plugin-struct` | isomorphic | **Partial** | `protectPdf()` — one pkg, Node + browser |
 | **CLI** | `gopdf-cli protect` | node | **Out of repo** | [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) — not OSS gate |
-| **Rust / WASM** | — | — | Web Crypto (Node + browser) | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |
+| **Rust / WASM** | — | — | Web Crypto (Node + browser) | per RFC + [0057](0057-rust-wasm-engine-architecture.md) |
 | **Vitest** | — | — | **Partial** | `packages/plugin-struct` |
 | **Browser e2e** | — | browser | **Done** | `apps/demo/e2e/tools/all-tools.spec.ts` |
 | **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: **PARTIAL** — OSS gate only ([0058 §3.5](../0058-engine-plugin-charter.md) · [`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)). **Not** gated on `gopdf-cli` (separate repo).
+**Verdict**: **PARTIAL** — OSS gate only ([`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)). **Not** gated on `gopdf-cli` (separate repo).

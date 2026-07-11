@@ -1,7 +1,7 @@
 
 # RFC 0061 - Understand PDF
 
-- **Status**: Implemented (product — L3); Planned (L1 `analyze_pdf` per [RFC 0058](0058-engine-plugin-charter.md) §3.2.3)
+- **Status**: Implemented (product — L3); Planned (L1 `analyze_pdf` per [RFC 0059](0059-pdf-object-layer.md))
 - **Author**: Antigravity
 - **Date**: 2026-03-22
 
@@ -47,9 +47,9 @@ This matches the original spec below. Implementation lives in the **product app*
 | **npm** | `@gopdfjs/plugin-inspect` | isomorphic | **Partial** | JS metadata until L1 lands |
 | **npm** | `@gopdfjs/engine` | isomorphic (target) | **Not started** | planned `analyzePdf()` in same engine pkg |
 | **CLI** | `gopdf-cli inspect` | node | **Out of repo** | [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) — not OSS gate |
-| **Rust / WASM** | — | — | Planned `analyze_pdf` | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |
+| **Rust / WASM** | — | — | Planned `analyze_pdf` | per RFC + [0057](completed/0057-rust-wasm-engine-architecture.md) |
 | **Vitest** | — | — | **Partial** | `packages/plugin-inspect + packages/engine` |
 | **Browser e2e** | — | browser | **Not done** | `apps/demo/e2e/tools/understand-pdf.spec.ts` |
 | **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: **PARTIAL** — OSS gate only ([0058 §3.5](../0058-engine-plugin-charter.md) · [`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)). **Not** gated on `gopdf-cli` (separate repo).
+**Verdict**: **PARTIAL** — OSS gate only ([`docs/PUBLISHING.md`](../../docs/PUBLISHING.md) · [`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)). **Not** gated on `gopdf-cli` (separate repo).

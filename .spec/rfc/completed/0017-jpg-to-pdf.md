@@ -42,9 +42,9 @@ Convert raster image files into search-optimized PDF documents.
 | **npm** | `@gopdfjs/plugin-struct` | isomorphic | **Partial** | pdf-lib assembly — one pkg |
 | **npm** | `@gopdfjs/engine` | isomorphic (target) | **Partial** | `encodeImages` — one pkg with runners |
 | **CLI** | `gopdf-cli jpg-to-pdf` | node | **Out of repo** | [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) — not OSS gate |
-| **Rust / WASM** | — | — | Hybrid encode leg | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |
+| **Rust / WASM** | — | — | Hybrid encode leg | per RFC + [0057](0057-rust-wasm-engine-architecture.md) |
 | **Vitest** | — | — | **Partial** | `packages/plugin-struct + packages/engine` |
 | **Browser e2e** | — | browser | **Done** | `apps/demo/e2e/tools/all-tools.spec.ts` |
 | **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: **PARTIAL** — OSS gate only ([0058 §3.5](../0058-engine-plugin-charter.md) · [`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)). **Not** gated on `gopdf-cli` (separate repo).
+**Verdict**: **PARTIAL** — OSS gate only ([`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)). **Not** gated on `gopdf-cli` (separate repo).

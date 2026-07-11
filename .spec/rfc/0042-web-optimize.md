@@ -50,9 +50,9 @@ const result = await linearizePdf(inputBytes);
 |---------|---------|---------|-------|-------|
 | **npm** | `@gopdfjs/engine` | isomorphic (target) | **Partial** | `linearizePdf()` — browser Worker today; Node in same pkg; split `-node` only if blocked |
 | **CLI** | `gopdf-cli linearize` | node | **Out of repo** | [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) — not OSS gate |
-| **Rust / WASM** | — | — | Partial stub | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |
+| **Rust / WASM** | — | — | Partial stub | per RFC + [0057](completed/0057-rust-wasm-engine-architecture.md) |
 | **Vitest** | — | — | **Partial** | `packages/engine` |
 | **Browser e2e** | — | browser | **Not done** | `apps/demo/e2e/tools/web-optimize.spec.ts` |
 | **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: **PARTIAL** — OSS gate only ([0058 §3.5](../0058-engine-plugin-charter.md) · [`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)). **Not** gated on `gopdf-cli` (separate repo).
+**Verdict**: **PARTIAL** — OSS gate only ([`docs/PUBLISHING.md`](../../docs/PUBLISHING.md) · [`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)). **Not** gated on `gopdf-cli` (separate repo).

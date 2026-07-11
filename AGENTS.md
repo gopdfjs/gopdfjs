@@ -36,6 +36,7 @@
 
 - `.spec/ROADMAP.md` · `.spec/TASK_TRACKING.md`
 - `.spec/rfc/NNNN-*.md`；归档 `completed/` · `pending/` · `rejected/`
-- **Umbrella RFC**：子 RFC 全部生成后 **close** → 移入 `completed/`（见 ROADMAP § Umbrella RFC lifecycle）
+- **Umbrella RFC**：子 RFC 全部生成后 **close** → `completed/`（见 ROADMAP § Umbrella RFC lifecycle）
+- **架构 RFC**（0057、0058）= **普通 RFC**；架构落地后 **close** → `completed/`。关不掉 = mono RFC → 拆子 RFC / TASK_TRACKING（见 ROADMAP § RFC lifecycle）
 - 发布：`docs/PUBLISHING.md`
 - E2E：`apps/demo/e2e/` · skill **`gopdf-e2e`** · `pnpm test:e2e`

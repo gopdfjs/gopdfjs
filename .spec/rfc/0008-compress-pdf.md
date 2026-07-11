@@ -200,9 +200,9 @@ Add `lopdf` (or chosen alternative) as an optional dependency behind a Cargo fea
 |---------|---------|---------|-------|-------|
 | **npm** | `@gopdfjs/engine` | isomorphic (target) | **Done** (P1) | `compressPdf()` — browser Worker today; Node in same pkg; split `-node` only if blocked |
 | **CLI** | `gopdf-cli compress` | node | **Out of repo** | [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) — not OSS gate |
-| **Rust / WASM** | — | — | P1 Done | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |
+| **Rust / WASM** | — | — | P1 Done | per RFC + [0057](completed/0057-rust-wasm-engine-architecture.md) |
 | **Vitest** | — | — | **Partial** | `packages/engine` |
 | **Browser e2e** | — | browser | **Done** | `apps/demo/e2e/tools/compress.spec.ts` |
 | **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: **PARTIAL** — OSS gate only ([0058 §3.5](../0058-engine-plugin-charter.md) · [`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)). **Not** gated on `gopdf-cli` (separate repo).
+**Verdict**: **PARTIAL** — OSS gate only ([`docs/PUBLISHING.md`](../../docs/PUBLISHING.md) · [`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)). **Not** gated on `gopdf-cli` (separate repo).

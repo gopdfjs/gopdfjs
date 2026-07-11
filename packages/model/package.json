@@ -1,7 +1,6 @@
 {
   "name": "@gopdfjs/model",
   "version": "0.1.0",
-  "private": true,
   "description": "Shared PDF document/canvas types — adapter ports and plugin runtime (zero env deps)",
   "type": "module",
   "exports": {
@@ -15,5 +14,6 @@
     "typescript": "^5",
     "vitest": "^3.0.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "private": true
 }

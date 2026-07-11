@@ -24,7 +24,7 @@ Consumer  →  engine.*()           (@gopdfjs/engine — public API)
 
 Engine **builds runtime from adapter** and **exposes plugin methods as `Gopdf`**. Products never import `plugin-*` or `adapter` directly.
 
-Design: `.spec/rfc/0058-engine-plugin-charter.md` · WASM: `.spec/rfc/0057-rust-wasm-engine-architecture.md`.
+Design: `.spec/rfc/completed/0058-engine-plugin-charter.md` · WASM: `.spec/rfc/completed/0057-rust-wasm-engine-architecture.md`.
 
 ## Packages
 

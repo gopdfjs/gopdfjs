@@ -32,9 +32,9 @@ Allow users to extract specific pages or ranges from a PDF and save them as new 
 |---------|---------|---------|-------|-------|
 | **npm** | `@gopdfjs/plugin-struct` | isomorphic | **Partial** | split helpers — one pkg, Node + browser |
 | **CLI** | `gopdf-cli split` | node | **Out of repo** | [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) — not OSS gate |
-| **Rust / WASM** | — | — | N/A | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |
+| **Rust / WASM** | — | — | N/A | per RFC + [0057](0057-rust-wasm-engine-architecture.md) |
 | **Vitest** | — | — | **Partial** | `packages/plugin-struct` |
 | **Browser e2e** | — | browser | **Done** | `apps/demo/e2e/tools/all-tools.spec.ts` |
 | **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: **PARTIAL** — OSS gate only ([0058 §3.5](../0058-engine-plugin-charter.md) · [`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)). **Not** gated on `gopdf-cli` (separate repo).
+**Verdict**: **PARTIAL** — OSS gate only ([`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)). **Not** gated on `gopdf-cli` (separate repo).

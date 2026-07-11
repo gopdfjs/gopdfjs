@@ -61,11 +61,11 @@ gopdfjs/                          # OSS monorepo
 |------|------|
 | **Tool RFC**（0006+） | 定义 `@gopdfjs/*` 包 + CLI；验收：`cargo test` · 包 Vitest · `apps/demo/e2e/tools/<slug>.spec.ts` |
 | **Umbrella RFC**（0001–0004） | 只规划；**子 RFC 文件齐了就 close** → `completed/`；**禁止 reopen** |
-| **Charter**（0057、0058） | 架构；保持 active |
+| **架构 RFC**（0057、0058） | 普通 RFC；完成 **close** → `completed/`；关不掉 = mono RFC → split |
 | **索引** | `.spec/ROADMAP.md` · `.spec/TASK_TRACKING.md` |
 | **发布** | `docs/PUBLISHING.md` |
 
-Umbrella 生命周期：`.spec/ROADMAP.md` § **Umbrella RFC lifecycle**。
+RFC 生命周期：`.spec/ROADMAP.md` § **RFC lifecycle**（umbrella · architecture · tool 同一规则）。
 
 ---
 
@@ -89,6 +89,7 @@ Umbrella 生命周期：`.spec/ROADMAP.md` § **Umbrella RFC lifecycle**。
 - **Skills**（`.cursor/skills/`）：
   - **`gopdf-browser-pdf-wasm`** — Rust/WASM/Worker、RFC 0057/0058
   - **`gopdf-e2e`** — Playwright、`apps/demo/e2e/`、RFC 浏览器验收
+  - **`gopdf-vite-sanity`** — Vite publish sanity（3 public pkgs · dist leak check）→ `.claude/skills/gopdf-vite-sanity/`
   - **`create-persona`** — 人格文档
 
 ---

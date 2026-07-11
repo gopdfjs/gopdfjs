@@ -8,7 +8,7 @@
 
 ## Context
 
-Structure, layout, and annotation tools — merge, split, reorder, crop, sign, watermark, etc. **L3**: `pdf-lib` + canvas; not WASM per [0057](../0057-rust-wasm-engine-architecture.md) / [0058](../0058-engine-plugin-charter.md) matrix.
+Structure, layout, and annotation tools — merge, split, reorder, crop, sign, watermark, etc. **L3**: `pdf-lib` + canvas; not WASM per [0057](0057-rust-wasm-engine-architecture.md) / [0058](0058-engine-plugin-charter.md) matrix.
 
 ## Technical goals (original)
 

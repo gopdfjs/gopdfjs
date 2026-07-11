@@ -209,8 +209,7 @@ IMPL_STATUS_RE = re.compile(
 )
 
 VERDICT = (
-    "**Verdict**: {verdict} — OSS gate only ([0058 §3.5](../0058-engine-plugin-charter.md) · "
-    "[`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)). "
+    "**Verdict**: {verdict} — OSS gate only ([`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)). "
     "**Not** gated on `gopdf-cli` (separate repo)."
 )
 
@@ -316,7 +315,7 @@ def implementation_block(stem: str, section: str = "6", e2e_done: bool | None = 
         f"| **CLI** | `{spec.cli}` | node | **Out of repo** | [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) — not OSS gate |"
     )
     rows.append(
-        f"| **Rust / WASM** | — | — | {spec.wasm} | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |"
+        f"| **Rust / WASM** | — | — | {spec.wasm} | per RFC + [0057](completed/0057-rust-wasm-engine-architecture.md) |"
     )
     rows.append(
         f"| **Vitest** | — | — | **Partial** | `{spec.vitest}` |"

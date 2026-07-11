@@ -22,4 +22,4 @@ model: inherit
 ## 必读
 
 - `docs/persona/maya-okonkwo.md`
-- `.spec/rfc/0057-rust-wasm-engine-architecture.md`、`.spec/rfc/0058-engine-plugin-charter.md`
+- `.spec/rfc/completed/0057-rust-wasm-engine-architecture.md`、`.spec/rfc/completed/0058-engine-plugin-charter.md`

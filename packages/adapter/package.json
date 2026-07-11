@@ -1,7 +1,6 @@
 {
   "name": "@gopdfjs/adapter",
   "version": "0.1.0",
-  "private": true,
   "description": "Adapter contracts for @gopdfjs/adapter-browser and @gopdfjs/adapter-node",
   "type": "module",
   "exports": {
@@ -26,5 +25,6 @@
     "typescript": "^5",
     "vitest": "^3.0.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "private": true
 }

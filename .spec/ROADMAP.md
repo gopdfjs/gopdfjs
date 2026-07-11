@@ -16,7 +16,7 @@ RFC bodies: `.spec/rfc/NNNN-kebab-slug.md` (active) · `.spec/rfc/completed/` (s
 .spec/rfc/
   NNNN-slug.md          ← active tool / WASM / proposed
   _template.md          ← tool RFC
-  completed/            ← shipped tools + **closed umbrellas**
+  completed/            ← every closed RFC (tool · umbrella · architecture)
   pending/              ← deferred (AI)
 ```
 
@@ -28,10 +28,9 @@ RFC bodies: `.spec/rfc/NNNN-kebab-slug.md` (active) · `.spec/rfc/completed/` (s
 | **PARTIAL** | Code in monorepo, but Vitest · browser e2e · or npm publish prep still open |
 | **NOT STARTED** | No meaningful implementation in this repo |
 | **DEFERRED** | In `pending/` — blocked on browser-only AI path |
-| **CHARTER** | Architecture doc — stays active until superseded |
-| **CLOSED** | Umbrella: child RFCs generated → `completed/`; do not reopen |
+| **CLOSED** | Spec job done → `completed/`; do not reopen |
 
-**OSS publish gate (RFC 0058 §3.5 + [`docs/PUBLISHING.md`](../docs/PUBLISHING.md))** — verdicts **ignore** [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) (separate repo):
+**OSS publish gate ([`docs/PUBLISHING.md`](../docs/PUBLISHING.md))** — verdicts **ignore** [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) (separate repo):
 
 | Gate | Where |
 |------|--------|
@@ -59,8 +58,8 @@ Ship **`@gopdfjs/engine`** + **`adapter-browser`** + **`adapter-node`** to npm. 
 
 | Priority | Item | Status |
 |----------|------|--------|
-| **P0** | Shared `dist/` build + `exports` rewrite | ❌ |
-| **P0** | Remove `"private": true` / `publishConfig` | ❌ |
+| **P0** | `dist/` build on **3 public packages only** (engine + adapters) | ❌ |
+| **P0** | `publishConfig` on those 3 only — **plugin-* stay `private`** | partial |
 | **P0** | Bundler WASM docs (Vite) | ❌ |
 | **P1** | Plugin Vitest gaps (organize · crop · sign · page-numbers · header-footer) | ❌ |
 | **P1** | OCR demo route + e2e (0020) | ❌ |
@@ -71,7 +70,7 @@ Ship **`@gopdfjs/engine`** + **`adapter-browser`** + **`adapter-node`** to npm. 
 
 ## Full implementation snapshot (2026-07-11)
 
-### Closed / charter
+### Closed (umbrellas + architecture RFCs)
 
 | ID | RFC | Verdict | Consumer (ilovepdf) | WASM L1 | Monorepo | Tests | Notes |
 |----|-----|---------|---------------------|---------|----------|-------|-------|
@@ -80,8 +79,8 @@ Ship **`@gopdfjs/engine`** + **`adapter-browser`** + **`adapter-node`** to npm. 
 | 0003 | Editing umbrella | **CLOSED** | — | — | — | — | Umbrella → 0006–0016, 0026, 0030–0032, 0040–0041, 0044–0045; [completed/0003](rfc/completed/0003-editing-organization-tools.md) |
 | 0004 | Optimize/security umbrella | **CLOSED** | — | — | — | — | Child RFCs generated; [completed/0004](rfc/completed/0004-optimization-security-advanced-tools.md) |
 | 0005 | i18n | **MOVED OUT** | ilovepdf / gopdf.fyi | n/a | removed from OSS | — | Product `use-intl` stack; site uses i18next only |
-| 0057 | WASM Worker arch | **PARTIAL** | n/a | Worker + 4 ops | `packages/engine` | compress only | Approved; matrix matches code except 0028/0042 depth |
-| 0058 | WASM PDF charter | **PARTIAL** | n/a | see L1 column | docs only | — | Approved; **PDF Object Layer** not built; 0058 §3.1 overstates 0028/0042 |
+| 0057 | WASM Worker arch | **CLOSED** | n/a | Worker + 4 ops | `packages/engine` | compress only | Architecture RFC closed 2026-07-11; [completed/0057](rfc/completed/0057-rust-wasm-engine-architecture.md) |
+| 0058 | Engine plugin layering | **CLOSED** | n/a | see L1 column | docs + layers | export guards ✓ | Architecture RFC closed 2026-07-11; impl → [0059](rfc/0059-pdf-object-layer.md) · [PUBLISHING](../docs/PUBLISHING.md) |
 
 ### Shipped tools (`completed/`) — OSS npm surface
 
@@ -160,7 +159,7 @@ Ship **`@gopdfjs/engine`** + **`adapter-browser`** + **`adapter-node`** to npm. 
 | 0047 | Chat with PDF | **DEFERRED** | same |
 | 0048 | AI translate | **DEFERRED** | same |
 
-Reserved: **0059**, **0060**.
+Reserved: **0060**.
 
 ---
 
@@ -170,24 +169,10 @@ Reserved: **0059**, **0060**.
 |---------|-------|---------------------|
 | **DONE** (strict OSS) | 0 | — npm `dist` + publish blocks all tools |
 | **DONE** (0008 P1 only) | 1 | 0008 Phase 1 — WASM + dedicated e2e |
-| **PARTIAL** | 20 | 0006–0018, 0020–0022, 0008 P2, 0028, 0042, 0057, 0058, 0035?, 0061 |
-| **CLOSED** | 4 | 0001–0004 umbrellas |
-| **CHARTER** | 2 | 0057, 0058 architecture |
-| **NOT STARTED** | 28 | 0019, 0023–0027, 0029–0034, 0036–0041, 0043–0045, 0049–0056 |
+| **PARTIAL** | 18 | 0006–0018, 0020–0022, 0008 P2, 0028, 0042, 0035?, 0061 |
+| **CLOSED** | 6 | 0001–0004 umbrellas · 0057 · 0058 architecture |
+| **NOT STARTED** | 29 | 0019, 0023–0027, 0029–0034, 0036–0041, 0043–0045, 0049–0056, 0059 |
 | **DEFERRED** | 3 | 0046–0048 |
-
----
-
-## Known drift (fix in spec pass)
-
-1. ~~**0058 §3.1** marks 0028 / 0042 as «已实现»~~ — **fixed 2026-06-28** → Partial stub
-2. ~~**0061** live on product vs RFC **Proposed**~~ — **fixed 2026-06-28** → Implemented (L3) / Planned (L1)
-3. ~~**`packages/tools`**~~ — removed; consume `@gopdfjs/*` npm directly
-4. **0058 PDF Object Layer** — planned; blocks 0008 P2, full 0028/0042, 0061 L1
-5. ~~**0005** — `apps/site/messages/` + parity tests~~ — **done 2026-06-28**
-6. ~~**completed/0006–0022** missing §6 monorepo honesty~~ — **fixed 2026-06-28**
-7. **Runtime model** — **fixed 2026-06-28** — one npm pkg default; split `-node` only if blocked ([0058 §2.3](rfc/0058-engine-plugin-charter.md))
-8. **CLI not OSS gate** — **fixed 2026-07-11** — `gopdf-cli` is separate repo; ROADMAP/RFC §6 verdicts = npm + tests only
 
 ---
 
@@ -221,8 +206,9 @@ Reserved: **0059**, **0060**.
 | 0023–0045 | (proposed tools) | Proposed | active |
 | 0046–0048 | (AI) | Deferred | pending |
 | 0049–0056 | (proposed tools) | Proposed | active |
-| 0057 | [WASM Worker](rfc/0057-rust-wasm-engine-architecture.md) | Approved | active |
-| 0058 | [WASM charter](rfc/0058-engine-plugin-charter.md) | Approved | active |
+| 0057 | [WASM Worker](rfc/completed/0057-rust-wasm-engine-architecture.md) | Closed | completed |
+| 0058 | [Engine layering](rfc/completed/0058-engine-plugin-charter.md) | Closed | completed |
+| 0059 | [PDF Object Layer](rfc/0059-pdf-object-layer.md) | Proposed | active |
 | 0061 | [Understand PDF](rfc/0061-understand-pdf.md) | Implemented (L3) / Planned (L1) | active |
 
 *(Full paths for 0023–0056: see `.spec/rfc/` listing.)*
@@ -242,22 +228,22 @@ Reserved: **0059**, **0060**.
 
 ## RFC conventions
 
-- **Active**: `.spec/rfc/NNNN-kebab-slug.md` — tool specs, WASM, proposed work
-- **Shipped / closed**: `.spec/rfc/completed/` — shipped tools **and closed umbrellas**
+- **Active**: `.spec/rfc/NNNN-kebab-slug.md`
+- **Closed**: `.spec/rfc/completed/` — **every** finished RFC (tool · umbrella · architecture)
 - **Deferred**: `.spec/rfc/pending/`
-- **Tasks**: only [TASK_TRACKING.md](TASK_TRACKING.md)
+- **Tasks**: [TASK_TRACKING.md](TASK_TRACKING.md) · publish gates: [PUBLISHING.md](../docs/PUBLISHING.md)
 
-### Umbrella RFC lifecycle
+### RFC lifecycle (all types — no exemptions)
 
-1. **Create** umbrella (0001-style) with themes + coverage map TBD.
-2. **Spawn** numbered child RFCs (0006+, pending/, etc.) — one canonical spec per tool/theme.
-3. **Close** umbrella when coverage map rows **all point at existing child RFC files**:
-   - Set `Status: Closed (umbrella — child RFCs generated)` + `Closed: YYYY-MM-DD`
-   - Move to `.spec/rfc/completed/`
-   - Update ROADMAP + TASK_TRACKING same PR
-4. **Never reopen** umbrella for new work → new child RFC **0062+** or amend child.
-5. **Implementation** progress lives in **child RFCs only** — not umbrella reopen.
+**Charter / umbrella are names, not a different lifecycle.** An RFC is an RFC.
 
-Charters **0057 / 0058** stay active (architecture, not tool umbrellas).
+1. **One concern** per file — no mono RFC mixing architecture + implementation backlog + publish checklist.
+2. **Close** when that concern’s spec job is done → `Status: Closed (…)` + `Closed: YYYY-MM-DD` → `completed/`.
+3. **Cannot close?** You wrote a mono RFC → **split** child RFCs (e.g. [0059](rfc/0059-pdf-object-layer.md)) or move work to TASK_TRACKING / PUBLISHING — then close the parent.
+4. **Never reopen** — new scope → new RFC **0062+** or amend a child.
 
-- **Review**: rfc-workflow Phase 1 — numeric order; next audit **0005** or first open tool RFC (0001–0004 closed)
+| Label | Close when |
+|-------|------------|
+| **Umbrella** (0001–0004) | Coverage map rows all point at existing child RFC files |
+| **Architecture** (0057, 0058) | Architecture accepted and encoded in repo |
+| **Tool** (0006+) | Per OSS gate in PUBLISHING + tool RFC §6 |

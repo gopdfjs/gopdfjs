@@ -1,6 +1,7 @@
 # RFC 0057 - Rust/WASM Engine Architecture & `GopdfEngine`
 
-- **Status**: Accepted (revised 2026-07-11 — WASM build per adapter; engine exports `.` only)
+- **Status**: Closed (architecture accepted)
+- **Closed**: 2026-07-11
 - **Author**: Antigravity (revised for `@gopdfjs` engine + adapter model)
 - **Date**: 2026-03-21
 
@@ -303,21 +304,18 @@ pnpm test:e2e
 
 `packages/engine/src/__tests__/integrationBytesChain.test.ts` 模式扩展到 **每个** `Gopdf` 方法（`createNodeGopdf` + fixture）。
 
-## 9. Success criteria
+## 9. Success criteria (architecture — closed)
 
 - [x] `pnpm build:wasm` → **单个** `@gopdfjs/wasm/pkg/`（web target，共享 `.wasm`）
 - [x] `@gopdfjs/engine` exports **only** `"."`
 - [x] `GopdfEngine` 由 browser + node adapter 实现（共享 `@gopdfjs/wasm`，各自 init）
 - [x] `createEngine` 为唯一 WASM 工具消费路径（engine 建 runtime，不 load pkg）
 - [x] Facade byte ownership 测试
-- [ ] Node adapter full port 单测
-- [ ] Browser e2e 全工具全绿
-- [ ] 10 MB 级 PDF 稳定（按工具抽测）
-- [ ] `gopdf_wasm_bg.wasm` gzip < 1 MB
-- [ ] PDF Object Layer → 解锁 0008 P2 / 真实 0028·0042
+
+Verification still open (Node ports · e2e · perf · Object Layer) → [TASK_TRACKING.md](../TASK_TRACKING.md) · [RFC 0059](../0059-pdf-object-layer.md).
 
 ## 10. Related
 
-- **RFC 0058** — engine + adapter charter、§2.6 方法表、发布门禁
+- **RFC 0058** — engine + adapter charter（closed）、§2.6 方法表
 - **RFC 0008** — compress P1
 - Skill **`gopdf-e2e`** · **`gopdf-browser-pdf-wasm`**

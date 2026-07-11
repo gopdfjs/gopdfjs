@@ -45,9 +45,9 @@ Facilitate high-fidelity rendering of PDF pages into JPEG/PNG image formats.
 |---------|---------|---------|-------|-------|
 | **npm** | `@gopdfjs/engine` | isomorphic (target) | **Partial** | pdf.js render via adapter canvas (`renderPage.ts` internal) + WASM encode |
 | **CLI** | `gopdf-cli pdf-to-jpg` | node | **Out of repo** | [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) — not OSS gate |
-| **Rust / WASM** | — | — | Hybrid | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |
+| **Rust / WASM** | — | — | Hybrid | per RFC + [0057](0057-rust-wasm-engine-architecture.md) |
 | **Vitest** | — | — | **Partial** | `packages/engine (renderPage.ts internal)` |
 | **Browser e2e** | — | browser | **Done** | `apps/demo/e2e/tools/all-tools.spec.ts` |
 | **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: **PARTIAL** — OSS gate only ([0058 §3.5](../0058-engine-plugin-charter.md) · [`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)). **Not** gated on `gopdf-cli` (separate repo).
+**Verdict**: **PARTIAL** — OSS gate only ([`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)). **Not** gated on `gopdf-cli` (separate repo).

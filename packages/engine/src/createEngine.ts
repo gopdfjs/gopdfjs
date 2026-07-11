@@ -1,4 +1,5 @@
-import type { CompressionLevel, Gopdf, GopdfAdapter } from "@gopdfjs/adapter/gopdf";
+import type { Gopdf, GopdfAdapter } from "@gopdfjs/adapter/gopdf";
+import type { CompressionLevel } from "@gopdfjs/adapter/engine";
 import { applyEdits } from "@gopdfjs/plugin-annotate";
 import { comparePdfText, createCompareSession, visualDiffCanvas } from "@gopdfjs/plugin-compare";
 import { htmlToPdf, markdownToHtml } from "@gopdfjs/plugin-author";
@@ -186,9 +187,9 @@ export function createEngine(adapter: GopdfAdapter): Gopdf {
       nUpPdf(ownPdfBytes(bytes), opts),
     fillPdfForm: (
       bytes: Uint8Array,
-      values: Parameters<Gopdf["fillPdfForm"]>[1],
-      options?: Parameters<Gopdf["fillPdfForm"]>[2],
-      fields?: Parameters<Gopdf["fillPdfForm"]>[3],
+      values: Parameters<typeof fillPdfForm>[1],
+      options?: Parameters<typeof fillPdfForm>[2],
+      fields?: Parameters<typeof fillPdfForm>[3],
     ) => fillPdfForm(ownPdfBytes(bytes), values, options, fields),
     addHeaderFooter: (bytes: Uint8Array, opts: Parameters<Gopdf["addHeaderFooter"]>[1]) =>
       addHeaderFooter(ownPdfBytes(bytes), opts),
@@ -215,8 +216,10 @@ export function createEngine(adapter: GopdfAdapter): Gopdf {
     createCompareSession: (bytesA: Uint8Array, bytesB: Uint8Array) =>
       createCompareSession(ownPdfBytes(bytesA), ownPdfBytes(bytesB), runtime),
 
-    visualDiffCanvases: (canvasA: HTMLCanvasElement, canvasB: HTMLCanvasElement) =>
-      visualDiffCanvas(canvasA, canvasB),
+    visualDiffCanvases: (
+      canvasA: Parameters<typeof visualDiffCanvas>[0],
+      canvasB: Parameters<typeof visualDiffCanvas>[1],
+    ) => visualDiffCanvas(canvasA, canvasB),
   });
 
   return gopdf;

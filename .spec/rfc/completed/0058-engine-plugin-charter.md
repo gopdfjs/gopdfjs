@@ -1,6 +1,7 @@
 # RFC 0058 - Engine Plugin Charter（PDF capability layering）
 
-- **Status**: Accepted (revised 2026-07-11 — WASM per adapter; engine `.` only)
+- **Status**: Closed (architecture accepted)
+- **Closed**: 2026-07-11
 - **Author**: GoPDF maintainers
 - **Date**: 2026-03-22
 
@@ -51,13 +52,14 @@
 | 路径 | 职责 | npm 发布 |
 |------|------|----------|
 | **`crates/`** | Rust 算法 | 否 |
-| **`packages/model`** | 共享 document/canvas 类型 | 是 |
-| **`packages/adapter`** | adapter 契约（零 env 依赖） | 是 |
-| **`packages/runtime`** | runtime 契约（`GopdfRuntime` + document） | 是 |
-| **`packages/plugin`** | plugin domain 契约 | 是 |
+| **`packages/model`** | 共享 document/canvas 类型 | **否** — internal |
+| **`packages/adapter`** | adapter 契约（零 env 依赖） | **否** — internal |
+| **`packages/runtime`** | runtime 契约（`GopdfRuntime` + document） | **否** — internal |
+| **`packages/plugin`** | plugin domain 契约 | **否** — internal |
+| **`packages/wasm`** | WASM bindgen + `pkg/` | **否** — internal（adapter 加载） |
 | **`packages/engine`** | `createEngine` 门面 | 是 |
 | **`packages/adapter-browser`** · **`adapter-node`** | 环境端口 + **own** wasm-pack `pkg/` | 是 |
-| **`packages/plugin-{struct,shrink,…}`** | feature plugin 逻辑（import `@gopdfjs/runtime` + `@gopdfjs/plugin`） | 是（实现单元；**不作为 consumer facade**） |
+| **`packages/plugin-{struct,shrink,…}`** | feature plugin 逻辑（import `@gopdfjs/runtime` + `@gopdfjs/plugin`） | **否** — monorepo `private`；engine 内部 wire；**禁止产品 import** |
 | **`packages/fixtures`** | 测试 fixture（dev only） | 否 |
 | **`apps/demo/`** | 浏览器 acceptance + Playwright e2e | 否 |
 | **`apps/site/`** | OSS 文档 | 否 |
@@ -320,7 +322,7 @@ const engine = createEngine(await createBrowserAdapter());
 | Plugin contract | plugin 只收 `GopdfRuntime` | `plugin-*` signatures | ✓ |
 | Engine-internal render | `pdfToJpeg` / `pdfToText` / `ocr` 持 adapter 闭包 | `packages/engine/src/*.ts` | ✓ |
 | Demo / e2e | 只 `engine.*()` | `apps/demo` | ✓ |
-| Public entry barrels | 主入口不暴露 adapter/WASM/plugin | `check-public-exports.py` | ✓ |
+| Public entry barrels | 主入口不暴露 adapter/WASM/plugin | `check-public-exports.mjs` | ✓ |
 | Engine exports | **only** `"."` on `@gopdfjs/engine` | `packages/engine/package.json` | ✓ |
 | WASM build | `packages/wasm/rust` → `@gopdfjs/wasm` `pkg/` | `pnpm build:wasm` | ✓ |
 | WASM load | adapter only；engine 不 load pkg | `adapter-*/src/engine.ts` | ✓ |
@@ -367,28 +369,13 @@ E2E 矩阵：
 
 Skill：**`gopdf-e2e`**。
 
-### 3.4 Node adapter 验收清单（待补全；env only）
+### 3.4 Node adapter 验收
 
-- [x] `createNodeAdapter()` 返回完整 `GopdfAdapter`
-- [x] `createNodeGopdf()` = `createEngine(await createNodeAdapter())`
-- [x] adapter ownership smoke：同一宿主 bytes 多次 engine 调用不 detach（主责在 engine facade）
-- [ ] `createNodeCanvasPort` 单测（surface · JPEG bytes）
-- [ ] `createNodeOcrPort` 单测（mock / fixture）
-- [ ] `createNodeEngine` WASM 四 op smoke（compress · encode · grayscale · linearize）
-- [ ] **每个 `Gopdf` 方法** Node integration test（`createNodeGopdf` + fixture）
+Architecture accepted. Open items → [TASK_TRACKING.md](../TASK_TRACKING.md) (P1 Node adapter).
 
-### 3.5 Publish checklist（`@gopdfjs/*` — **本仓 only**）
+### 3.5 Publish checklist
 
-**不含** [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli)（独立仓 · MCP · `gopdf install`）。
-
-- [ ] `createEngine` 覆盖 §2.6 全部方法
-- [ ] 工具包零 `@gopdfjs/engine` / `@gopdfjs/adapter-*` 依赖
-- [ ] `exports` 仅公开文档化路径；`@gopdfjs/engine` **only** `"."`；adapter 随包带 `pkg/` WASM
-- [ ] 每工具 Vitest（plugin 或 engine）+ browser demo e2e（`apps/demo/e2e/tools/`）
-- [ ] Browser e2e 全绿（`pnpm test:e2e`）
-- [ ] `pnpm test` + `pnpm test:rust` 全 monorepo 绿
-- [ ] `dist/` build · `exports` → dist · remove `private`
-- [ ] `docs/PUBLISHING.md` 版本与 changelog 同步
+Moved to [`docs/PUBLISHING.md`](../../docs/PUBLISHING.md) · [TASK_TRACKING.md](../TASK_TRACKING.md) (P0 publish). **Not** tracked on this closed RFC.
 
 ## 4. Plugin & acceleration layering
 
@@ -425,19 +412,13 @@ Skill：**`gopdf-e2e`**。
 - 可选择 JS-only 或经 engine 持有的 adapter WASM
 - **不**自行决定对外 API 形状
 
-### 4.3 PDF Object Layer（未来）
+### 4.3 PDF Object Layer
 
-见 §5 — 解锁 0008 P2、真实 0028/0042、0061 WASM `analyze_pdf`。不阻塞当前 adapter 发布模型。
+Implementation → **[RFC 0059](../0059-pdf-object-layer.md)**. Does not block current adapter publish model.
 
-## 5. PDF Object Layer（自建，非 lopdf）
+## 5. PDF Object Layer（moved）
 
-（保留原 §3.2 技术决策 — xref-as-index、惰性对象、增量写回、体积预算。）
-
-| 里程碑 | 状态 |
-|--------|------|
-| `pdf/xref.rs` + `parser.rs` + `writer.rs` | Not started |
-| RFC 0008 P2 图像重编码 | Blocked on Object Layer |
-| RFC 0061 `analyze_pdf` WASM op | Planned |
+Spec and milestones → **[RFC 0059](../0059-pdf-object-layer.md)** (split on charter close).
 
 ## 6. Non-goals
 
@@ -452,14 +433,13 @@ Skill：**`gopdf-e2e`**。
 - [x] `@gopdfjs/adapter` + `@gopdfjs/runtime` + `@gopdfjs/plugin` + `adapter-browser` + `adapter-node` 分包
 - [x] `apps/demo` 全工具路由 + e2e 矩阵骨架
 - [x] Byte ownership 测试（`@gopdfjs/adapter` · engine · adapters · `plugin-shrink`）
-- [ ] Node adapter env ports full unit coverage + `Gopdf` integration 单测
-- [ ] Browser e2e **全绿**（33 tools + compress + smoke）
-- [ ] 全部 `@gopdfjs/*` 发布到 npm（见 PUBLISHING.md）
-- [ ] ilovepdf 仅通过 `engine.*` 消费（零工具包直连）
+
+Remaining gates (npm publish, Node adapter, e2e) → [`docs/PUBLISHING.md`](../../docs/PUBLISHING.md) · [TASK_TRACKING.md](../TASK_TRACKING.md).
 
 ## 8. Related RFCs
 
-- **RFC 0057** — Rust/WASM 构建、`GopdfEngine` 实现、决策矩阵
-- **RFC 0008** — compress P1 Done；P2 待 Object Layer
-- **RFC 0028 / 0042** — WASM stub；完整版待 Object Layer
-- Tool RFCs 0006+ — 各声明 `Gopdf` 方法名 + e2e 路径
+- **RFC 0057** — Rust/WASM 构建、`GopdfEngine`（closed charter）
+- **RFC 0059** — PDF Object Layer（implementation）
+- **RFC 0008** — compress P1 Done；P2 blocked on 0059
+- **RFC 0028 / 0042** — WASM stub；full impl blocked on 0059
+- Tool RFCs 0006+ — `Gopdf` 方法名 + e2e 路径

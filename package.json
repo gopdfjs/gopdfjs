@@ -16,6 +16,7 @@
     "test": "pnpm test:rust && python3 .spec/scripts/check-layer-deps.py && python3 .spec/scripts/check-public-exports.py && turbo run test",
     "check:layer-deps": "python3 .spec/scripts/check-layer-deps.py",
     "check:public-exports": "python3 .spec/scripts/check-public-exports.py",
+    "check:vite-sanity": "node .claude/skills/gopdf-vite-sanity/scripts/vite-sanity-check.mjs",
     "test:coverage": "turbo run test:coverage",
     "test:e2e": "playwright test -c apps/demo/e2e/playwright.config.ts",
     "fixtures:download": "bash scripts/download-e2e-fixtures.sh",

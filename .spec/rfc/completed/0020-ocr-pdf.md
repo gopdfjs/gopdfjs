@@ -42,9 +42,9 @@ The current architecture — Worker pool with one Worker per CPU core, each runn
 |---------|---------|---------|-------|-------|
 | **npm** | `@gopdfjs/plugin-extract` | isomorphic | **Partial** | OCR pipeline — one pkg, Node + browser |
 | **CLI** | `gopdf-cli ocr` | node | **Out of repo** | [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) — not OSS gate |
-| **Rust / WASM** | — | — | N/A (tesseract.js) | per RFC + [0057](../0057-rust-wasm-engine-architecture.md) |
+| **Rust / WASM** | — | — | N/A (tesseract.js) | per RFC + [0057](0057-rust-wasm-engine-architecture.md) |
 | **Vitest** | — | — | **Partial** | `packages/plugin-extract` |
 | **Browser e2e** | — | browser | **Not done** | `apps/demo/e2e/tools/ocr-pdf.spec.ts` |
 | **ilovepdf** | — | — | out of repo | consumes npm; not OSS gate |
 
-**Verdict**: **PARTIAL** — OSS gate only ([0058 §3.5](../0058-engine-plugin-charter.md) · [`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)). **Not** gated on `gopdf-cli` (separate repo).
+**Verdict**: **PARTIAL** — OSS gate only ([`docs/PUBLISHING.md`](../../docs/PUBLISHING.md)). **Not** gated on `gopdf-cli` (separate repo).
