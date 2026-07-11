@@ -324,7 +324,7 @@ const engine = createEngine(await createBrowserAdapter());
 | Demo / e2e | 只 `engine.*()` | `apps/demo` | ✓ |
 | Public entry barrels | 主入口不暴露 adapter/WASM/plugin | `check-public-exports.py` | ✓ |
 | Engine exports | **only** `"."` on `@gopdfjs/engine` | `packages/engine/package.json` | ✓ |
-| WASM build | same `crates/gopdf-wasm` → per-adapter `pkg/` | `adapter-*/package.json` `build:wasm` | ✓ |
+| WASM build | `packages/wasm/rust` → `@gopdfjs/wasm` `pkg/` | `pnpm build:wasm` | ✓ |
 | WASM load | adapter only；engine 不 load pkg | `adapter-*/src/engine.ts` | ✓ |
 | `splitEncodedImages` | engine-internal；不 export | `packages/engine/src/splitEncodedImages.ts` | ✓ |
 | Bytes ownership | Engine clones at facade | `ownPdfBytes` + `createGopdfRuntime` | ✓ |

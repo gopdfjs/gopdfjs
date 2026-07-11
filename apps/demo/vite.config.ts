@@ -3,7 +3,9 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import wasm from "vite-plugin-wasm";
 import topLevelAwait from "vite-plugin-top-level-await";
-import { GOPDF_PORTS } from "../ports";
+
+/** demo-react dev */
+const DEMO_DEV_PORT = 5174;
 
 /** Consumes workspace `@gopdfjs/engine` + `@gopdfjs/adapter-browser`; run `pnpm build:wasm` first. */
 export default defineConfig({
@@ -17,14 +19,14 @@ export default defineConfig({
     plugins: () => [wasm(), topLevelAwait()],
   },
   server: {
-    port: GOPDF_PORTS.demoDev,
+    port: DEMO_DEV_PORT,
     strictPort: true,
     fs: {
       allow: [path.resolve(__dirname, "../..")],
     },
   },
   preview: {
-    port: GOPDF_PORTS.demoDev,
+    port: DEMO_DEV_PORT,
     strictPort: true,
   },
 });

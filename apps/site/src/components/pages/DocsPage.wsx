@@ -1,0 +1,29 @@
+/** @jsxImportSource @wsxjs/wsx-core */
+
+import { LightComponent, autoRegister } from '@wsxjs/wsx-core';
+// 导入 wsx-press 客户端组件（触发自动注册）
+import '@wsxjs/wsx-press/client';
+import styles from './DocsPage.css?inline';
+
+/**
+ * 文档页面组件
+ * 使用 wsx-press 的 DocLayout 组件来显示文档
+ */
+@autoRegister({ tagName: 'docs-page' })
+export class DocsPage extends LightComponent {
+  constructor() {
+    super({
+      styles,
+      styleName: 'docs-page',
+    });
+  }
+
+  render() {
+    return (
+      <div class="docs-page">
+        {/* 使用 wsx-press 的 DocLayout 组件 */}
+        <wsx-doc-layout />
+      </div>
+    );
+  }
+}

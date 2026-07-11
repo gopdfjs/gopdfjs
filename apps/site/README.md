@@ -1,27 +1,27 @@
-# `@gopdfjs/site`
+# @gopdfjs/site
 
-CLI docs landing page for GoPDF.js (GitHub Pages): token calculator, install cards, MCP setup, and CLI vs traditional PDF workflow comparison. **No WASM or browser PDF processing** — PDF work runs via `gopdf-cli` on the host.
+GoPDF.js docs landing — static site for **GitHub Pages** (`/gopdfjs/` base).
 
-## Local dev
+Built with [WSX](https://www.wsxjs.dev) (`@wsxjs/wsx-*`) + [wsx-press](https://www.wsxjs.dev) for markdown docs.
+
+## Commands
 
 ```bash
-pnpm install
-pnpm --filter=@gopdfjs/site dev   # http://127.0.0.1:5175
+pnpm --filter=@gopdfjs/site dev
+pnpm --filter=@gopdfjs/site build    # dist/ with base /gopdfjs/
+pnpm --filter=@gopdfjs/site preview  # preview production build
 ```
 
-Ports: `apps/ports.ts` · registry `../../port.md` (ws/prj).
+## Content
 
-## How to publish site to GitHub Pages
+| Path | Purpose |
+|------|---------|
+| `src/` | WSX pages (home, packages, shell) |
+| `public/docs/` | Markdown consumed by wsx-press |
+| `public/locales/` | i18next JSON (en, zh) |
 
-1. **One-time setup:** GitHub repo → **Settings** → **Pages** → Source = **GitHub Actions**.
-2. **Automatic deploy:** Push changes under `apps/site/` to `main` → workflow runs → site live at `https://<user>.github.io/gopdfjs/`.
-3. **Manual redeploy:** **Actions** tab → **Deploy site to GitHub Pages** → **Run workflow**.
-4. **Local preview before push:**
+## Deploy
 
-   ```bash
-   pnpm --filter=@gopdfjs/site build
-   ```
+Push to `main` with changes under `apps/site/**` triggers `.github/workflows/deploy-site.yml`.
 
-5. **Different repo path?** Edit `VITE_BASE` in `.github/workflows/deploy-site.yml` (one line at the top).
-
-Workflow only triggers on `apps/site/**` changes (plus the workflow file itself). No Rust or WASM build step.
+Not the product UI — browser tool smoke lives in `apps/demo`.

@@ -1,0 +1,166 @@
+.header {
+  background-color: color-mix(in srgb, var(--gopdf-bg-secondary) 95%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--gopdf-border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--gopdf-shadow-sm);
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+}
+
+[data-theme="light"] .header {
+  background-color: color-mix(in srgb, var(--gopdf-bg-secondary) 95%, transparent);
+}
+
+.header-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.brand-link {
+  text-decoration: none !important;
+  color: var(--gopdf-text-primary, #E6EDF3);
+  font-size: 1.5rem;
+  font-weight: 700;
+  display: flex !important;
+  align-items: center;
+  gap: 0.875rem;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  cursor: pointer;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+/* 亮色模式下的 brand link */
+[data-theme="light"] .brand-link {
+  color: var(--gopdf-text-primary, #1E293B);
+}
+
+.brand-link:hover {
+  opacity: 0.8;
+}
+
+.brand-link::part(link) {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  white-space: nowrap;
+  text-decoration: none !important;
+}
+
+.brand-link * {
+  text-decoration: none !important;
+}
+
+.brand-logo {
+  width: 32px;
+  height: 32px;
+  display: block;
+  flex-shrink: 0;
+  border-radius: 10px;
+  object-fit: contain;
+}
+
+.brand-title {
+  background: linear-gradient(
+    135deg,
+    var(--gopdf-accent-hover) 0%,
+    var(--gopdf-accent-color) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  white-space: nowrap;
+  flex-shrink: 0;
+  text-decoration: none !important;
+  border-bottom: none !important;
+  margin-left: 0;
+}
+
+.header-nav {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-link {
+  text-decoration: none !important;
+  color: var(--gopdf-text-secondary, #8B949E);
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.5rem 0.75rem;
+  transition: all 0.2s ease;
+  border-bottom: 2px solid transparent;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+/* 亮色模式下的 nav link */
+[data-theme="light"] .nav-link {
+  color: var(--gopdf-text-secondary, #475569);
+}
+
+.nav-link * {
+  text-decoration: none !important;
+  color: inherit;
+}
+
+.nav-link::part(link) {
+  text-decoration: none !important;
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+}
+
+.nav-link:hover {
+  color: var(--gopdf-text-primary);
+  background-color: var(--gopdf-accent-soft);
+}
+
+.nav-link:hover::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0.75rem;
+  right: 0.75rem;
+  height: 2px;
+  background-color: var(--gopdf-accent-color);
+  opacity: 0.5;
+  border-radius: 2px 2px 0 0;
+}
+
+.nav-link-active {
+  color: var(--gopdf-accent-color) !important;
+  border-bottom-color: var(--gopdf-accent-color);
+  font-weight: 600;
+  background-color: var(--gopdf-accent-soft);
+}
+
+.nav-link-active * {
+  color: var(--gopdf-accent-color) !important;
+}
+
+.nav-link-active::part(link) {
+  color: var(--gopdf-accent-color) !important;
+}
+
+.nav-link-active::after {
+  display: none;
+}

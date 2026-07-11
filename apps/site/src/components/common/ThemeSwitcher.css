@@ -1,0 +1,61 @@
+.theme-switcher {
+  display: inline-flex;
+  align-items: center;
+}
+
+.theme-switcher-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  background-color: var(--gopdf-bg-secondary, #161B22);
+  border: 1px solid var(--gopdf-border-color, #30363D);
+  border-radius: 0.5rem;
+  color: var(--gopdf-text-primary, #E6EDF3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* 默认 hover 样式（暗色模式） */
+.theme-switcher-btn:hover {
+  background-color: var(--gopdf-bg-tertiary, #21262D);
+  border-color: var(--gopdf-accent-color, #fb923c);
+  color: var(--gopdf-text-primary, #E6EDF3);
+  box-shadow: 0 0 0 1px var(--gopdf-accent-color, #fb923c);
+}
+
+.theme-switcher-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  flex-shrink: 0;
+}
+
+/* 亮色模式下的样式 */
+[data-theme="light"] .theme-switcher-btn {
+  background-color: var(--gopdf-bg-secondary, #F8FAFC);
+  border-color: var(--gopdf-border-color, #E2E8F0);
+  color: var(--gopdf-text-primary, #1E293B);
+}
+
+/* 亮色模式下的 hover - 使用更高优先级确保覆盖 */
+[data-theme="light"] .theme-switcher-btn:hover {
+  background-color: var(--gopdf-bg-tertiary, #F0F2F5) !important;
+  border-color: var(--gopdf-accent-color, #f97316) !important;
+  color: var(--gopdf-text-primary, #1E293B) !important;
+  box-shadow: 0 0 0 1px var(--gopdf-accent-color, #f97316) !important;
+}
+
+/* 确保图标颜色也遵循主题 */
+[data-theme="light"] .theme-switcher-icon {
+  color: var(--gopdf-text-primary, #1E293B);
+}
+
+[data-theme="dark"] .theme-switcher-icon {
+  color: var(--gopdf-text-primary, #E6EDF3);
+}

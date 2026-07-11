@@ -1,0 +1,92 @@
+.packages-page {
+  background: var(--gopdf-bg-primary);
+  color: var(--gopdf-text-primary);
+  min-height: calc(100vh - 8rem);
+}
+
+.packages-container {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.packages-hero {
+  padding: 4rem 0 2rem;
+  text-align: center;
+}
+
+.packages-title {
+  font-size: 2.5rem;
+  margin: 0 0 1rem;
+  letter-spacing: -0.02em;
+}
+
+.packages-subtitle {
+  color: var(--gopdf-text-secondary);
+  font-size: 1.0625rem;
+  max-width: 42rem;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.packages-grid-section {
+  padding: 2rem 0 3rem;
+}
+
+.packages-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1.25rem;
+}
+
+.package-card {
+  background: var(--gopdf-bg-tertiary);
+  border: 1px solid var(--gopdf-border-color);
+  border-radius: var(--gopdf-radius-md);
+  padding: 1.5rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.package-card:hover {
+  border-color: var(--gopdf-accent-glow);
+  box-shadow: var(--gopdf-shadow-lg);
+}
+
+.package-icon {
+  color: var(--gopdf-accent-color);
+  margin-bottom: 0.75rem;
+}
+
+.package-name {
+  font-size: 1.125rem;
+  margin: 0 0 0.5rem;
+}
+
+.package-description {
+  color: var(--gopdf-text-secondary);
+  margin: 0 0 1rem;
+  line-height: 1.6;
+  font-size: 0.9375rem;
+}
+
+.package-import {
+  display: block;
+  background: var(--gopdf-bg-secondary);
+  border: 1px solid var(--gopdf-border-color);
+  border-radius: var(--gopdf-radius-sm);
+  padding: 0.5rem 0.75rem;
+  font-family: var(--gopdf-font-mono);
+  font-size: 0.75rem;
+  overflow-x: auto;
+  color: #fdba74;
+}
+
+.packages-cta {
+  padding: 2rem 0 4rem;
+  text-align: center;
+}
+
+.packages-note {
+  color: var(--gopdf-text-secondary);
+  margin: 0 0 1.5rem;
+}

@@ -79,13 +79,19 @@ export async function repairPdf(
 
   const rebuilt = await tryRebuildPipeline(bytes, runtime, options, warnings, onProgress);
 
-  const validated = await validatePdfOpenable(rebuilt.bytes, runtime, options);
+  // pdf.js loadDocument may detach the buffer — keep an independent copy for the caller.
+  const outputBytes = new Uint8Array(rebuilt.bytes);
+  const validated = await validatePdfOpenable(
+    new Uint8Array(outputBytes),
+    runtime,
+    options,
+  );
   if (!validated) {
     throw new Error("Repaired PDF failed openability validation");
   }
 
   return {
-    bytes: rebuilt.bytes,
+    bytes: outputBytes,
     report: {
       strategy: rebuilt.strategy,
       scan,

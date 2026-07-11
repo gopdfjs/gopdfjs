@@ -1,0 +1,60 @@
+/**
+ * GoPDF.js design tokens — aligned with apps/demo/src/styles/tokens.css
+ */
+:root,
+[data-theme="dark"] {
+  --gopdf-font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --gopdf-font-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
+
+  --gopdf-accent-color: #f97316;
+  --gopdf-accent-hover: #fb923c;
+  --gopdf-accent-active: #ea580c;
+  --gopdf-accent-soft: rgba(249, 115, 22, 0.12);
+  --gopdf-accent-glow: rgba(249, 115, 22, 0.35);
+
+  --gopdf-bg-primary: #09090b;
+  --gopdf-bg-secondary: #0c0c0f;
+  --gopdf-bg-tertiary: #131316;
+  --gopdf-bg-elevated: #18181b;
+
+  --gopdf-text-primary: #fafafa;
+  --gopdf-text-secondary: #a1a1aa;
+  --gopdf-text-subtle: #71717a;
+  --gopdf-text-on-accent: #ffffff;
+
+  --gopdf-border-color: rgba(255, 255, 255, 0.08);
+  --gopdf-border-strong: rgba(255, 255, 255, 0.14);
+
+  --gopdf-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --gopdf-shadow-md: 0 8px 32px rgba(0, 0, 0, 0.45);
+  --gopdf-shadow-lg: 0 0 0 1px rgba(249, 115, 22, 0.2), 0 8px 32px rgba(249, 115, 22, 0.12);
+
+  --gopdf-radius-sm: 8px;
+  --gopdf-radius-md: 12px;
+  --gopdf-radius-lg: 16px;
+}
+
+[data-theme="light"] {
+  --gopdf-accent-color: #ea580c;
+  --gopdf-accent-hover: #f97316;
+  --gopdf-accent-active: #c2410c;
+  --gopdf-accent-soft: rgba(234, 88, 12, 0.1);
+  --gopdf-accent-glow: rgba(234, 88, 12, 0.25);
+
+  --gopdf-bg-primary: #fafafa;
+  --gopdf-bg-secondary: #ffffff;
+  --gopdf-bg-tertiary: #f4f4f5;
+  --gopdf-bg-elevated: #ffffff;
+
+  --gopdf-text-primary: #09090b;
+  --gopdf-text-secondary: #52525b;
+  --gopdf-text-subtle: #71717a;
+  --gopdf-text-on-accent: #ffffff;
+
+  --gopdf-border-color: rgba(0, 0, 0, 0.08);
+  --gopdf-border-strong: rgba(0, 0, 0, 0.14);
+
+  --gopdf-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --gopdf-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --gopdf-shadow-lg: 0 0 0 1px rgba(234, 88, 12, 0.15), 0 8px 24px rgba(234, 88, 12, 0.1);
+}

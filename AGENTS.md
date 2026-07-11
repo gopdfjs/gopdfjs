@@ -29,10 +29,8 @@
 | 命令 | 用途 |
 |------|------|
 | CLI | **separate repo** [`gopdf-cli`](https://github.com/gopdfjs/gopdf-cli) — zero coupling |
-| `pnpm --filter=@gopdfjs/site dev` | CLI docs landing — **:5175** |
-| `pnpm --filter=@gopdfjs/demo-react dev` | 浏览器 acceptance — **:5174** |
-
-Dev ports: `apps/ports.ts` · ws registry `../../port.md`
+| `pnpm --filter=@gopdfjs/site dev` | CLI docs landing |
+| `pnpm --filter=@gopdfjs/demo-react dev` | 浏览器 acceptance |
 
 ## RFC
 

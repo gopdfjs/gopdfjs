@@ -1,0 +1,60 @@
+/** @jsxImportSource @wsxjs/wsx-core */
+
+import { LightComponent, autoRegister } from '@wsxjs/wsx-core';
+import { i18n } from '@wsxjs/wsx-i18next';
+import '@wsxjs/wsx-base-components';
+import styles from './AppHeader.css?inline';
+import '../../components/common/LanguageSwitcher.wsx';
+import '../../components/common/ThemeSwitcher.wsx';
+
+@autoRegister({ tagName: 'gopdf-app-header' })
+@i18n('common')
+export class AppHeader extends LightComponent {
+  constructor() {
+    super({
+      styles,
+      styleName: 'gopdf-app-header',
+    });
+  }
+
+  render() {
+    return (
+      <header class="header">
+        <div class="header-container">
+          <div class="header-brand">
+            <wsx-link to="/" class="brand-link">
+              <img src="/favicon.svg" alt={this.t('brandAlt')} class="brand-logo" />
+              <span class="brand-title">{this.t('brandName')}</span>
+            </wsx-link>
+          </div>
+
+          <nav class="header-nav">
+            <wsx-link to="/" class="nav-link" active-class="nav-link-active" exact>
+              {this.t('home')}
+            </wsx-link>
+            <wsx-link to="/packages" class="nav-link" active-class="nav-link-active">
+              {this.t('packages')}
+            </wsx-link>
+            <wsx-link
+              to="/docs/guide/getting-started"
+              class="nav-link"
+              active-class="nav-link-active"
+            >
+              {this.t('docs')}
+            </wsx-link>
+            <a
+              href="https://github.com/gopdfjs/gopdfjs"
+              class="nav-link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {this.t('github')}
+            </a>
+            <gopdf-language-switcher />
+            <gopdf-theme-switcher />
+          </nav>
+        </div>
+      </header>
+    );
+  }
+}

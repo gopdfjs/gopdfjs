@@ -86,11 +86,14 @@ export function createEngine(adapter: GopdfAdapter): Gopdf {
       onProgress?: Parameters<Gopdf["redactPdf"]>[3],
     ) => redactPdf(ownPdfBytes(bytes), runtime, regions, options, onProgress),
 
-    repairPdf: (
+    repairPdf: async (
       bytes: Uint8Array,
       options?: Parameters<typeof repairPdf>[2],
       onProgress?: Parameters<typeof repairPdf>[3],
-    ) => repairPdf(ownPdfBytes(bytes), runtime, options, onProgress),
+    ) => {
+      const result = await repairPdf(ownPdfBytes(bytes), runtime, options, onProgress);
+      return { ...result, bytes: ownPdfBytes(result.bytes) };
+    },
 
     repairPdfBatch: (
       inputs: Parameters<typeof repairPdfBatch>[0],

@@ -57,9 +57,11 @@ logs/
 *.tmp
 *.temp
 
-# E2E (if Playwright is added later)
+# E2E (Playwright)
 test-results/
 playwright-report/
 blob-report/
+apps/demo/e2e/.tmp/*
+!apps/demo/e2e/.tmp/.gitignore
 .codegraph/
 graphify-out/

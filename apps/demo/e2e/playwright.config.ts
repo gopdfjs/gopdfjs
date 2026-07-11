@@ -1,8 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
-import { GOPDF_PORTS } from "../../ports";
 
-const DEMO_PORT = GOPDF_PORTS.demoE2e;
-const BASE_URL = `http://127.0.0.1:${DEMO_PORT}`;
+/** demo Playwright webServer */
+const DEMO_E2E_PORT = 4174;
+const BASE_URL = `http://127.0.0.1:${DEMO_E2E_PORT}`;
 
 export default defineConfig({
   testDir: "./tools",
@@ -18,7 +18,7 @@ export default defineConfig({
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: {
-    command: `pnpm --filter=@gopdfjs/demo-react exec vite --port ${DEMO_PORT} --strictPort --host 127.0.0.1`,
+    command: `pnpm --filter=@gopdfjs/demo-react exec vite --port ${DEMO_E2E_PORT} --strictPort --host 127.0.0.1`,
     url: BASE_URL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

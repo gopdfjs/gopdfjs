@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { DemoKind } from "../../src/config/demoKind";
@@ -7,10 +8,16 @@ import { PDF_FIXTURES } from "@gopdfjs/fixtures";
 import { DEMO_PASSWORD_DEFAULT } from "../../src/hooks/useToolDemo";
 
 const E2E_DIR = path.dirname(fileURLToPath(import.meta.url));
+const E2E_TMP_DIR = path.join(E2E_DIR, "../.tmp");
 const ONE_PX_PNG = path.join(E2E_DIR, "../fixtures/one-pixel.png");
-const PROTECTED_PDF_PATH = path.join(E2E_DIR, "../.tmp-protected.pdf");
+const PROTECTED_PDF_PATH = path.join(E2E_TMP_DIR, "protected.pdf");
+
+function ensureE2eTmpDir(): void {
+  fs.mkdirSync(E2E_TMP_DIR, { recursive: true });
+}
 
 async function prepareUnlockInput(page: Page): Promise<string> {
+  ensureE2eTmpDir();
   await page.goto("/tools/protect");
   await page.locator('input[type="file"]').first().setInputFiles(PDF_FIXTURES.BMAUPIN_BASIC);
   await page.getByTestId("tool-run").click();
@@ -21,6 +28,13 @@ async function prepareUnlockInput(page: Page): Promise<string> {
   const download = await downloadPromise;
   await download.saveAs(PROTECTED_PDF_PATH);
   return PROTECTED_PDF_PATH;
+}
+
+async function waitForToolOutcome(page: Page, timeoutMs: number): Promise<void> {
+  await expect(
+    page.locator('[data-testid="tool-success"], [data-testid="tool-error"]'),
+  ).toBeVisible({ timeout: timeoutMs });
+  await expect(page.getByTestId("tool-error")).toHaveCount(0);
 }
 
 async function seedToolInput(page: Page, tool: (typeof TOOL_REGISTRY)[number]): Promise<void> {
@@ -118,10 +132,8 @@ for (const tool of TOOL_REGISTRY) {
       }
 
       await page.getByTestId("tool-run").click();
-      await expect(page.getByTestId("tool-success")).toBeVisible({
-        timeout: tool.e2eTimeoutMs ?? 120_000,
-      });
-      await expect(page.getByTestId("tool-error")).toHaveCount(0);
+      await waitForToolOutcome(page, tool.e2eTimeoutMs ?? 120_000);
+      await expect(page.getByTestId("tool-success")).toBeVisible();
       await assertDemoOutput(page, tool.demoKind, tool.e2eTimeoutMs ?? 120_000);
     });
   });

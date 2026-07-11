@@ -1,0 +1,87 @@
+/** @jsxImportSource @wsxjs/wsx-core */
+/**
+ * ThemeSwitcher Component
+ * 主题切换器组件，用于在暗色/亮色模式之间切换
+ *
+ * 遵循 WSX Press Author 的设计系统和谐原则
+ * 通过 CSS 变量系统实现无侵入式主题切换
+ */
+import { WebComponent, autoRegister, state } from '@wsxjs/wsx-core';
+import styles from './ThemeSwitcher.css?inline';
+import './Icon.wsx';
+
+const THEME_STORAGE_KEY = 'gopdf-theme';
+
+@autoRegister({ tagName: 'gopdf-theme-switcher' })
+export default class ThemeSwitcher extends WebComponent {
+  /** 当前主题 */
+  @state private currentTheme: 'dark' | 'light' = 'dark';
+
+  constructor() {
+    super({
+      styles,
+      styleName: 'theme-switcher',
+    });
+  }
+
+  render(): HTMLElement {
+    // 显示可以切换到的模式图标（更直观）
+    const targetTheme = this.currentTheme === 'dark' ? 'light' : 'dark';
+    const iconName = targetTheme === 'dark' ? 'moon' : 'sun';
+
+    return (
+      <button
+        class="theme-switcher-btn"
+        onClick={this.toggleTheme}
+        aria-label={`Switch to ${targetTheme} mode`}
+        title={`当前: ${this.currentTheme === 'dark' ? '暗色' : '亮色'}模式，点击切换到${targetTheme === 'dark' ? '暗色' : '亮色'}模式`}
+      >
+        <wsx-icon name={iconName} class="theme-switcher-icon" />
+      </button>
+    );
+  }
+
+  /**
+   * 切换主题
+   */
+  private toggleTheme = (): void => {
+    const newTheme = this.currentTheme === 'dark' ? 'light' : 'dark';
+    this.setTheme(newTheme);
+  };
+
+  /**
+   * 设置主题
+   */
+  private setTheme(theme: 'dark' | 'light'): void {
+    this.currentTheme = theme;
+
+    // 设置 data-theme 属性到 document.documentElement
+    document.documentElement.setAttribute('data-theme', theme);
+
+    // 保存到 localStorage
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
+
+    // 重新渲染组件以更新图标
+    this.rerender();
+  }
+
+  /**
+   * 组件连接时初始化
+   */
+  protected onConnected(): void {
+    // 从 localStorage 或 document 获取当前主题
+    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+    const documentTheme = document.documentElement.getAttribute('data-theme');
+
+    // 优先使用 document 上的主题（可能已在 main.ts 中设置）
+    const theme = (documentTheme || savedTheme || 'dark') as 'dark' | 'light';
+
+    if (theme !== this.currentTheme) {
+      this.currentTheme = theme;
+      // 确保 document 上的主题属性正确
+      if (document.documentElement.getAttribute('data-theme') !== theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+      }
+    }
+  }
+}

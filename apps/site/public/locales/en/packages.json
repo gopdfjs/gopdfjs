@@ -1,0 +1,28 @@
+{
+  "title": "Packages",
+  "subtitle": "GoPDF.js is a layered monorepo. Apps import @gopdfjs/engine (or a one-liner adapter); plugins and WASM stay internal.",
+  "items": {
+    "engine": {
+      "name": "@gopdfjs/engine",
+      "description": "Public consumer API — createEngine(adapter) exposes compressPdf, repairPdf, and other tool methods.",
+      "import": "import { createEngine } from \"@gopdfjs/engine\""
+    },
+    "adapters": {
+      "name": "Adapters",
+      "description": "adapter-browser and adapter-node wire WASM, Workers, and host I/O into a GopdfAdapter.",
+      "import": "import { createBrowserGopdf } from \"@gopdfjs/adapter-browser\""
+    },
+    "plugins": {
+      "name": "@gopdfjs/plugin-*",
+      "description": "Domain logic (shrink, extract, repair, …) consumed by the engine — not imported directly by apps.",
+      "import": "// wired inside createEngine — apps use engine.*()"
+    },
+    "wasm": {
+      "name": "@gopdfjs/wasm",
+      "description": "wasm-pack output from crates/gopdf-*; initialized by adapters, never imported by product UI code.",
+      "import": "pnpm build:wasm  # contributors"
+    }
+  },
+  "note": "Terminal users install gopdf-cli from the separate gopdf-cli repository.",
+  "cta": "Engine API reference"
+}

@@ -1,0 +1,136 @@
+@import './tokens.css';
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  /* wsx-press doc layout — driven by GoPDF tokens */
+  --wsx-press-bg-primary: var(--gopdf-bg-primary);
+  --wsx-press-bg-secondary: var(--gopdf-bg-secondary);
+  --wsx-press-bg-tertiary: var(--gopdf-bg-tertiary);
+
+  --wsx-press-text-primary: var(--gopdf-text-primary);
+  --wsx-press-text-secondary: var(--gopdf-text-secondary);
+  --wsx-press-text-tertiary: var(--gopdf-text-subtle);
+
+  --wsx-press-border: var(--gopdf-border-color);
+  --wsx-press-border-hover: var(--gopdf-border-strong);
+
+  --wsx-press-link: var(--gopdf-accent-color);
+  --wsx-press-link-hover: var(--gopdf-accent-hover);
+  --wsx-press-accent: var(--gopdf-accent-color);
+  --wsx-press-accent-hover: var(--gopdf-accent-hover);
+
+  --wsx-press-code-bg: var(--gopdf-bg-tertiary);
+  --wsx-press-code-text: #fdba74;
+  --wsx-press-code-border: var(--gopdf-border-color);
+
+  --wsx-press-spacing-xs: 0.25rem;
+  --wsx-press-spacing-sm: 0.5rem;
+  --wsx-press-spacing-md: 1rem;
+  --wsx-press-spacing-lg: 1.5rem;
+  --wsx-press-spacing-xl: 2rem;
+  --wsx-press-spacing-2xl: 3rem;
+
+  --wsx-press-font-family: var(--gopdf-font-sans);
+  --wsx-press-font-mono: var(--gopdf-font-mono);
+
+  --wsx-press-font-size-xs: 0.75rem;
+  --wsx-press-font-size-sm: 0.875rem;
+  --wsx-press-font-size-base: 1rem;
+  --wsx-press-font-size-lg: 1.125rem;
+  --wsx-press-font-size-xl: 1.25rem;
+  --wsx-press-font-size-2xl: 1.5rem;
+  --wsx-press-font-size-3xl: 1.875rem;
+  --wsx-press-font-size-4xl: 2.25rem;
+
+  --wsx-press-line-height-tight: 1.25;
+  --wsx-press-line-height-normal: 1.6;
+
+  --wsx-press-sidebar-width: 280px;
+  --wsx-press-toc-width: 240px;
+  --wsx-press-content-max-width: 800px;
+  --wsx-press-layout-max-width: 1440px;
+
+  --wsx-press-radius-sm: var(--gopdf-radius-sm);
+  --wsx-press-radius-md: var(--gopdf-radius-md);
+  --wsx-press-radius-lg: var(--gopdf-radius-lg);
+  --wsx-press-shadow-sm: var(--gopdf-shadow-sm);
+  --wsx-press-shadow-md: var(--gopdf-shadow-md);
+  --wsx-press-shadow-lg: var(--gopdf-shadow-lg);
+
+  --wsx-press-sidebar-bg: var(--gopdf-bg-secondary);
+  --wsx-press-sidebar-hover-bg: var(--gopdf-bg-tertiary);
+  --wsx-press-sidebar-active-bg: var(--gopdf-accent-soft);
+  --wsx-press-sidebar-active-color: var(--gopdf-accent-color);
+  --wsx-press-toc-active-color: var(--gopdf-accent-color);
+
+  --doc-page-padding-x: 2rem;
+  --doc-page-padding-y: 1rem;
+  --doc-layout-main-padding-x: 2rem;
+  --doc-layout-main-padding-y: 1rem;
+}
+
+html {
+  height: 100%;
+  overflow-y: auto;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--gopdf-font-sans);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--gopdf-bg-primary);
+  color: var(--gopdf-text-primary);
+  line-height: 1.55;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  min-height: 100%;
+  overflow-y: auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--gopdf-font-sans);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--gopdf-text-primary);
+}
+
+code {
+  font-family: var(--gopdf-font-mono);
+  font-size: 0.92em;
+  padding: 0.12em 0.4em;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #fdba74;
+}
+
+[data-theme="light"] code {
+  background: rgba(0, 0, 0, 0.05);
+  color: #c2410c;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+.btn-primary {
+  background: linear-gradient(145deg, var(--gopdf-accent-hover) 0%, var(--gopdf-accent-active) 100%) !important;
+  color: var(--gopdf-text-on-accent) !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--gopdf-shadow-lg);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.05);
+  transform: translateY(-2px);
+}

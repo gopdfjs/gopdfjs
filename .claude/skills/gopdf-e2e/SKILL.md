@@ -14,7 +14,7 @@ RFC browser acceptance tests live under **`apps/demo/e2e/`** — not `.spec/`.
 
 ```
 apps/demo/e2e/
-  playwright.config.ts   # starts demo Vite on :4174 (see apps/ports.ts)
+  playwright.config.ts   # Playwright webServer (port in config)
   tools/<slug>.spec.ts   # one file per tool RFC (copy compress)
 
 Fixtures: `@gopdfjs/fixtures` (`packages/fixtures/`).

@@ -1,0 +1,35 @@
+/** @jsxImportSource @wsxjs/wsx-core */
+
+import { LightComponent, autoRegister } from '@wsxjs/wsx-core';
+import styles from './App.css?inline';
+import '@wsxjs/wsx-base-components';
+import '@wsxjs/wsx-router';
+import './components/layout/AppHeader.wsx';
+import './components/layout/AppFooter.wsx';
+import './components/pages/HomePage.wsx';
+import './components/pages/PackagesPage.wsx';
+import './components/pages/DocsPage.wsx';
+
+@autoRegister({ tagName: 'gopdf-app' })
+export default class App extends LightComponent {
+  constructor() {
+    super({
+      styles,
+      styleName: 'gopdf-app',
+    });
+  }
+
+  render() {
+    return (
+      <div class="app-container">
+        <gopdf-app-header />
+        <wsx-router mode="hash">
+          <wsx-view route="/" component="home-page" />
+          <wsx-view route="/packages" component="packages-page" />
+          <wsx-view route="/docs/:category/:page" component="docs-page" />
+        </wsx-router>
+        <gopdf-app-footer />
+      </div>
+    );
+  }
+}

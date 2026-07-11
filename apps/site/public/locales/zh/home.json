@@ -1,0 +1,32 @@
+{
+  "title": "GoPDF.js",
+  "subtitle": "浏览器与 Node 本地 PDF 处理 — @gopdfjs/* npm 包，终端用 gopdf-cli。",
+  "stats": {
+    "license": "MIT 许可证",
+    "wasm": "Rust / WASM",
+    "local": "文件不离开本机"
+  },
+  "features": {
+    "title": "为什么选择 GoPDF.js",
+    "local": {
+      "title": "默认私有",
+      "description": "PDF 在浏览器 Worker 或本机处理，无需上传到服务器。"
+    },
+    "npm": {
+      "title": "npm + CLI 交付",
+      "description": "每个工具对应公开 @gopdfjs/* API 与 gopdf-cli 子命令。"
+    },
+    "browserNode": {
+      "title": "浏览器与 Node",
+      "description": "应用内用 createBrowserGopdf()，脚本内用 createNodeGopdf()，引擎 API 一致。"
+    },
+    "cli": {
+      "title": "无 UI 的终端",
+      "description": "需要压缩、修复或 MCP 集成时，安装 gopdf-cli 即可，无需嵌入库。"
+    }
+  },
+  "quickStart": {
+    "title": "快速开始（浏览器）",
+    "description": "在 monorepo 中先构建 WASM，再在应用中引入 browser adapter。"
+  }
+}

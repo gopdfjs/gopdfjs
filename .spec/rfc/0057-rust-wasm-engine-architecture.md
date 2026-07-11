@@ -96,7 +96,7 @@ flowchart TD
 
 | 路径 | 用途 |
 |------|------|
-| `crates/` | Rust 算法 + `gopdf-wasm` bindgen；`cargo test --workspace` |
+| `crates/` | Rust 算法；WASM bindgen 在 `packages/wasm/rust/`；`cargo test --workspace` |
 | `packages/wasm/pkg/` | wasm-pack 产物（gitignore）；**单个 web build，adapter 共享** |
 | `packages/adapter` | 零 env 契约（`GopdfAdapter` · `GopdfEngine` · bytes） |
 | `packages/runtime` | `GopdfRuntime` 契约（plugins only） |
@@ -209,7 +209,7 @@ await init({ module_or_path: fs.readFileSync(wasmPath) });
 | `grayscale_pdf` | plugin `grayscalePdf` path | 0028 | **Partial** stub |
 | `linearize_pdf` | plugin `linearizePdf` path | 0042 | **Partial** stub |
 
-源码：`crates/gopdf-wasm/src/lib.rs` + 各 `crates/gopdf-*/src/lib.rs`。
+源码：`packages/wasm/rust/src/lib.rs` + 各 `crates/gopdf-*/src/lib.rs`。
 
 ### 5.4 Worker（历史 / 可选）
 

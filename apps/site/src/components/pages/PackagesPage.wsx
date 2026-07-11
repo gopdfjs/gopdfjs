@@ -1,0 +1,64 @@
+/** @jsxImportSource @wsxjs/wsx-core */
+
+import { LightComponent, autoRegister } from '@wsxjs/wsx-core';
+import { i18n } from '@wsxjs/wsx-i18next';
+import '@wsxjs/wsx-base-components';
+import styles from './PackagesPage.css?inline';
+import '../../components/common/Icon.wsx';
+
+const PACKAGE_ITEMS = [
+  { key: 'engine', icon: 'target' },
+  { key: 'adapters', icon: 'device' },
+  { key: 'plugins', icon: 'plug' },
+  { key: 'wasm', icon: 'package' },
+] as const;
+
+@autoRegister({ tagName: 'packages-page' })
+@i18n('packages')
+export class PackagesPage extends LightComponent {
+  constructor() {
+    super({
+      styles,
+      styleName: 'packages-page',
+    });
+  }
+
+  render() {
+    return (
+      <div class="packages-page">
+        <section class="packages-hero">
+          <div class="packages-container">
+            <h1 class="packages-title">{this.t('title')}</h1>
+            <p class="packages-subtitle">{this.t('subtitle')}</p>
+          </div>
+        </section>
+
+        <section class="packages-grid-section">
+          <div class="packages-container">
+            <div class="packages-grid">
+              {PACKAGE_ITEMS.map(({ key, icon }) => (
+                <article class="package-card" key={key}>
+                  <div class="package-icon">
+                    <wsx-icon name={icon} />
+                  </div>
+                  <h2 class="package-name">{this.t(`items.${key}.name`)}</h2>
+                  <p class="package-description">{this.t(`items.${key}.description`)}</p>
+                  <code class="package-import">{this.t(`items.${key}.import`)}</code>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section class="packages-cta">
+          <div class="packages-container">
+            <p class="packages-note">{this.t('note')}</p>
+            <wsx-link to="/docs/api/engine" class="btn btn-primary">
+              {this.t('cta')}
+            </wsx-link>
+          </div>
+        </section>
+      </div>
+    );
+  }
+}

@@ -9,12 +9,10 @@ Browser acceptance host for Playwright e2e (`pnpm test:e2e`).
 | `/tools/<slug>` | One page per engine tool (**32** generic surfaces — `src/config/toolIds.ts`) |
 
 ```bash
-pnpm --filter=@gopdfjs/demo-react dev   # http://127.0.0.1:5174
+pnpm --filter=@gopdfjs/demo-react dev
 pnpm --filter=@gopdfjs/demo-react test
-pnpm test:e2e                           # Playwright on :4174
+pnpm test:e2e
 ```
-
-Ports: `apps/ports.ts` · registry `../../port.md` (ws/prj).
 
 E2E matrix: `e2e/tools/all-tools.spec.ts` (generic tools) + `compress.spec.ts` + `engine-smoke.spec.ts`.
 

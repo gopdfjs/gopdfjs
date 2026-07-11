@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gopdfjs.github.io/gopdfjs/sitemap.xml

@@ -45,6 +45,9 @@ jobs:
 
       - name: Build site
         run: pnpm --filter=@gopdfjs/site build
+        env:
+          VITE_BASE: /gopdfjs/
+          VITE_SITE_URL: https://gopdfjs.github.io/gopdfjs
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

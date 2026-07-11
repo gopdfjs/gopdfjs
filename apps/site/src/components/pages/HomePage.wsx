@@ -1,0 +1,113 @@
+/** @jsxImportSource @wsxjs/wsx-core */
+
+import { LightComponent, autoRegister } from '@wsxjs/wsx-core';
+import { i18n } from '@wsxjs/wsx-i18next';
+import '@wsxjs/wsx-base-components';
+import styles from './HomePage.css?inline';
+import '../../components/common/Icon.wsx';
+
+const QUICK_START_CODE = `import { createBrowserGopdf } from "@gopdfjs/adapter-browser";
+
+const engine = await createBrowserGopdf();
+const out = await engine.compressPdf(pdfBytes, "recommended", (p) => {
+  console.log("progress", p);
+});`;
+
+@autoRegister({ tagName: 'home-page' })
+@i18n('home')
+export class HomePage extends LightComponent {
+  constructor() {
+    super({
+      styles,
+      styleName: 'home-page',
+    });
+  }
+
+  render() {
+    return (
+      <div class="home-page">
+        <section class="hero">
+          <div class="hero-container">
+            <h1 class="hero-title">{this.t('title')}</h1>
+            <p class="hero-subtitle">{this.t('subtitle')}</p>
+            <div class="hero-actions">
+              <wsx-link to="/docs/guide/getting-started" class="btn btn-primary btn-large">
+                {this.t('quickStartCTA', { ns: 'common' })}
+              </wsx-link>
+              <wsx-link to="/packages" class="btn btn-secondary">
+                {this.t('viewPackages', { ns: 'common' })}
+              </wsx-link>
+            </div>
+            <div class="hero-stats">
+              <div class="stat-item">
+                <div class="stat-value">MIT</div>
+                <div class="stat-label">{this.t('stats.license')}</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value">WASM</div>
+                <div class="stat-label">{this.t('stats.wasm')}</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value">Local</div>
+                <div class="stat-label">{this.t('stats.local')}</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="features">
+          <div class="features-container">
+            <h2 class="section-title">{this.t('features.title')}</h2>
+            <div class="features-grid">
+              <div class="feature-card">
+                <div class="feature-icon">
+                  <wsx-icon name="lock" />
+                </div>
+                <h3 class="feature-title">{this.t('features.local.title')}</h3>
+                <p class="feature-description">{this.t('features.local.description')}</p>
+              </div>
+              <div class="feature-card">
+                <div class="feature-icon">
+                  <wsx-icon name="package" />
+                </div>
+                <h3 class="feature-title">{this.t('features.npm.title')}</h3>
+                <p class="feature-description">{this.t('features.npm.description')}</p>
+              </div>
+              <div class="feature-card">
+                <div class="feature-icon">
+                  <wsx-icon name="device" />
+                </div>
+                <h3 class="feature-title">{this.t('features.browserNode.title')}</h3>
+                <p class="feature-description">{this.t('features.browserNode.description')}</p>
+              </div>
+              <div class="feature-card">
+                <div class="feature-icon">
+                  <wsx-icon name="plug" />
+                </div>
+                <h3 class="feature-title">{this.t('features.cli.title')}</h3>
+                <p class="feature-description">{this.t('features.cli.description')}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="quick-start">
+          <div class="quick-start-container">
+            <h2 class="section-title">{this.t('quickStart.title')}</h2>
+            <p class="section-description">{this.t('quickStart.description')}</p>
+            <div class="code-example">
+              <pre>
+                <code>{QUICK_START_CODE}</code>
+              </pre>
+            </div>
+            <div class="quick-start-actions">
+              <wsx-link to="/docs/guide/browser" class="btn btn-primary">
+                {this.t('viewDocs', { ns: 'common' })}
+              </wsx-link>
+            </div>
+          </div>
+        </section>
+      </div>
+    );
+  }
+}
