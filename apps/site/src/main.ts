@@ -3,14 +3,10 @@
  */
 
 import { createLogger } from '@wsxjs/wsx-core';
-import { installFetchBase } from './sitePaths';
 import 'uno.css';
 import './main.css';
 import '@wsxjs/wsx-base-components';
 import '@wsxjs/wsx-router';
-
-installFetchBase();
-
 import './i18n';
 import './App.wsx';
 

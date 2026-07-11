@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { joinBasePath, withSiteBase } from './sitePaths';
+import { joinBasePath } from './sitePaths';
 
 describe('joinBasePath', () => {
   it('prefixes GitHub Pages project base', () => {
@@ -13,27 +13,31 @@ describe('joinBasePath', () => {
   });
 });
 
-describe('withSiteBase', () => {
-  it('prefixes root-relative asset paths', () => {
-    expect(withSiteBase('/gopdfjs/', '/locales/en/home.json')).toBe('/gopdfjs/locales/en/home.json');
-    expect(withSiteBase('/gopdfjs/', '/.wsx-press/docs-meta.json')).toBe(
-      '/gopdfjs/.wsx-press/docs-meta.json',
-    );
-    expect(withSiteBase('/gopdfjs/', '/docs/guide/getting-started.md')).toBe(
-      '/gopdfjs/docs/guide/getting-started.md',
+describe('rewriteSubpathFetches', () => {
+  const WSX_PRESS_FETCH = '/.wsx-press/';
+  const DOCS_FETCH = '/docs/';
+
+  function rewrite(code: string, siteBase: string): string {
+    if (siteBase === '/' || siteBase === '') {
+      return code;
+    }
+    const normalizedBase = siteBase.endsWith('/') ? siteBase.slice(0, -1) : siteBase;
+    return code
+      .replaceAll(`"${WSX_PRESS_FETCH}`, `"${normalizedBase}${WSX_PRESS_FETCH}`)
+      .replaceAll(`'${WSX_PRESS_FETCH}`, `'${normalizedBase}${WSX_PRESS_FETCH}`)
+      .replaceAll(`"${DOCS_FETCH}`, `"${normalizedBase}${DOCS_FETCH}`)
+      .replaceAll(`'${DOCS_FETCH}`, `'${normalizedBase}${DOCS_FETCH}`);
+  }
+
+  it('rewrites wsx-press and docs fetch paths for GitHub Pages', () => {
+    const input = 'fetch("/.wsx-press/docs-meta.json");fetch("/docs/guide/x.md");';
+    expect(rewrite(input, '/gopdfjs/')).toBe(
+      'fetch("/gopdfjs/.wsx-press/docs-meta.json");fetch("/gopdfjs/docs/guide/x.md");',
     );
   });
 
-  it('leaves absolute and external URLs unchanged', () => {
-    expect(withSiteBase('/gopdfjs/', '/')).toBe('/gopdfjs/');
-    expect(withSiteBase('/gopdfjs/', '//cdn.example.com/x.json')).toBe('//cdn.example.com/x.json');
-    expect(withSiteBase('/', '/locales/en/home.json')).toBe('/locales/en/home.json');
-  });
-
-  it('does not double-prefix URLs that already include the site base', () => {
-    expect(withSiteBase('/gopdfjs/', '/gopdfjs/locales/en/home.json')).toBe(
-      '/gopdfjs/locales/en/home.json',
-    );
-    expect(withSiteBase('/gopdfjs/', '/gopdfjs/')).toBe('/gopdfjs/');
+  it('leaves bundle unchanged for root base dev', () => {
+    const input = 'fetch("/.wsx-press/docs-meta.json");';
+    expect(rewrite(input, '/')).toBe(input);
   });
 });

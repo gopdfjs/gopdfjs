@@ -5,6 +5,7 @@ import UnoCSS from 'unocss/vite';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { cpSync, existsSync, readFileSync, writeFileSync } from 'fs';
+import { rewriteSubpathFetches } from './vite-plugins/rewriteSubpathFetches';
 
 const SITE_DEV_PORT = 5175;
 const SITE_PREVIEW_PORT = 5176;
@@ -63,11 +64,6 @@ function copy404Plugin(): Plugin {
 export default defineConfig({
   base: SITE_BASE,
 
-  define: {
-    __GOPDF_SITE_BASE__: JSON.stringify(SITE_BASE),
-    __GOPDF_LOCALE_LOAD_PATH__: JSON.stringify(`${SITE_BASE}locales/{{lng}}/{{ns}}.json`),
-  },
-
   plugins: [
     wsxPress({
       docsRoot: path.resolve(__dirname, './public/docs'),
@@ -79,6 +75,7 @@ export default defineConfig({
       jsxFactory: 'h',
       jsxFragment: 'Fragment',
     }),
+    rewriteSubpathFetches(SITE_BASE),
     copyWsxPressPlugin(),
     copy404Plugin(),
   ],

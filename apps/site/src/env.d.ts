@@ -7,9 +7,6 @@ interface ImportMetaEnv {
   readonly CUSTOM_DOMAIN: string;
 }
 
-declare const __GOPDF_SITE_BASE__: string;
-declare const __GOPDF_LOCALE_LOAD_PATH__: string;
-
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
