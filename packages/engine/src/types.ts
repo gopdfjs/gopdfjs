@@ -4,6 +4,8 @@
  */
 export type { CompressionLevel } from "../../adapter/src/engine";
 
+export type { GopdfAdapter } from "../../adapter/src/adapter";
+
 export type {
   Gopdf,
   PdfJpegPage,

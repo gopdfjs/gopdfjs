@@ -1,4 +1,4 @@
-import type { GopdfAdapter } from "@gopdfjs/adapter/adapter";
+import type { GopdfAdapter } from "@gopdfjs/engine";
 import { createBrowserCanvasPort } from "./canvas";
 import { createBrowserEngine } from "./engine";
 import { createBrowserPdfJsRuntime } from "./pdfjs";

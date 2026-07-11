@@ -63,6 +63,10 @@ function copy404Plugin(): Plugin {
 export default defineConfig({
   base: SITE_BASE,
 
+  define: {
+    __GOPDF_LOCALE_LOAD_PATH__: JSON.stringify(`${SITE_BASE}locales/{{lng}}/{{ns}}.json`),
+  },
+
   plugins: [
     wsxPress({
       docsRoot: path.resolve(__dirname, './public/docs'),

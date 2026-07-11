@@ -1,4 +1,4 @@
-import type { GopdfAdapter } from "@gopdfjs/adapter/adapter";
+import type { GopdfAdapter } from "@gopdfjs/engine";
 import { createNodeCanvasPort } from "./canvas";
 import { createNodeEngine } from "./engine";
 import { createNodeOcrPort } from "./ocr";

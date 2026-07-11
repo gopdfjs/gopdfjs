@@ -19,7 +19,8 @@ const ENGINE_INDEX_FORBIDDEN = [
 const ADAPTER_INDEX_FORBIDDEN = [
   /\bcreateBrowserGopdf\b/,
   /\bcreateNodeGopdf\b/,
-  /from "@gopdfjs\/engine"/,
+  /from ['"]@gopdfjs\/engine['"]/,
+  /from ['"]@gopdfjs\/adapter/,
   /export\s*\{[^}]*\bcreateEngine\b/,
   /export\s*\{[^}]*\bcreateBrowserEngine\b/,
   /export\s*\{[^}]*\bcreateBrowserCanvasPort\b/,
