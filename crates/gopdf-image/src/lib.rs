@@ -91,7 +91,7 @@ pub fn encode_images(
 /// Limitation: This handles inline image data only. Color space declarations
 /// in the PDF's page content stream (for vector graphics / text) are not
 /// modified here — that pass is handled by pdf-lib on the JS side.
-pub fn grayscale_pdf(bytes: &[u8], ) -> Result<Vec<u8>, String> {
+pub fn grayscale_pdf(bytes: &[u8]) -> Result<Vec<u8>, String> {
     let mut output = bytes.to_vec();
 
     // Process JPEG images embedded in streams
@@ -105,13 +105,15 @@ pub fn grayscale_pdf(bytes: &[u8], ) -> Result<Vec<u8>, String> {
 fn convert_embedded_images(bytes: &[u8], format: ImageFormat) -> Result<Vec<u8>, String> {
     let (magic_start, magic_end) = match format {
         ImageFormat::Jpeg => (
-            &[0xFF_u8, 0xD8][..],  // SOI
-            &[0xFF_u8, 0xD9][..],  // EOI
+            &[0xFF_u8, 0xD8][..], // SOI
+            &[0xFF_u8, 0xD9][..], // EOI
         ),
         ImageFormat::Png => (
             &[0x89_u8, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A][..], // PNG sig
             // PNG ends with IEND chunk: length(0)+IEND+CRC
-            &[0x00_u8, 0x00, 0x00, 0x00, 0x49, 0x45, 0x4E, 0x44, 0xAE, 0x42, 0x60, 0x82][..],
+            &[
+                0x00_u8, 0x00, 0x00, 0x00, 0x49, 0x45, 0x4E, 0x44, 0xAE, 0x42, 0x60, 0x82,
+            ][..],
         ),
         _ => return Ok(bytes.to_vec()),
     };
@@ -177,9 +179,8 @@ mod tests {
 
     /// 生成最小合法 JPEG 字节，用于嵌入「假 PDF」做灰度扫描测试。
     fn tiny_color_jpeg() -> Vec<u8> {
-        let img: ImageBuffer<Rgb<u8>, Vec<u8>> = ImageBuffer::from_fn(4, 4, |x, y| {
-            Rgb([(x * 40) as u8, (y * 40) as u8, 128])
-        });
+        let img: ImageBuffer<Rgb<u8>, Vec<u8>> =
+            ImageBuffer::from_fn(4, 4, |x, y| Rgb([(x * 40) as u8, (y * 40) as u8, 128]));
         let mut out = Vec::new();
         let mut cursor = Cursor::new(&mut out);
         img.write_to(&mut cursor, ImageFormat::Jpeg)
@@ -211,8 +212,8 @@ mod tests {
         let len = u32::from_be_bytes([packed[0], packed[1], packed[2], packed[3]]) as usize;
         assert_eq!(len + 4, packed.len());
         let jpeg = &packed[4..];
-        let decoded = image::load_from_memory_with_format(jpeg, ImageFormat::Jpeg)
-            .expect("decode jpeg");
+        let decoded =
+            image::load_from_memory_with_format(jpeg, ImageFormat::Jpeg).expect("decode jpeg");
         assert_eq!(decoded.width(), 2);
         assert_eq!(decoded.height(), 2);
     }
