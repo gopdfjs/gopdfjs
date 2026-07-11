@@ -3,6 +3,7 @@
 import { LightComponent, autoRegister } from '@wsxjs/wsx-core';
 import { i18n } from '@wsxjs/wsx-i18next';
 import '@wsxjs/wsx-base-components';
+import { sitePath } from '../../sitePaths';
 import styles from './PackagesPage.css?inline';
 import '../../components/common/Icon.wsx';
 
@@ -53,7 +54,7 @@ export class PackagesPage extends LightComponent {
         <section class="packages-cta">
           <div class="packages-container">
             <p class="packages-note">{this.t('note')}</p>
-            <wsx-link to="/docs/api/engine" class="btn btn-primary">
+            <wsx-link to={sitePath('/docs/api/engine')} class="btn btn-primary">
               {this.t('cta')}
             </wsx-link>
           </div>

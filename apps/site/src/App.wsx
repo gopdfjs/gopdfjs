@@ -4,6 +4,7 @@ import { LightComponent, autoRegister } from '@wsxjs/wsx-core';
 import styles from './App.css?inline';
 import '@wsxjs/wsx-base-components';
 import '@wsxjs/wsx-router';
+import { sitePath } from './sitePaths';
 import './components/layout/AppHeader.wsx';
 import './components/layout/AppFooter.wsx';
 import './components/pages/HomePage.wsx';
@@ -23,10 +24,10 @@ export default class App extends LightComponent {
     return (
       <div class="app-container">
         <gopdf-app-header />
-        <wsx-router mode="hash">
-          <wsx-view route="/" component="home-page" />
-          <wsx-view route="/packages" component="packages-page" />
-          <wsx-view route="/docs/:category/:page" component="docs-page" />
+        <wsx-router>
+          <wsx-view route={sitePath('/')} component="home-page" />
+          <wsx-view route={sitePath('/packages')} component="packages-page" />
+          <wsx-view route={sitePath('/docs/:category/:page')} component="docs-page" />
         </wsx-router>
         <gopdf-app-footer />
       </div>

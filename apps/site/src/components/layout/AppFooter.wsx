@@ -3,6 +3,7 @@
 import { LightComponent, autoRegister } from '@wsxjs/wsx-core';
 import { i18n } from '@wsxjs/wsx-i18next';
 import '@wsxjs/wsx-base-components';
+import { sitePath } from '../../sitePaths';
 import styles from './AppFooter.css?inline';
 
 @autoRegister({ tagName: 'gopdf-app-footer' })
@@ -29,13 +30,13 @@ export class AppFooter extends LightComponent {
               <h4 class="footer-heading">{this.t('resources.title')}</h4>
               <ul class="footer-links">
                 <li>
-                  <wsx-link to="/docs/guide/getting-started">{this.t('resources.docs')}</wsx-link>
+                  <wsx-link to={sitePath('/docs/guide/getting-started')}>{this.t('resources.docs')}</wsx-link>
                 </li>
                 <li>
-                  <wsx-link to="/docs/guide/ai-help">{this.t('resources.aiHelp')}</wsx-link>
+                  <wsx-link to={sitePath('/docs/guide/ai-help')}>{this.t('resources.aiHelp')}</wsx-link>
                 </li>
                 <li>
-                  <wsx-link to="/docs/api/gopdf-methods">{this.t('resources.api')}</wsx-link>
+                  <wsx-link to={sitePath('/docs/api/gopdf-methods')}>{this.t('resources.api')}</wsx-link>
                 </li>
                 <li>
                   <a

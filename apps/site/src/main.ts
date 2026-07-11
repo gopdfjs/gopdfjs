@@ -3,6 +3,7 @@
  */
 
 import { createLogger } from '@wsxjs/wsx-core';
+import { normalizeSitePathname } from './sitePaths';
 import 'uno.css';
 import './main.css';
 import '@wsxjs/wsx-base-components';
@@ -21,6 +22,7 @@ function initTheme(): void {
 }
 
 function initApp(): void {
+  normalizeSitePathname();
   initTheme();
 
   const appContainer = document.getElementById('app');
