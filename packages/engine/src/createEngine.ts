@@ -27,6 +27,8 @@ import {
   mergePdfs,
   nUpPdf,
   organizePdf,
+  resizePdf,
+  reversePdf,
   protectPdf,
   rotatePdf,
   signPdf,
@@ -185,6 +187,9 @@ export function createEngine(adapter: GopdfAdapter): Gopdf {
       halvePdf(ownPdfBytes(bytes), opts),
     nUpPdf: (bytes: Uint8Array, opts: Parameters<Gopdf["nUpPdf"]>[1]) =>
       nUpPdf(ownPdfBytes(bytes), opts),
+    resizePdf: (bytes: Uint8Array, options: Parameters<Gopdf["resizePdf"]>[1]) =>
+      resizePdf(ownPdfBytes(bytes), options),
+    reversePdf: (bytes: Uint8Array) => reversePdf(ownPdfBytes(bytes)),
     fillPdfForm: (
       bytes: Uint8Array,
       values: Parameters<typeof fillPdfForm>[1],

@@ -51,6 +51,8 @@ const engine = createEngine(await createBrowserAdapter());
 | `signPdf(bytes, pngBytes, placement)` | `Uint8Array` | ✓ | ✓ | Image signature overlay. |
 | `halvePdf(bytes, opts)` | `Uint8Array` | ✓ | ✓ | Split page in half. |
 | `nUpPdf(bytes, opts)` | `Uint8Array` | ✓ | ✓ | N-up imposition layouts. |
+| `resizePdf(bytes, options)` | `Uint8Array` | ✓ | ✓ | Scale pages to paper preset/custom size. |
+| `reversePdf(bytes)` | `Uint8Array` | ✓ | ✓ | Reverse page order. |
 | `addPageNumbers(bytes, opts)` | `Uint8Array` | ✓ | ✓ | Page number stamp. |
 | `addHeaderFooter(bytes, opts)` | `Uint8Array` | ✓ | ✓ | Header/footer text. |
 | `fillPdfForm(bytes, values, options?, fields?)` | `Uint8Array` | ✓ | ✓ | AcroForm fill; optional flatten. |

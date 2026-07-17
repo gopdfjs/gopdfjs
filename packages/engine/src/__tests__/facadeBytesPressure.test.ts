@@ -69,6 +69,8 @@ vi.mock("@gopdfjs/plugin-struct", () => ({
   signPdf: mockFn(STUB_BYTES),
   halvePdf: mockFn(STUB_BYTES),
   nUpPdf: mockFn(STUB_BYTES),
+  resizePdf: mockFn(STUB_BYTES),
+  reversePdf: mockFn(STUB_BYTES),
   fillPdfForm: mockFn(STUB_BYTES),
   addHeaderFooter: mockFn(STUB_BYTES),
   addPageNumbers: mockFn(STUB_BYTES),
@@ -179,6 +181,12 @@ const FACADE_CASES: FacadeCase[] = [
   },
   { name: "halvePdf", run: (e, h) => e.halvePdf(h, { orientation: "vertical" }) },
   { name: "nUpPdf", run: (e, h) => e.nUpPdf(h, { layout: "2x2" }) },
+  {
+    name: "resizePdf",
+    run: (e, h) =>
+      e.resizePdf(h, { target: { preset: "a4" }, mode: "fit", scope: "uniform" }),
+  },
+  { name: "reversePdf", run: (e, h) => e.reversePdf(h) },
   { name: "fillPdfForm", run: (e, h) => e.fillPdfForm(h, {}) },
   {
     name: "addHeaderFooter",

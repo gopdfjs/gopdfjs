@@ -9,6 +9,8 @@ export * from "./jpgToPdf";
 export * from "./crop";
 export * from "./halve";
 export * from "./nup";
+export * from "./resize";
+export * from "./reverse";
 export * from "./formFiller";
 export * from "./sign";
 export * from "./headerFooter";

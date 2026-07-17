@@ -145,6 +145,19 @@ export interface Gopdf {
     },
   ): Promise<Uint8Array>;
 
+  resizePdf(
+    bytes: Uint8Array,
+    options: {
+      target:
+        | { preset: "a4" | "letter" | "legal" | "tabloid" }
+        | { preset: "custom"; widthMm: number; heightMm: number };
+      mode: "fit" | "fill" | "stretch";
+      scope: "uniform" | "perPage";
+    },
+  ): Promise<Uint8Array>;
+
+  reversePdf(bytes: Uint8Array): Promise<Uint8Array>;
+
   addHeaderFooter(
     bytes: Uint8Array,
     opts: { header: string; footer: string; fontSize: number; color: string; margin: number },
