@@ -101,6 +101,8 @@ Ship **`@gopdfjs/engine`** + **`adapter-browser`** + **`adapter-node`** to npm. 
 | 0020 | OCR | **PARTIAL** | `plugin-extract` / engine | partial | ❌ no demo | demo + e2e + npm `dist` |
 | 0021 | Protect | **PARTIAL** | `plugin-struct` | ✓ | ✓ | npm `dist` |
 | 0022 | Unlock | **PARTIAL** | same | ✓ | ✓ | npm `dist` |
+| 0040 | Resize | **PARTIAL** | `plugin-struct` + engine | ✓ | — | product UI in ilovepdf; npm `dist` |
+| 0041 | Reverse | **PARTIAL** | same | ✓ | — | product UI in ilovepdf; npm `dist` |
 
 ### Active — WASM / verified
 
@@ -136,8 +138,6 @@ Ship **`@gopdfjs/engine`** + **`adapter-browser`** + **`adapter-node`** to npm. 
 | 0037 | Scan→PDF | **NOT STARTED** | — | — | |
 | 0038 | Markdown/LaTeX→PDF | **NOT STARTED** | — | — | |
 | 0039 | HEIC/WebP→PDF | **NOT STARTED** | — | — | |
-| 0040 | Resize | **NOT STARTED** | — | — | |
-| 0041 | Reverse | **NOT STARTED** | — | — | |
 | 0043 | Flatten | **NOT STARTED** | — | — | |
 | 0044 | Edit metadata | **NOT STARTED** | — | — | |
 | 0045 | PDF overlay | **NOT STARTED** | — | — | |
@@ -169,9 +169,9 @@ Reserved: **0060**.
 |---------|-------|---------------------|
 | **DONE** (strict OSS) | 0 | — npm `dist` + publish blocks all tools |
 | **DONE** (0008 P1 only) | 1 | 0008 Phase 1 — WASM + dedicated e2e |
-| **PARTIAL** | 18 | 0006–0018, 0020–0022, 0008 P2, 0028, 0042, 0035?, 0061 |
+| **PARTIAL** | 20 | 0006–0018, 0020–0022, 0008 P2, 0028, 0040–0041, 0042, 0035?, 0061 |
 | **CLOSED** | 6 | 0001–0004 umbrellas · 0057 · 0058 architecture |
-| **NOT STARTED** | 29 | 0019, 0023–0027, 0029–0034, 0036–0041, 0043–0045, 0049–0056, 0059 |
+| **NOT STARTED** | 27 | 0019, 0023–0027, 0029–0034, 0036–0039, 0043–0045, 0049–0056, 0059 |
 | **DEFERRED** | 3 | 0046–0048 |
 
 ---
@@ -203,7 +203,9 @@ Reserved: **0060**.
 | 0020 | [OCR](rfc/completed/0020-ocr-pdf.md) | Implemented | completed |
 | 0021 | [Protect](rfc/completed/0021-protect-pdf.md) | Implemented | completed |
 | 0022 | [Unlock](rfc/completed/0022-unlock-pdf.md) | Implemented | completed |
-| 0023–0045 | (proposed tools) | Proposed | active |
+| 0040 | [Resize](rfc/completed/0040-resize-pdf.md) | Implemented (PARTIAL) | completed |
+| 0041 | [Reverse](rfc/completed/0041-reverse-pdf.md) | Implemented (PARTIAL) | completed |
+| 0023–0039, 0043–0045 | (proposed tools) | Proposed | active |
 | 0046–0048 | (AI) | Deferred | pending |
 | 0049–0056 | (proposed tools) | Proposed | active |
 | 0057 | [WASM Worker](rfc/completed/0057-rust-wasm-engine-architecture.md) | Closed | completed |

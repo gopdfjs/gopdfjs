@@ -34,8 +34,8 @@ Structure, layout, and annotation tools — merge, split, reorder, crop, sign, w
 | Form filler | [0031](../0031-form-filler.md) | active |
 | Native text edit | [0032](../0032-native-text-edit.md) | active |
 | N-up | [0030](../0030-n-up-pdf.md) | active |
-| Resize pages | [0040](../0040-resize-pdf.md) | active |
-| Reverse page order | [0041](../0041-reverse-pdf.md) | active |
+| Resize pages | [0040](0040-resize-pdf.md) | completed (PARTIAL) |
+| Reverse page order | [0041](0041-reverse-pdf.md) | completed (PARTIAL) |
 | PDF overlay | [0045](../0045-pdf-overlay.md) | active |
 | Edit metadata | [0044](../0044-edit-metadata.md) | active |
 
@@ -50,6 +50,7 @@ Structure, layout, and annotation tools — merge, split, reorder, crop, sign, w
 | Child | Verdict | § status |
 |-------|---------|----------|
 | [0006](0006-merge-pdf.md)–[0016](0016-header-footer.md) | **PARTIAL** | Each has §6 — product assumed; `pdf-lib` L3 not in monorepo |
-| [0026](../0026-redact-pdf.md) · 0030–0032 · 0040–0041 · 0044–0045 | **NOT STARTED** | Proposed only |
+| [0026](../0026-redact-pdf.md) · 0030–0032 · 0044–0045 | **NOT STARTED** | Proposed only |
+| [0040](0040-resize-pdf.md)–[0041](0041-reverse-pdf.md) | **PARTIAL** | plugin-struct + engine; product UI in ilovepdf |
 
 Track detail in [ROADMAP](../ROADMAP.md#shipped-tools-completed) and [TASK_TRACKING](../TASK_TRACKING.md).
