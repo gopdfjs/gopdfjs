@@ -41,6 +41,7 @@ import { ocrPdf } from "./ocr";
 import { ownPdfBytes, ownPdfBytesList } from "./ownedBytes";
 import { pdfToJpeg } from "./pdfToJpeg";
 import { pdfToText } from "./pdfToText";
+import { convertZipToPdf } from "./zipToPdf";
 
 function mapCompressionLevel(level: CompressionLevel): CompressLevel {
   if (level === "low") return "low";
@@ -176,6 +177,8 @@ export function createEngine(adapter: GopdfAdapter): Gopdf {
           bytes: ownPdfBytes(image.bytes),
         })),
       ),
+    zipToPdf: (bytes: Uint8Array, options: Parameters<Gopdf["zipToPdf"]>[1]) =>
+      convertZipToPdf(ownPdfBytes(bytes), options),
     watermarkPdf: (
       bytes: Uint8Array,
       content: Parameters<Gopdf["watermarkPdf"]>[1],

@@ -58,6 +58,7 @@ const engine = createEngine(await createBrowserAdapter());
 | `fillPdfForm(bytes, values, options?, fields?)` | `Uint8Array` | ✓ | ✓ | AcroForm fill; optional flatten. |
 | `applyNativeTextEdits(bytes, edits)` | `Uint8Array` | ✓ | ✓ | Overlay text boxes on pages. |
 | `jpgToPdf(images)` | `Uint8Array` | ✓ | ✓ | Images → single PDF. |
+| `zipToPdf(bytes, options)` | `ZipToPdfResult` | ✓ | partial | RFC 0055. `options.mode`: `"combined"` (one PDF) or `"individual"` (ZIP of PDFs). JPEG, PNG, and PDF entries work in Node and the browser. Plain text, Markdown, and HTML go through `htmlToPdf` (browser DOM). Unsupported or corrupt entries are reported on `entries` and do not stop the batch. Office files are unsupported. |
 
 ## Repair & redact
 
