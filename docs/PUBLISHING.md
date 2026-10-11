@@ -49,7 +49,7 @@ Engine **bundles** internal `@gopdfjs/*` at publish build — consumers do not a
 | Vite publish sanity | **`pnpm check:vite-sanity`** — manual / pre-release only (not in `pnpm release -y`) |
 | Unit tests | `pnpm test` · `pnpm test:rust` |
 | Browser acceptance | `pnpm test:e2e` |
-| Build | `dist/` via **Vite library mode** on the **3 public** packages |
+| Build | **Closed.** Vite library mode emits `dist/` for `@gopdfjs/engine`, `@gopdfjs/adapter-browser`, and `@gopdfjs/adapter-node` (`pnpm --filter=@gopdfjs/engine --filter=@gopdfjs/adapter-browser --filter=@gopdfjs/adapter-node build`). Not an open gap. |
 | npm metadata | `publishConfig.access: public` on those 3 only |
 
 **Not in this repo:** `gopdf-cli` subcommands · MCP install · ilovepdf UI.
