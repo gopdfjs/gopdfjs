@@ -51,6 +51,20 @@ function mapExportsToDist(exportsField) {
   return out;
 }
 
+/** npm tarball exports: drop the Vite `development` condition so consumers cannot resolve `src/`. */
+function publishedExports(exportsField) {
+  const out = {};
+  for (const [key, value] of Object.entries(exportsField ?? {})) {
+    if (value && typeof value === "object" && !Array.isArray(value)) {
+      const { development: _development, ...rest } = value;
+      out[key] = rest;
+    } else {
+      out[key] = value;
+    }
+  }
+  return out;
+}
+
 for (const dir of fs.readdirSync(PACKAGES_DIR)) {
   const pkgPath = path.join(PACKAGES_DIR, dir, "package.json");
   if (!fs.existsSync(pkgPath)) continue;
@@ -60,7 +74,10 @@ for (const dir of fs.readdirSync(PACKAGES_DIR)) {
 
   if (isPublic) {
     delete pkg.private;
-    pkg.publishConfig = { access: "public" };
+    pkg.publishConfig = {
+      access: "public",
+      ...(pkg.exports ? { exports: publishedExports(mapExportsToDist(pkg.exports)) } : {}),
+    };
     pkg.files = ["dist"];
     pkg.scripts = {
       ...pkg.scripts,

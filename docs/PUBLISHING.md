@@ -69,6 +69,8 @@ Never `pnpm dev dev` — second arg is the demo **value** from config, not the s
 
 Public packages expose **`exports.development` → `./src/*.ts`**. Vite resolves source directly — **no `dist/` build for local dev**.
 
+`publishConfig.exports` drops that `development` condition. `pnpm pack` / npm publish therefore resolve only `./dist/*`. Packed consumers must not import `src/`. Check with `pnpm check:pack-exports`.
+
 ## Release — `@systembug/qingniao` + changesets
 
 Tooling (root `package.json`):
@@ -115,6 +117,7 @@ npm view @gopdfjs/adapter-node version
 - `pnpm check:layer-deps` — `plugin-*` prod deps must not pull `@gopdfjs/adapter*` / `engine`
 - `pnpm check:public-exports` — engine exports only `"."`; adapter barrels must not re-export engine/plugins/WASM
 - `pnpm check:vite-sanity` — **manual only** (not in qingniao release); builds 3 public packages; no private `@gopdfjs/*` in published JS/d.ts
+- `pnpm check:pack-exports` — packs the 3 public packages and checks Node resolves `dist/` (including `--conditions=development`)
 
 ## Bundler guidance (browser consumers)
 
