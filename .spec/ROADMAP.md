@@ -147,7 +147,7 @@ Ship **`@gopdfjs/engine`** + **`adapter-browser`** + **`adapter-node`** to npm. 
 | 0052 | Viewer prefs | **NOT STARTED** | — | — | |
 | 0053 | Compare | **NOT STARTED** | — | — | |
 | 0054 | Invert colors | **NOT STARTED** | — | — | |
-| 0055 | ZIP→PDF | **NOT STARTED** | — | — | |
+| 0055 | ZIP→PDF | **PARTIAL** | — | — | `engine.zipToPdf`; JPEG/PNG/PDF + browser text/HTML/MD; Office out of scope; no demo route |
 | 0056 | Niche formats | **NOT STARTED** | — | — | |
 | 0061 | Understand PDF | **PARTIAL** | **live** L3 | ❌ `analyze_pdf` | L1 `@gopdfjs/plugin-inspect` planned; see RFC §5 |
 
@@ -169,9 +169,9 @@ Reserved: **0060**.
 |---------|-------|---------------------|
 | **DONE** (strict OSS) | 0 | — npm `dist` + publish blocks all tools |
 | **DONE** (0008 P1 only) | 1 | 0008 Phase 1 — WASM + dedicated e2e |
-| **PARTIAL** | 20 | 0006–0018, 0020–0022, 0008 P2, 0028, 0040–0041, 0042, 0035?, 0061 |
+| **PARTIAL** | 21 | 0006–0018, 0020–0022, 0008 P2, 0028, 0040–0041, 0042, 0035?, 0055, 0061 |
 | **CLOSED** | 6 | 0001–0004 umbrellas · 0057 · 0058 architecture |
-| **NOT STARTED** | 27 | 0019, 0023–0027, 0029–0034, 0036–0039, 0043–0045, 0049–0056, 0059 |
+| **NOT STARTED** | 26 | 0019, 0023–0027, 0029–0034, 0036–0039, 0043–0045, 0049–0054, 0056, 0059 |
 | **DEFERRED** | 3 | 0046–0048 |
 
 ---

@@ -88,6 +88,7 @@ function mockEngine(): Gopdf {
     comparePdfText: async () => ({}) as never,
     createCompareSession: async () => ({}) as never,
     visualDiffCanvases: (() => ({})) as never,
+    zipToPdf: async () => ({ mode: "combined" as const, bytes, entries: [] }),
   };
 }
 

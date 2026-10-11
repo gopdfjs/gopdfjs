@@ -13,7 +13,8 @@ PUBLISH    dist/ build · exports → dist · un-private · Vite WASM docs
 PARTIAL    0006–0022 npm coded; global blocker = npm dist
 PARTIAL    0028 0042 WASM stubs
 CLOSED     0057 0058 architecture RFCs → completed/
-NOT START  0023–0027 0029–0034 0036–0039 0043–0045 0049–0056 0059
+NOT START  0023–0027 0029–0034 0036–0039 0043–0045 0049–0054 0056 0059
+PARTIAL    0055 ZIP→PDF `engine.zipToPdf` (Office out of scope; no demo route)
 PARTIAL    0040–0041 plugin-struct + engine (product UI in ilovepdf)
 DEFERRED   0046–0048 AI
 E2E        all-tools matrix ✅ (except OCR — no demo route)
@@ -76,7 +77,8 @@ PUBLISH    docs/PUBLISHING.md checklist
 
 ## To do — P3 (proposed backlog)
 
-0023–0027 · 0029–0034 · 0036–0039 · 0043–0045 · 0049–0056 — Approved + rfc-workflow first.
+0023–0027 · 0029–0034 · 0036–0039 · 0043–0045 · 0049–0054 · 0056 — Approved + rfc-workflow first.
+0055 — PARTIAL: `engine.zipToPdf` (JPEG/PNG/PDF + browser text; Office out of scope; demo/e2e not added).
 0040–0041 — PARTIAL (plugin-struct + engine; product UI in ilovepdf).
 
 ## Deferred

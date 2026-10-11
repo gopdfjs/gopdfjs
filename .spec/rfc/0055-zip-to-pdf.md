@@ -1,7 +1,7 @@
 
 # RFC 0055 - ZIP to PDF
 
-- **Status**: Proposed
+- **Status**: In progress (`engine.zipToPdf`; Office out of scope; no demo route yet)
 - **Author**: Antigravity
 - **Date**: 2026-03-22
 

@@ -12,7 +12,14 @@ export type {
   PdfToJpegOptions,
   PdfToTextFormat,
   PdfToTextOptions,
+  ZipEntryStatus,
+  ZipToPdfEntryResult,
+  ZipToPdfMode,
+  ZipToPdfOptions,
+  ZipToPdfResult,
 } from "../../adapter/src/gopdf";
+
+export { ZIP_ENTRY_STATUS, ZIP_TO_PDF_MODE } from "../../adapter/src/gopdf";
 
 export type {
   Annotation,

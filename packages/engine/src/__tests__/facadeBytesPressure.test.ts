@@ -171,6 +171,10 @@ const FACADE_CASES: FacadeCase[] = [
     run: (e, h) => e.jpgToPdf([{ bytes: h, mimeType: "image/jpeg" }]),
   },
   {
+    name: "zipToPdf",
+    run: (e, h) => e.zipToPdf(h, { mode: "combined" }),
+  },
+  {
     name: "watermarkPdf",
     run: (e, h) =>
       e.watermarkPdf(h, { text: "x" }, { fontSize: 12, opacity: 0.5, rotation: 0, color: "#000", tile: false, position: "center" }),
