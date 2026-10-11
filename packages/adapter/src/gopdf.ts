@@ -45,6 +45,48 @@ export type PdfToTextOptions = {
   renderScale?: number;
 };
 
+/** RFC 0055 — one merged PDF, or a ZIP of one PDF per converted entry. */
+export const ZIP_TO_PDF_MODE = {
+  combined: "combined",
+  individual: "individual",
+} as const;
+
+export type ZipToPdfMode = (typeof ZIP_TO_PDF_MODE)[keyof typeof ZIP_TO_PDF_MODE];
+
+/** Per-entry outcome. A failed or unsupported entry does not stop the rest of the archive. */
+export const ZIP_ENTRY_STATUS = {
+  converted: "converted",
+  unsupported: "unsupported",
+  failed: "failed",
+} as const;
+
+export type ZipEntryStatus = (typeof ZIP_ENTRY_STATUS)[keyof typeof ZIP_ENTRY_STATUS];
+
+export type ZipToPdfEntryResult = {
+  /** Archive-relative path after `\` → `/` and `.` / `..` checks. */
+  path: string;
+  status: ZipEntryStatus;
+  /** PDF name inside an individual-mode ZIP, or the source name merged in combined mode. */
+  outputPath?: string;
+  message?: string;
+};
+
+export type ZipToPdfOptions = {
+  mode: ZipToPdfMode;
+  /** Called after each file entry, in deterministic path order. `index` is 0-based. */
+  onEntry?: (entry: ZipToPdfEntryResult, index: number, total: number) => void;
+};
+
+export type ZipToPdfResult = {
+  mode: ZipToPdfMode;
+  /**
+   * Combined mode: one PDF (empty PDF when nothing converted).
+   * Individual mode: ZIP of converted PDFs, nested paths preserved.
+   */
+  bytes: Uint8Array;
+  entries: ZipToPdfEntryResult[];
+};
+
 /**
  * Consumer-facing PDF API (`engine.compressPdf()`, …).
  * **Type lives here; implementation lives in `@gopdfjs/engine` `createEngine()`**, which
@@ -114,6 +156,13 @@ export interface Gopdf {
   ): Promise<Uint8Array>;
 
   jpgToPdf(images: ImageInput[]): Promise<Uint8Array>;
+
+  /**
+   * RFC 0055. Converts JPEG, PNG, PDF, plain text, Markdown, and HTML entries.
+   * Office files are unsupported and reported per entry. Text, Markdown, and HTML
+   * use `htmlToPdf` (browser DOM). JPEG/PNG/PDF work in Node and the browser.
+   */
+  zipToPdf(bytes: Uint8Array, options: ZipToPdfOptions): Promise<ZipToPdfResult>;
 
   watermarkPdf(
     bytes: Uint8Array,

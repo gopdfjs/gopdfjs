@@ -6,6 +6,7 @@
  */
 
 export type * from "./types";
+export { ZIP_ENTRY_STATUS, ZIP_TO_PDF_MODE } from "./types";
 export { createEngine } from "./createEngine";
 
 export {
