@@ -80,7 +80,7 @@ export type ZipToPdfOptions = {
 export type ZipToPdfResult = {
   mode: ZipToPdfMode;
   /**
-   * Combined mode: one PDF (empty PDF when nothing converted).
+   * Combined mode: one PDF. When nothing converted, pdf-lib reloads that merge as one blank page.
    * Individual mode: ZIP of converted PDFs, nested paths preserved.
    */
   bytes: Uint8Array;

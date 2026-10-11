@@ -125,7 +125,12 @@ describe("convertZipToPdf", () => {
     expect(seen).toEqual(["pdf", "image", "<pre>zeta</pre>"]);
 
     const packed = await JSZip.loadAsync(result.bytes);
-    expect(Object.keys(packed.files).sort()).toEqual(["a/a.pdf", "a/c.pdf", "z/b.pdf"]);
+    // JSZip also records parent folders (`a/`, `z/`) for nested files.
+    const packedFiles = Object.entries(packed.files)
+      .filter(([, entry]) => !entry.dir)
+      .map(([name]) => name)
+      .sort();
+    expect(packedFiles).toEqual(["a/a.pdf", "a/c.pdf", "z/b.pdf"]);
   });
 
   it("merges successful PDFs and keeps going after unsupported or corrupt entries", async () => {
@@ -182,8 +187,10 @@ describe("convertZipToPdf", () => {
   });
 
   it("reports an unsafe path without stopping the next file", async () => {
+    // JSZip resolves `..` while reading, so the guard is for names it keeps (`/tmp/...`, `C:/...`).
     const archive = await zipOf({
-      "../secret.txt": new TextEncoder().encode("nope"),
+      "/tmp/secret.txt": new TextEncoder().encode("nope"),
+      "C:/secret.txt": new TextEncoder().encode("nope"),
       "ok.txt": new TextEncoder().encode("yes"),
     });
     const result = await convertZipToPdf(
@@ -191,11 +198,19 @@ describe("convertZipToPdf", () => {
       { mode: ZIP_TO_PDF_MODE.individual },
       stubPorts(),
     );
-    const secret = result.entries.find((entry) => entry.path.includes("secret"));
+    const unsafe = result.entries.filter((entry) => entry.path.includes("secret"));
     const ok = result.entries.find((entry) => entry.path === "ok.txt");
-    expect(secret?.status).toBe(ZIP_ENTRY_STATUS.failed);
+    expect(unsafe.map((entry) => entry.status)).toEqual([
+      ZIP_ENTRY_STATUS.failed,
+      ZIP_ENTRY_STATUS.failed,
+    ]);
     expect(ok?.status).toBe(ZIP_ENTRY_STATUS.converted);
     expect(ok?.outputPath).toBe("ok.pdf");
+    const packed = await JSZip.loadAsync(result.bytes);
+    const packedFiles = Object.entries(packed.files)
+      .filter(([, entry]) => !entry.dir)
+      .map(([name]) => name);
+    expect(packedFiles).toEqual(["ok.pdf"]);
   });
 
   it("disambiguates output names that would collide", async () => {
@@ -222,7 +237,8 @@ describe("convertZipToPdf", () => {
     const emptyZip = await JSZip.loadAsync(individual.bytes);
     expect(Object.keys(emptyZip.files)).toEqual([]);
     const emptyPdf = await PDFDocument.load(combined.bytes);
-    expect(emptyPdf.getPageCount()).toBe(0);
+    // pdf-lib saves a zero-page document and reloads it as one blank page.
+    expect(emptyPdf.getPageCount()).toBe(1);
     expect(individual.entries).toEqual([]);
   });
 
