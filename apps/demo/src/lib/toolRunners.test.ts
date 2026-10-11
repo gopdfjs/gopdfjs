@@ -31,6 +31,8 @@ function mockEngine(): Gopdf {
     signPdf: stub,
     halvePdf: stub,
     nUpPdf: stub,
+    resizePdf: stub,
+    reversePdf: stub,
     addHeaderFooter: stub,
     addPageNumbers: stub,
     repairPdf: async () =>
@@ -83,9 +85,9 @@ function mockEngine(): Gopdf {
     pdfToEpub: async () => new Blob(),
     htmlToPdf: async () => ({ bytes, pageCount: 1, truncated: false }),
     markdownToHtml: async () => "<p>ok</p>",
-    comparePdfText: async () => ({ equal: true, diff: "" }),
+    comparePdfText: async () => ({}) as never,
     createCompareSession: async () => ({}) as never,
-    visualDiffCanvases: async () => ({}) as never,
+    visualDiffCanvases: (() => ({})) as never,
   };
 }
 

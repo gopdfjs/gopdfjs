@@ -93,6 +93,9 @@ RFC 生命周期：`.spec/ROADMAP.md` § **RFC lifecycle**（umbrella · archite
 
 ## 常见误区（别搞错）
 
+- ~~直接 import `@gopdfjs/plugin-*`~~ → **`engine.*()` via `createEngine(adapter)`**（RFC 0058；见 `AGENTS.md` § Consumer API）
+- ~~Next.js client 用 Node adapter~~ → **client = `createBrowserAdapter()` only**
+- ~~`@gopdfjs/plugin-extract/ocr` 等子路径~~ → **`engine.ocr()`**；plugin 子路径不对外
 - ~~`packages/tools`~~、~~`@gopdfjs/components`~~、~~`@gopdfjs/i18n`~~、~~`locale-cli`~~ → 已移出 OSS
 - ~~`.spec/e2e`~~ → 已删；e2e 在 **`apps/demo/e2e/`**
 - ~~`apps/site/` = 产品工具站~~ → CLI docs landing（GitHub Pages）

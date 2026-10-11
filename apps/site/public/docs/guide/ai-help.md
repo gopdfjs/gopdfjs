@@ -15,7 +15,7 @@ description: 'Copy-paste context for LLMs — createEngine, adapter, plugin laye
 createEngine(adapter)  →  Gopdf  →  engine.*()     ← YOU CALL THIS
        ↓ wires plugin-* internally (never import plugins from apps)
 createBrowserAdapter() / createNodeAdapter()  →  GopdfAdapter  ← host ports
-       ↓ WASM · pdf.js · canvas · ocr (node)
+       ↓ WASM · pdf.js · canvas · ocr
 @gopdfjs/wasm
 ```
 
@@ -28,7 +28,9 @@ createBrowserAdapter() / createNodeAdapter()  →  GopdfAdapter  ← host ports
 5. **Input/output** = `Uint8Array` (read `File` / `fs` at the edge).
 6. **Reuse one engine** per workflow — adapter init is async (WASM).
 
-## Browser (React, Vite, etc.)
+## Browser (React, Vite, Next.js client, etc.)
+
+**Next.js:** `"use client"` components and client libs → **`createBrowserAdapter()` only**. Do not use `createNodeAdapter()` in client bundles.
 
 ```ts
 import { createEngine } from "@gopdfjs/engine";
@@ -40,6 +42,8 @@ const pdfBytes = new Uint8Array(await file.arrayBuffer());
 const compressed = await engine.compressPdf(pdfBytes, "recommended", (p) => {
   console.log("progress", p);
 });
+
+const ocrText = await engine.ocr(pdfBytes, "eng");
 ```
 
 **Browser-only APIs:** `htmlToPdf`, `markdownToHtml`, `createCompareSession`, `visualDiffCanvases` (need DOM).
@@ -57,7 +61,7 @@ const input = await readFile("input.pdf");
 const output = await engine.compressPdf(input, "recommended");
 await writeFile("output.pdf", output);
 
-const ocrText = await engine.ocr(input, "eng"); // Node adapter only
+const ocrText = await engine.ocr(input, "eng");
 ```
 
 ## Common mistakes (agents)
@@ -65,6 +69,8 @@ const ocrText = await engine.ocr(input, "eng"); // Node adapter only
 | Wrong | Right |
 |-------|-------|
 | `import { mergePdfs } from "@gopdfjs/plugin-struct"` | `engine.mergePdfs([a, b])` via `createEngine(adapter)` |
+| `export * from "@gopdfjs/plugin-extract/ocr"` | `engine.ocr(bytes, "eng")` — subpath does not exist |
+| Next.js client uses `createNodeAdapter()` | Next.js client uses `createBrowserAdapter()` |
 | `import { compressPdf } from "@gopdfjs/engine"` | `engine.compressPdf(bytes, level)` on `Gopdf` instance |
 | Skip adapter, call WASM directly | `createEngine(await createXxxAdapter())` |
 | Expecting CLI in this repo | Libraries only — embed engine in **your** app |

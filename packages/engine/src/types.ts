@@ -30,3 +30,9 @@ export type {
   TextDiffResult,
   VisualDiffResult,
 } from "../../plugin/src/index";
+
+export type { SerializedFabricObject } from "../../plugin-annotate/src/index";
+
+export type { ViewportRect } from "../../plugin-redact/src/index";
+
+

@@ -9,9 +9,40 @@
 | 必须 | 说明 |
 |------|------|
 | 每个 tool RFC → **`@gopdfjs/*` npm** · `engine.*()` on `Gopdf` | `completed/0058-engine-plugin-charter.md` §2.6 |
-| 浏览器 | `@gopdfjs/engine` + `@gopdfjs/adapter-browser` |
-| Node 库 | `@gopdfjs/engine` + `@gopdfjs/adapter-node` |
+| 浏览器 | `@gopdfjs/adapter-browser` → `createEngine(adapter)` → `engine.*()` |
+| Node 库 | `@gopdfjs/adapter-node` → `createEngine(adapter)` → `engine.*()` |
 | Rust | `crates/` → wasm-pack → adapter `pkg/` |
+
+## Consumer API（app / LLM 必读）
+
+**唯一对外入口** = `createEngine(adapter)` → `Gopdf` → `engine.*()`。详见 `apps/site/public/docs/guide/ai-help.md`。
+
+| 环境 | adapter | 典型宿主 |
+|------|---------|----------|
+| **Browser** | `createBrowserAdapter()` from `@gopdfjs/adapter-browser` | React · Vite · **Next.js client** (`"use client"`) |
+| **Node** | `createNodeAdapter()` from `@gopdfjs/adapter-node` | scripts · `gopdf-cli` · server-only jobs |
+
+```ts
+// Browser / Next.js client — always this pattern
+import { createEngine } from "@gopdfjs/engine";
+import { createBrowserAdapter } from "@gopdfjs/adapter-browser";
+
+const engine = createEngine(await createBrowserAdapter());
+const out = await engine.compressPdf(bytes, "recommended");
+const text = await engine.ocr(bytes, "eng");
+```
+
+**禁止（产品 / demo / 任何 app 代码）：**
+
+| ❌ 错误 | ✅ 正确 |
+|---------|---------|
+| `import … from "@gopdfjs/plugin-*"` | `engine.mergePdfs()` 等 `engine.*()` |
+| `import … from "@gopdfjs/plugin-extract/ocr"`（路径不存在） | `engine.ocr(bytes, lang)` |
+| `export * from "@gopdfjs/plugin-struct"` 薄 re-export | 直接调 `engine.*()`；勿绕门面 |
+| Next.js **client** 用 `createNodeAdapter()` | client → `createBrowserAdapter()` only |
+| 直接 import `@gopdfjs/wasm` / `@gopdfjs/runtime` | 经 adapter + engine |
+
+`@gopdfjs/plugin-*` 是 **engine 内部接线**，`private` 或未发布子路径；RFC 旧稿里 `apps/web/lib/tools/*.ts` re-export plugin 的写法 **已废弃**（见 RFC 0058）。
 
 | **不是本仓** | |
 |--------------|--|

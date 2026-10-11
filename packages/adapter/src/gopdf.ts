@@ -70,7 +70,7 @@ export interface Gopdf {
     onProgress?: (current: number, total: number) => void,
   ): Promise<string>;
 
-  /** Requires `adapter.ocr` (Node adapter). */
+  /** Requires `adapter.ocr` on the host adapter. */
   ocr(
     bytes: Uint8Array,
     lang?: string,

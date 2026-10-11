@@ -17,7 +17,8 @@
   },
   "dependencies": {
     "@gopdfjs/engine": "workspace:*",
-    "pdfjs-dist": "^5.4.296"
+    "pdfjs-dist": "^5.4.296",
+    "tesseract.js": "^7.0.0"
   },
   "devDependencies": {
     "@gopdfjs/adapter": "workspace:*",

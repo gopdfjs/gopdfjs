@@ -34,7 +34,7 @@ const engine = createEngine(await createBrowserAdapter());
 |--------|---------|---------|------|---------|
 | `pdfToJpeg(bytes, options?)` | `PdfJpegPage[]` | ✓ | ✓ | Render pages to JPEG bytes. `scale`, `quality`. |
 | `pdfToText(bytes, options?, onProgress?)` | `string` | ✓ | ✓ | Text export. `format`: `"txt"` \| `"html"` \| `"rtf"`. |
-| `ocr(bytes, lang?, onProgress?)` | `string` | — | ✓ | OCR via Node adapter (tesseract). |
+| `ocr(bytes, lang?, onProgress?)` | `string` | — | ✓ | OCR via adapter.ocr (tesseract.js). |
 
 ## Structure & pages (pdf-lib)
 

@@ -7,3 +7,16 @@
 
 export type * from "./types";
 export { createEngine } from "./createEngine";
+
+export {
+  fabricObjectsToAnnotations,
+  computeFitDisplayScale,
+  pageDisplaySize,
+  scaleSerializedFabricObjects,
+  FABRIC_SERIALIZE_FIELDS,
+} from "../../plugin-annotate/src/index";
+
+export {
+  viewportRectToPdfRegion,
+  pdfRegionToCanvasRect,
+} from "../../plugin-redact/src/index";

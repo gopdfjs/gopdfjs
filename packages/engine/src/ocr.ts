@@ -4,7 +4,7 @@ import { renderPageToJpeg } from "./renderPage";
 const OCR_RENDER_SCALE = 2;
 const DEFAULT_OCR_LANG = "eng";
 
-/** OCR every page — requires `adapter.ocr` (Node adapter). */
+/** OCR every page — requires `adapter.ocr` on the host adapter. */
 export async function ocrPdf(
   adapter: GopdfAdapter,
   bytes: Uint8Array,
