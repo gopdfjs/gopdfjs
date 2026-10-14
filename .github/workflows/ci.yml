@@ -32,8 +32,8 @@ jobs:
       - name: Validate
         run: pnpm validate
 
-      - name: Changeset gate unit tests
-        run: node --test scripts/require-changeset.test.mjs
+      - name: Changeset gate and CI config unit tests
+        run: node --test scripts/require-changeset.test.mjs scripts/write-qingniao-ci-config.test.mjs
 
       - name: Require a changeset for package and crate diffs
         if: github.event_name == 'pull_request'
