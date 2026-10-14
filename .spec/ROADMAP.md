@@ -249,3 +249,9 @@ Reserved: **0060**.
 | **Umbrella** (0001–0004) | Coverage map rows all point at existing child RFC files |
 | **Architecture** (0057, 0058) | Architecture accepted and encoded in repo |
 | **Tool** (0006+) | Per OSS gate in PUBLISHING + tool RFC §6 |
+
+## Active index
+
+| ID | RFC | Status |
+|----|-----|--------|
+| 0062 | [GitHub Actions CI/CD: feature PRs to develop, weekly promote to main, npm release on main](rfc/0062-github-actions-release-pipeline.md) | Approved |

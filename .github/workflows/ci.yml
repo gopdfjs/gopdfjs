@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rust-and-js:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup toolchain
+        uses: ./.github/actions/setup-ci
+
+      - name: Format check
+        run: pnpm format:check
+
+      - name: Validate
+        run: pnpm validate
+
+      - name: Changeset gate and CI config unit tests
+        run: node --test scripts/require-changeset.test.mjs scripts/write-qingniao-ci-config.test.mjs
+
+      - name: Require a changeset for package and crate diffs
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: node scripts/require-changeset.mjs
+
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup toolchain
+        uses: ./.github/actions/setup-ci
+
+      - name: Install Playwright chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Browser end-to-end tests
+        run: pnpm test:e2e
+
+  verify:
+    needs: [rust-and-js, e2e]
+    if: ${{ always() && !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require rust-and-js and e2e
+        env:
+          RUST_AND_JS_RESULT: ${{ needs.rust-and-js.result }}
+          E2E_RESULT: ${{ needs.e2e.result }}
+        run: |
+          set -euo pipefail
+          echo "rust-and-js=${RUST_AND_JS_RESULT} e2e=${E2E_RESULT}"
+          if [ "$RUST_AND_JS_RESULT" != "success" ] || [ "$E2E_RESULT" != "success" ]; then
+            echo "::error::verify requires rust-and-js and e2e to succeed"
+            exit 1
+          fi
