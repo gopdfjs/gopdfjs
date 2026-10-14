@@ -254,4 +254,4 @@ Reserved: **0060**.
 
 | ID | RFC | Status |
 |----|-----|--------|
-| 0062 | [GitHub Actions CI/CD: feature PRs to develop, weekly promote to main, npm release on main](rfc/0062-github-actions-release-pipeline.md) | Draft |
+| 0062 | [GitHub Actions CI/CD: feature PRs to develop, weekly promote to main, npm release on main](rfc/0062-github-actions-release-pipeline.md) | Approved |

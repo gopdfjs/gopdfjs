@@ -1,6 +1,6 @@
 # RFC 0062: GitHub Actions CI/CD: feature PRs to develop, weekly promote to main, npm release on main
 
-**Status:** Draft
+**Status:** Approved
 
 **Author**: GoPDF maintainers
 **Date**: 2026-10-11
@@ -99,7 +99,7 @@
 3. 若 `.changeset/` 下除 `README.md` 和 `config.json` 外没有 `*.md`，成功退出。
 4. 安装与 `ci.yml` 相同的 pnpm / Node / Rust / wasm-pack，再跑 `pnpm validate` 与 `pnpm check:vite-sanity`。e2e 已在合入 `main` 的 PR 上跑过，发布 job 不重复跑，避免把发布卡在浏览器下载上。
 5. 把 npm CLI 升到 `>=11.5.1`（`npm install -g npm@11`）。Trusted publishing 从该版本起才会自动用 OIDC。Node 22 自带的 npm 不一定满足。
-6. `pnpm exec qingniao --json --yes`。没有 `--yes` 时 qingniao 以退出码 3 停住。stdout 是 JSON Lines，人读的诊断在 stderr。`workflow_dispatch` 时改跑 `pnpm exec qingniao --json --yes --dry-run`，不发布。
+6. `pnpm exec qingniao --yes --config <ci-config>`。`@systembug/qingniao@0.1.0` 没有 `--json`；没有 `--yes` 时会停在确认提示。`workflow_dispatch` 时改跑 `pnpm exec qingniao --yes --dry-run --config <ci-config>`，不发布。
 7. 发布成功后打开或更新 `main` → `develop` 的回灌 PR，标题 `chore: back-merge release commits into develop`。这个 PR 仍走 `ci.yml`。不自动合并，留给人看版本号 diff。
 
 `qingniao` 的 git 分支保持默认 `main`，不要在 `qingniao.config.json` 里改成 `develop`。`.changeset/config.json` 的 `baseBranch` 继续是 `main`：changeset 在功能 PR 里写好，跟着每周合并到达 `main` 后才被 `changeset version` 消费。
@@ -123,7 +123,7 @@
 
 本机 `pnpm release -y` 的交互 OTP 保留给没有 CI 的紧急人工发布，但常规周发布不走这条。获批实现后，`docs/PUBLISHING.md` 的 Release 一节应改成指向本 RFC 的 workflow，并写明人工 OTP 只是逃生通道。
 
-实现时先在 `workflow_dispatch` 上跑 `qingniao doctor --json` 与 `--dry-run`。若 doctor 仍要求 TTY OTP，停在发布步骤，不要改回把 automation token 写进日志。只有 OIDC 被 qingniao 的子进程丢掉时，才允许 secret `NPM_TOKEN`（granular automation token，bypass 2FA）作为备案，并且 RFC 状态要记一笔原因。
+`workflow_dispatch` 先跑 `qingniao doctor`，再跑 `--dry-run`。`doctor` 没有 `--json`。它把 `pnpm whoami` 失败记成 `npm-auth` error。GitHub OIDC 只在 `npm publish` 当次注入，`whoami` 看不到，所以这次 **不** 加 secret `NPM_TOKEN`。发布步骤用一份临时配置，把 `checks.auth` 设为 `false`（仍从 `qingniao.config.json` 拷贝其余字段），让 `pnpm publish` 自己走 OIDC。若发布子进程真的丢掉 OIDC，再记一笔原因并允许 granular automation token。
 
 ### 分支保护（仓库设置，不进 YAML）
 
