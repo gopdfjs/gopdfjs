@@ -7,6 +7,29 @@ import { fileURLToPath } from "node:url";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 const ENGINE_EXPORTS_ONLY_DOT = path.join(ROOT, "packages/engine/package.json");
+const PUBLIC_NPM_PACKAGES = [
+  "packages/engine/package.json",
+  "packages/adapter-browser/package.json",
+  "packages/adapter-node/package.json",
+];
+const PRIVATE_NPM_PACKAGES = [
+  "packages/adapter/package.json",
+  "packages/fixtures/package.json",
+  "packages/model/package.json",
+  "packages/plugin/package.json",
+  "packages/plugin-annotate/package.json",
+  "packages/plugin-author/package.json",
+  "packages/plugin-compare/package.json",
+  "packages/plugin-extract/package.json",
+  "packages/plugin-grayscale/package.json",
+  "packages/plugin-inspect/package.json",
+  "packages/plugin-redact/package.json",
+  "packages/plugin-repair/package.json",
+  "packages/plugin-shrink/package.json",
+  "packages/plugin-struct/package.json",
+  "packages/runtime/package.json",
+  "packages/wasm/package.json",
+];
 
 const ENGINE_INDEX_FORBIDDEN = [
   /\bGopdfAdapter\b/,
@@ -34,6 +57,26 @@ const ADAPTER_INDEX_FORBIDDEN = [
 
 function main() {
   const errors = [];
+
+  for (const rel of PUBLIC_NPM_PACKAGES) {
+    const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, rel), "utf8"));
+    if (pkg.publishConfig?.access !== "public") {
+      errors.push(`${rel}: publishConfig.access must be "public" for v1 public packages`);
+    }
+    if (pkg.private === true) {
+      errors.push(`${rel}: public npm package must not set private: true`);
+    }
+  }
+
+  for (const rel of PRIVATE_NPM_PACKAGES) {
+    const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, rel), "utf8"));
+    if (pkg.private !== true) {
+      errors.push(`${rel}: internal package must set private: true`);
+    }
+    if (pkg.publishConfig?.access === "public") {
+      errors.push(`${rel}: internal package must not set publishConfig.access to "public"`);
+    }
+  }
 
   const enginePkg = JSON.parse(fs.readFileSync(ENGINE_EXPORTS_ONLY_DOT, "utf8"));
   const exportKeys = Object.keys(enginePkg.exports ?? {});
