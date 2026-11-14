@@ -92,15 +92,28 @@ Optional **`qingniao.config.json`**: `{ "publish": { "skipExisting": true } }`.
 
 **`.changeset/config.json`** — three public packages in **`fixed`** (lockstep version); all private workspace packages in **`ignore`**.
 
-### Release flow (maintainer)
+### Release flow
 
-1. Optional manual gates: `pnpm check:vite-sanity` · `pnpm test:e2e`
-2. `pnpm changeset` — describe bump; creates `.changeset/*.md`
-3. `git add .changeset && git commit -m "chore: changeset"`
-4. `git push`
-5. `pnpm login` (if needed)
-6. **`pnpm release -y`** in your terminal — NPM 2FA OTP must be entered interactively here
-7. Verify:
+Routine releases go through GitHub Actions ([RFC 0062](../.spec/rfc/0062-github-actions-release-pipeline.md)). `develop` never runs `npm publish`.
+
+1. Feature work lands on `develop` by pull request. The required check is the `verify` job in `.github/workflows/ci.yml` (`pnpm format:check`, `pnpm validate`, `pnpm test:e2e`). A diff under `packages/` or `crates/` must add a `.changeset/*.md` file.
+2. Monday 15:00 UTC, `.github/workflows/promote-develop.yml` opens or updates `develop` → `main` and merge-commits it after `verify` is green. Re-run it with `workflow_dispatch` when you do not want to wait for Monday.
+3. Push to `main` runs `.github/workflows/release.yml`. Pending changesets: `pnpm validate`, `pnpm check:vite-sanity`, then `pnpm exec qingniao --yes`. No pending changeset: the job exits 0 and does not publish. `workflow_dispatch` on this workflow is dry-run only.
+4. After a publish, the workflow opens `main` → `develop` (`chore: back-merge release commits into develop`). Review that pull request; it is not auto-merged.
+5. Verify:
+
+Manual OTP stays the escape hatch when Actions cannot publish. In a terminal: `pnpm login` if needed, then **`pnpm release -y`**, and enter the NPM 2FA OTP at the prompt. Do not put an NPM token in the workflow to replace trusted publishing.
+
+One-time repository setup (not in YAML):
+
+| Setting | Value |
+|---------|--------|
+| Branch `develop` | Create from `main` after the pipeline files are on `main` |
+| Secret `RELEASE_GITHUB_TOKEN` | Fine-grained PAT or GitHub App. Contents and pull requests: read/write. Its pushes must be allowed to trigger workflows. The default `GITHUB_TOKEN` will not start `release.yml` or `deploy-site.yml` after the weekly merge |
+| Branch protection `develop` and `main` | Pull request required. Required check: `verify`. No force push |
+| npm trusted publisher, each public package | This GitHub repository, workflow `release.yml`, action **`npm publish`** (not only `npm stage publish`) |
+
+`actions/setup-node` in these workflows must not set `registry-url`. That writes a token `.npmrc` and hides OIDC.
 
 ```bash
 npm view @gopdfjs/engine version

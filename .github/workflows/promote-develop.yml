@@ -1,0 +1,91 @@
+name: Promote develop to main
+
+on:
+  schedule:
+    # Monday 15:00 UTC
+    - cron: "0 15 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: promote-develop
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require RELEASE_GITHUB_TOKEN
+        env:
+          RELEASE_GITHUB_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+        run: |
+          if [ -z "$RELEASE_GITHUB_TOKEN" ]; then
+            echo "::error::Set Actions secret RELEASE_GITHUB_TOKEN. The default GITHUB_TOKEN cannot start release.yml after this merge."
+            exit 1
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+
+      - name: Open or merge the weekly promote pull request
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git fetch origin develop
+
+          ahead="$(git rev-list --count origin/main..origin/develop)"
+          echo "develop is ${ahead} commit(s) ahead of main"
+          if [ "$ahead" = "0" ]; then
+            echo "Nothing to promote."
+            exit 0
+          fi
+
+          promote_title="chore: weekly promote develop to main"
+          pr="$(gh pr list --base main --head develop --state open --json number --jq '.[0].number')"
+          if [ -z "$pr" ]; then
+            gh pr create \
+              --base main \
+              --head develop \
+              --title "$promote_title" \
+              --body "$(cat <<'EOF'
+          Weekly merge of `develop` into `main`.
+
+          This pull request does not publish to npm. `release.yml` publishes after the merge commit reaches `main`, and only when a changeset is pending.
+
+          Merge with a merge commit. Do not squash or rebase.
+          EOF
+          )"
+            pr="$(gh pr list --base main --head develop --state open --json number --jq '.[0].number')"
+          fi
+
+          echo "Waiting for checks on PR #${pr}"
+          checks_seen=0
+          for _ in $(seq 1 30); do
+            report="$(gh pr checks "$pr" 2>&1 || true)"
+            printf '%s\n' "$report"
+            if printf '%s\n' "$report" | grep -q "no checks reported"; then
+              sleep 20
+              continue
+            fi
+            checks_seen=1
+            break
+          done
+          if [ "$checks_seen" -ne 1 ]; then
+            echo "::error::ci.yml did not report checks for PR #${pr}"
+            exit 1
+          fi
+
+          if ! gh pr checks "$pr" --watch --fail-fast --interval 20; then
+            echo "::error::Checks failed on PR #${pr}. Leaving it open."
+            gh pr checks "$pr" || true
+            exit 1
+          fi
+
+          gh pr merge "$pr" --merge
