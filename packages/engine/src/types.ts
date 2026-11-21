@@ -14,12 +14,18 @@ export type {
   PdfToTextOptions,
   ZipEntryStatus,
   ZipToPdfEntryResult,
+  ZipToPdfLimits,
   ZipToPdfMode,
   ZipToPdfOptions,
   ZipToPdfResult,
 } from "../../adapter/src/gopdf";
 
-export { ZIP_ENTRY_STATUS, ZIP_TO_PDF_MODE } from "../../adapter/src/gopdf";
+export {
+  ZIP_ENTRY_STATUS,
+  ZIP_TO_PDF_DEFAULT_LIMITS,
+  ZIP_TO_PDF_MODE,
+  ZipToPdfError,
+} from "../../adapter/src/gopdf";
 
 export type {
   Annotation,
