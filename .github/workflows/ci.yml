@@ -26,6 +26,9 @@ jobs:
       - name: Setup toolchain
         uses: ./.github/actions/setup-ci
 
+      - name: Build workspace packages
+        run: pnpm build
+
       - name: Format check
         run: pnpm format:check
 
@@ -50,6 +53,9 @@ jobs:
 
       - name: Setup toolchain
         uses: ./.github/actions/setup-ci
+
+      - name: Build workspace packages
+        run: pnpm build
 
       - name: Install Playwright chromium
         run: pnpm exec playwright install --with-deps chromium
