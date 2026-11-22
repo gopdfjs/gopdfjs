@@ -62,26 +62,67 @@ export const ZIP_ENTRY_STATUS = {
 
 export type ZipEntryStatus = (typeof ZIP_ENTRY_STATUS)[keyof typeof ZIP_ENTRY_STATUS];
 
+/** Default archive resource caps for RFC 0055 ZIP-to-PDF conversion. */
+export const ZIP_TO_PDF_DEFAULT_LIMITS = {
+  /** Maximum number of non-directory file entries accepted in one archive. */
+  maxEntries: 500,
+  /** Maximum uncompressed byte size accepted for a single entry (50 MiB). */
+  maxEntryBytes: 50 * 1024 * 1024,
+  /** Maximum aggregate uncompressed byte size across all entries (200 MiB). */
+  maxTotalUncompressedBytes: 200 * 1024 * 1024,
+} as const;
+
+export type ZipToPdfLimits = {
+  /** Maximum non-directory file entries allowed. Defaults to `ZIP_TO_PDF_DEFAULT_LIMITS.maxEntries` (500). */
+  maxEntries?: number;
+  /** Maximum uncompressed bytes allowed for any single entry. Defaults to `ZIP_TO_PDF_DEFAULT_LIMITS.maxEntryBytes` (50 MiB). */
+  maxEntryBytes?: number;
+  /** Maximum aggregate uncompressed bytes across all entries. Defaults to `ZIP_TO_PDF_DEFAULT_LIMITS.maxTotalUncompressedBytes` (200 MiB). */
+  maxTotalUncompressedBytes?: number;
+};
+
+/** Thrown when the container is not a readable ZIP, options/limits are invalid, or resource limits are exceeded. */
+export class ZipToPdfError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ZipToPdfError";
+  }
+}
+
 export type ZipToPdfEntryResult = {
   /** Archive-relative path after `\` → `/` and `.` / `..` checks. */
   path: string;
   status: ZipEntryStatus;
-  /** PDF name inside an individual-mode ZIP, or the source name merged in combined mode. */
+  /**
+   * PDF name inside an individual-mode ZIP, or the source output name in combined mode.
+   * Case-insensitive output-name collisions are deterministically disambiguated (`-2`, `-3`, …).
+   */
   outputPath?: string;
   message?: string;
+  /** Set when `options.onEntry` throws; unrelated entries continue processing. */
+  callbackError?: string;
 };
 
 export type ZipToPdfOptions = {
   mode: ZipToPdfMode;
-  /** Called after each file entry, in deterministic path order. `index` is 0-based. */
+  /**
+   * Optional archive resource limits enforced via pre-flight header checks and streaming
+   * inflation guards. Exceeding or passing invalid limits rejects with `ZipToPdfError`.
+   */
+  limits?: ZipToPdfLimits;
+  /**
+   * Called after each file entry, in deterministic Unicode code-point path order. `index` is 0-based.
+   * Errors thrown by this callback are recorded on `entry.callbackError` and do not abort the batch.
+   */
   onEntry?: (entry: ZipToPdfEntryResult, index: number, total: number) => void;
 };
 
 export type ZipToPdfResult = {
   mode: ZipToPdfMode;
   /**
-   * Combined mode: one PDF (empty PDF when nothing converted).
-   * Individual mode: ZIP of converted PDFs, nested paths preserved.
+   * Combined mode: one merged PDF, or a fresh valid single blank-page PDF when nothing converted
+   * (inspect `entries` for per-entry outcomes).
+   * Individual mode: ZIP of converted PDFs, nested paths preserved and case-insensitively unique.
    */
   bytes: Uint8Array;
   entries: ZipToPdfEntryResult[];
@@ -158,9 +199,11 @@ export interface Gopdf {
   jpgToPdf(images: ImageInput[]): Promise<Uint8Array>;
 
   /**
-   * RFC 0055. Converts JPEG, PNG, PDF, plain text, Markdown, and HTML entries.
-   * Office files are unsupported and reported per entry. Text, Markdown, and HTML
-   * use `htmlToPdf` (browser DOM). JPEG/PNG/PDF work in Node and the browser.
+   * RFC 0055. Converts JPEG, PNG, PDF, plain text, Markdown, and HTML entries sequentially
+   * in Unicode code-point path order. Office files are unsupported and reported per entry.
+   * Text, Markdown, and HTML use `htmlToPdf` (browser DOM); JPEG/PNG/PDF work in Node and the
+   * browser. Enforces `options.limits` (default `ZIP_TO_PDF_DEFAULT_LIMITS`) and throws
+   * `ZipToPdfError` for unreadable archives, invalid modes/limits, or resource-limit violations.
    */
   zipToPdf(bytes: Uint8Array, options: ZipToPdfOptions): Promise<ZipToPdfResult>;
 

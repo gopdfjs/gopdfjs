@@ -6,7 +6,12 @@
  */
 
 export type * from "./types";
-export { ZIP_ENTRY_STATUS, ZIP_TO_PDF_MODE } from "./types";
+export {
+  ZIP_ENTRY_STATUS,
+  ZIP_TO_PDF_DEFAULT_LIMITS,
+  ZIP_TO_PDF_MODE,
+  ZipToPdfError,
+} from "./types";
 export { createEngine } from "./createEngine";
 
 export {

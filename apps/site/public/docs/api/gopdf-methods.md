@@ -58,7 +58,7 @@ const engine = createEngine(await createBrowserAdapter());
 | `fillPdfForm(bytes, values, options?, fields?)` | `Uint8Array` | ✓ | ✓ | AcroForm fill; optional flatten. |
 | `applyNativeTextEdits(bytes, edits)` | `Uint8Array` | ✓ | ✓ | Overlay text boxes on pages. |
 | `jpgToPdf(images)` | `Uint8Array` | ✓ | ✓ | Images → single PDF. |
-| `zipToPdf(bytes, options)` | `ZipToPdfResult` | ✓ | partial | RFC 0055. `options.mode`: `"combined"` (one PDF) or `"individual"` (ZIP of PDFs). JPEG, PNG, and PDF entries work in Node and the browser. Plain text, Markdown, and HTML go through `htmlToPdf` (browser DOM). Unsupported or corrupt entries are reported on `entries` and do not stop the batch. Office files are unsupported. |
+| `zipToPdf(bytes, options)` | `ZipToPdfResult` | ✓ | partial | RFC 0055. `options.mode`: `"combined"` (one PDF, or a fresh valid single blank-page PDF when nothing converts) or `"individual"` (ZIP of PDFs). Entries run sequentially in Unicode code-point path order; case-insensitive output-name collisions are deterministically disambiguated (`-2`, `-3`, …). Default limits (`ZIP_TO_PDF_DEFAULT_LIMITS`: 500 entries, 50 MiB/entry, 200 MiB total uncompressed, configurable via `options.limits`) are enforced pre-flight and during streaming inflation, rejecting invalid containers/options/limits with `ZipToPdfError`. JPEG, PNG, and PDF entries work in Node and the browser; plain text, Markdown, and HTML use `htmlToPdf` (browser DOM). Unsupported, corrupt, merge-failing, or unsafe-path entries are isolated per entry (`entries`), and throwing `onEntry` callbacks are recorded on `entry.callbackError` without aborting unrelated entries. Office files are unsupported. |
 
 ## Repair & redact
 
