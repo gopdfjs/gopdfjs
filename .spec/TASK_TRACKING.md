@@ -35,6 +35,10 @@ PUBLISH    docs/PUBLISHING.md checklist
 
 ---
 
+## Active
+
+- [ ] Implement RFC 0062: GitHub Actions CI/CD: feature PRs to develop, weekly promote to main, npm release on main (RFC 0062)
+
 ## Done
 
 - [x] RFC layout: flat `.spec/rfc/` + `completed/` + `pending/`

@@ -1,0 +1,108 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: npm-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require RELEASE_GITHUB_TOKEN
+        env:
+          RELEASE_GITHUB_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+        run: |
+          if [ -z "$RELEASE_GITHUB_TOKEN" ]; then
+            echo "::error::Set Actions secret RELEASE_GITHUB_TOKEN so version commits can be pushed and can start later workflows."
+            exit 1
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+
+      - name: Count pending changesets
+        id: changesets
+        run: |
+          set -euo pipefail
+          pending="$(find .changeset -name '*.md' ! -name 'README.md' | wc -l | tr -d ' ')"
+          echo "pending=${pending}" >> "$GITHUB_OUTPUT"
+          echo "Pending changeset files: ${pending}"
+
+      - name: Setup toolchain
+        if: steps.changesets.outputs.pending != '0' || github.event_name == 'workflow_dispatch'
+        uses: ./.github/actions/setup-ci
+
+      - name: Validate and Vite publish sanity
+        if: github.event_name == 'push' && steps.changesets.outputs.pending != '0'
+        run: |
+          pnpm validate
+          pnpm check:vite-sanity
+
+      - name: Install npm CLI for trusted publishing
+        if: steps.changesets.outputs.pending != '0' || github.event_name == 'workflow_dispatch'
+        run: |
+          npm install -g npm@11
+          npm --version
+
+      - name: qingniao doctor
+        if: github.event_name == 'workflow_dispatch'
+        continue-on-error: true
+        run: pnpm exec qingniao doctor
+
+      - name: Write CI qingniao config
+        if: steps.changesets.outputs.pending != '0'
+        run: node scripts/write-qingniao-ci-config.mjs "$RUNNER_TEMP/qingniao.ci.json"
+
+      - name: Dry run
+        if: github.event_name == 'workflow_dispatch' && steps.changesets.outputs.pending != '0'
+        run: pnpm exec qingniao --yes --dry-run --config "$RUNNER_TEMP/qingniao.ci.json"
+
+      - name: Publish
+        if: github.event_name == 'push' && steps.changesets.outputs.pending != '0'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          pnpm exec qingniao --yes --config "$RUNNER_TEMP/qingniao.ci.json"
+
+      - name: Open back-merge pull request
+        if: github.event_name == 'push' && steps.changesets.outputs.pending != '0'
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if ! git rev-parse --verify origin/develop >/dev/null 2>&1; then
+            git fetch origin develop || true
+          fi
+          if ! git rev-parse --verify origin/develop >/dev/null 2>&1; then
+            echo "::warning::origin/develop does not exist. Create it from main, then open the back-merge pull request."
+            exit 0
+          fi
+          existing="$(gh pr list --base develop --head main --state open --json number --jq '.[0].number')"
+          if [ -n "$existing" ]; then
+            echo "Back-merge PR #${existing} is already open."
+            exit 0
+          fi
+          gh pr create \
+            --base develop \
+            --head main \
+            --title "chore: back-merge release commits into develop" \
+            --body "$(cat <<'EOF'
+          Release commits on `main` (version, CHANGELOG, consumed changesets) need to land on `develop` before the next weekly promote.
+
+          Review the version diff. Do not squash.
+          EOF
+          )"
