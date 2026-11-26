@@ -37,6 +37,11 @@ jobs:
         with:
           components: rustfmt
 
+      - name: Install wasm-pack
+        uses: jetli/wasm-pack-action@v0.4.0
+        with:
+          version: latest
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
